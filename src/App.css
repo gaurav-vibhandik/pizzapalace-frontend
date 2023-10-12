@@ -1,8 +1,63 @@
 .App {
-  border: 3px dotted black;
-  height: 100vh;
+  /* border: 3px dotted black; */
+  min-height: 100vh;
+}
+
+.header {
+  border: 2px dotted black;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .borderline {
   border: 2px dotted blue;
+}
+
+.contentDisplay {
+  background-color: orange;
+  border: 4px solid green;
+  min-height: 84vh;
+  margin-top: 7.5rem;
+  text-align: center;
+  display: flex;
+}
+
+.pizzaDisplay {
+  border: 3px dotted red;
+  min-height: 84vh;
+  width: 70vw;
+  background-color: aquamarine;
+}
+
+.veg {
+  height: 900px;
+  background-color: chartreuse;
+}
+
+.nonVeg {
+  height: 600px;
+  background-color: brown;
+}
+
+.sides {
+  height: 300px;
+  background-color: burlywood;
+}
+
+#menu {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  justify-content: center;
+}
+.orderDisplay {
+  width: 50vw;
+
+  background-color: pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

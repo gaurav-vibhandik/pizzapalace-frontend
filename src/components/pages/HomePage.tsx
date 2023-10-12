@@ -1,17 +1,14 @@
 import React from "react";
 import Header from "../commons/Header";
-import MainDisplay from "../commons/MainDisplay";
+import ContentDisplay from "../commons/ContentDisplay";
 import Footer from "../commons/Footer";
 
 const HomePage = () => {
   return (
     <React.Fragment>
-      <div
-        className="borderline"
-        style={{ border: "3px solid yellow", height: "100vh" }}
-      >
+      <div style={{ border: "3px solid yellow", minHeight: "100vh" }}>
         <Header />
-        <MainDisplay />
+        <ContentDisplay />
         <Footer />
       </div>
     </React.Fragment>

@@ -1,9 +1,9 @@
 import React from "react";
 
-const Header = () => {
+const OrderDisplay = () => {
   return (
     <React.Fragment>
-      <div className="borderline">
+      <div className="orderDisplay borderline">
         <h2>This is OrderDisplay</h2>
       </div>
     </React.Fragment>

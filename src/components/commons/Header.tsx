@@ -1,19 +1,30 @@
 import React from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Image, Nav, Navbar } from "react-bootstrap";
+import logo from "../images/pizza_logo.jpg";
 
 const Header = () => {
   return (
     <React.Fragment>
-      <div className="borderline container-fluid" style={{}}>
-        <Navbar bg="light" data-bs-theme="light">
-          <div>
-            <Navbar.Brand href="#home">Yummy Pizza</Navbar.Brand>
-            <Nav className="me-auto">
+      <div className="header">
+        <Navbar bg="primary" data-bs-theme="dark">
+          <Container fluid>
+            <Navbar.Brand href="#home">
+              <img
+                alt="logo"
+                src={logo}
+                width="40"
+                height="40"
+                className="d-inline-block align-top "
+              />
+              <b className="ms-2">Yummy Pizzas</b>
+            </Navbar.Brand>
+            <Nav className="" style={{}}>
               <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#features">Features</Nav.Link>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
+              <Nav.Link href="#Admin">Admin</Nav.Link>
+              <Nav.Link href="#SignIn">SignIn</Nav.Link>
+              <Nav.Link href="#SignUp">Register</Nav.Link>
             </Nav>
-          </div>
+          </Container>
         </Navbar>
       </div>
     </React.Fragment>
