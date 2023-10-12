@@ -29,11 +29,16 @@
   min-height: 84vh;
   width: 70vw;
   background-color: aquamarine;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .veg {
-  height: 900px;
   background-color: chartreuse;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .nonVeg {
@@ -52,6 +57,8 @@
   left: 0;
   right: 0;
   justify-content: center;
+
+  background-color: aliceblue;
 }
 .orderDisplay {
   width: 50vw;
@@ -61,3 +68,5 @@
   align-items: center;
   justify-content: center;
 }
+
+/*===========================================*/

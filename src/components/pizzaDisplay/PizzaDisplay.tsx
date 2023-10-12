@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import axios from "axios";
+import { Pizza } from "../interfaces/pizzaInterface";
+import CardPizza from "./CardPizza";
 
 const PizzaDisplay = () => {
+  const [pizzaList, setPizzaList] = useState<Pizza[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/v1/pizzas")
+      .then((resp) => {
+        let myList: Pizza[] = resp.data.data.list;
+        console.log(myList);
+        setPizzaList(myList);
+
+        console.log(pizzaList);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <React.Fragment>
       <div className="container-fluid pizzaDisplay">
@@ -11,10 +29,11 @@ const PizzaDisplay = () => {
           data-bs-root-margin="0px 0px -40%"
           data-bs-smooth-scroll="true"
           className="scrollspy-example bg-body-tertiary p-3 rounded-2"
-          tabIndex={-1}
+          tabIndex={0}
         >
           <div id="scrollSpyVeg" className="veg container-fluid ">
-            <h2>VegPizza Details</h2>
+            {pizzaList.length > 0 &&
+              pizzaList.map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
           <div id="scrollSpyNonVeg" className="container-fluid  nonVeg">
             <h2>Non-veg Pizza Details</h2>
@@ -37,19 +56,6 @@ export default PizzaDisplay;
 //   return (
 //     <React.Fragment>
 //       <div className="container-fluid pizzaDisplay">
-//         <div>
-//           <Navbar className="menu">
-//             <Container fluid style={{ border: "3px solid red", width: "100%" }}>
-//               <Navbar.Brand>Menu ==)</Navbar.Brand>
-//               <Nav className="me-auto nav-pills">
-//                 <Nav.Link href="#scrollSpyVeg">Veg Pizza</Nav.Link>
-//                 <Nav.Link href="#scrollSpyNonVeg">Non-veg Pizza</Nav.Link>
-//                 <Nav.Link href="#scrollSpySides">Sides</Nav.Link>
-//               </Nav>
-//             </Container>
-//           </Navbar>
-//         </div>
-
 //         <div
 //           data-bs-spy="scroll"
 //           data-bs-target="#menu"
@@ -59,7 +65,7 @@ export default PizzaDisplay;
 //           tabIndex={0}
 //         >
 //           <div id="scrollSpyVeg" className="veg container-fluid ">
-//             <h2>VegPizza Details</h2>
+
 //           </div>
 //           <div id="scrollSpyNonVeg" className="container-fluid  nonVeg">
 //             <h2>Non-veg Pizza Details</h2>
