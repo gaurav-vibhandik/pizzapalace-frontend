@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Image, Nav, Navbar } from "react-bootstrap";
 import logo from "../images/pizza_logo.jpg";
+import MenuDisplay from "./MenuDisplay";
 
 const Header = () => {
   return (

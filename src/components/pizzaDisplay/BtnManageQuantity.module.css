@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  border: 1px dotted red;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+
+  background-color: aliceblue;
+  justify-content: center;
+}
+
+.btnRemoveQty {
+  background-color: rgb(235, 67, 67);
+  color: black;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: 2px dotted black;
+}
+
+.qty {
+  border: 2px dotted blue;
+  width: fit-content;
+}
+
+.btnAddQty {
+  background-color: greenyellow;
+  color: white;
+  height: 1.5rem;
+  width: 1.5rem;
+}

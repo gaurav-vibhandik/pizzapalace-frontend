@@ -4,7 +4,7 @@ export interface Pizza {
   description: string;
   type: string;
   imageUrl: string;
-  priceSmallSize: number;
+  priceRegularSize: number;
   priceMediumSize: number;
   priceLargeSize: number;
 }

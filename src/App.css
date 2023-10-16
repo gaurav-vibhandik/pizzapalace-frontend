@@ -1,7 +1,14 @@
 .App {
   /* border: 3px dotted black; */
   min-height: 100vh;
+  background-color: black;
 }
+
+.borderline {
+  border: 2px dotted blue;
+}
+
+/*=======================> Header css =========================*/
 
 .header {
   border: 2px dotted black;
@@ -10,58 +17,102 @@
   right: 0;
   left: 0;
 }
-
-.borderline {
-  border: 2px dotted blue;
-}
-
-.contentDisplay {
-  background-color: orange;
-  border: 4px solid green;
-  min-height: 84vh;
-  margin-top: 7.5rem;
-  text-align: center;
-  display: flex;
-}
-
-.pizzaDisplay {
-  border: 3px dotted red;
-  min-height: 84vh;
-  width: 70vw;
-  background-color: aquamarine;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.veg {
-  background-color: chartreuse;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.nonVeg {
-  height: 600px;
-  background-color: brown;
-}
-
-.sides {
-  height: 300px;
-  background-color: burlywood;
-}
-
+/*======= Menu display css =========================*/
 #menu {
   position: fixed;
   top: 4rem;
   left: 0;
   right: 0;
-  justify-content: center;
 
   background-color: aliceblue;
 }
+/*=============================== Content Display css =========================*/
+
+.contentDisplay {
+  background-color: green;
+  border: 4px solid green;
+  min-height: 84vh;
+  margin-top: 7.5rem;
+  display: flex;
+  flex-direction: row;
+}
+
+/*=============================== Pizza Display css =========================*/
+
+.pizzaDisplay {
+  border: 3px dotted red;
+  min-height: 84vh;
+  width: 70vw;
+  background-color: red;
+}
+
+.pizzaCardsFlexBox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: space-evenly;
+}
+
+.veg {
+  background-color: chartreuse;
+  border: 3px dotted blue;
+}
+
+.nonVeg {
+  min-height: 600px;
+  background-color: brown;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.sides {
+  min-height: 300px;
+  background-color: burlywood;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+/*================= PizzaCard ===========*/
+/* .myPizzaCard {
+  width: 19rem;
+  position: static;
+  font-size: small;
+  z-index: 0;
+}
+
+.pizzaImageSection {
+  position: relative;
+}
+.pizzaFoodTypeLogo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+}
+
+.myPizzaSizeSelect,
+.myPizzaCrustSelect {
+  font-size: 0.8rem;
+  color: darkcyan;
+}
+
+.myPizzaSizeSelect select,
+.myPizzaCrustSelect select {
+  font-size: 0.8rem;
+  color: green;
+ .pizzaSizePrice {
+  color: green;
+} */
+
+/*=============================== Order Display css =========================*/
+
 .orderDisplay {
-  width: 50vw;
+  width: 30vw;
 
   background-color: pink;
   display: flex;
