@@ -1,8 +1,8 @@
 .myPizzaCard {
   width: 17rem;
-  position: static;
+  height: fit-content;
   font-size: small;
-  z-index: 0;
+  box-shadow: 2px 2px 7px gray;
 }
 
 .pizzaImageSection {
@@ -26,7 +26,7 @@
 }
 
 .selectContainer {
-  border: 2px dotted blue;
+  /* border: 2px dotted blue; */
   justify-content: center;
   flex-direction: column;
   align-items: flex-start;
@@ -47,13 +47,19 @@
   /* color: green; */
 }
 
-/* .pizzaPrice {
+.pizzaPrice {
+  background-color: whitesmoke;
   color: green;
-} */
+  font-size: large;
+  position: absolute;
+  top: 7.9rem;
+  height: fit-content;
+}
 
 #id_pizzaSizePrice {
   color: red;
 }
 .btnAddToCart {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  box-shadow: 2px 2px 2px gray;
 }

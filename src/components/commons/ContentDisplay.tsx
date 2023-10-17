@@ -7,9 +7,8 @@ const ContentDisplay = () => {
   return (
     <React.Fragment>
       <div className="contentDisplay">
-        {/* <MenuDisplay /> */}
+        <MenuDisplay />
         <PizzaDisplay />
-
         <OrderDisplay />
       </div>
     </React.Fragment>

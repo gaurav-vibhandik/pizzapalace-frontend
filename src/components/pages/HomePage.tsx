@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../commons/Header";
 import ContentDisplay from "../commons/ContentDisplay";
 import Footer from "../commons/Footer";
-import MenuDisplay from "../commons/MenuDisplay";
 
 const HomePage = () => {
   return (
@@ -11,11 +10,10 @@ const HomePage = () => {
         style={{
           border: "3px solid yellow",
           minHeight: "100vh",
-          position: "static",
         }}
       >
         <Header />
-        {/* <MenuDisplay /> */}
+
         <ContentDisplay />
         <Footer />
       </div>

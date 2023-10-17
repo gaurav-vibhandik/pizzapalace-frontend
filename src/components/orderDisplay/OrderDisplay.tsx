@@ -1,10 +1,11 @@
 import React from "react";
+import styles from "./OrderDisplay.module.css";
 
 const OrderDisplay = () => {
   return (
     <React.Fragment>
-      <div className="orderDisplay borderline">
-        <h2>This is OrderDisplay</h2>
+      <div className={styles.orderDisplay}>
+        <div className={styles.orderCart}>This is OrderCart</div>
       </div>
     </React.Fragment>
   );

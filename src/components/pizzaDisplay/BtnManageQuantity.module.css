@@ -1,12 +1,12 @@
 .container {
   display: flex;
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
   flex-direction: row;
-  justify-content: start;
-  align-items: center;
-
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: 100%;
 }
 
 .btnRemoveQty {
@@ -14,17 +14,19 @@
   color: black;
   height: 1.5rem;
   width: 1.5rem;
-  border: 2px dotted black;
+  /* border: 2px dotted black; */
 }
 
 .qty {
-  border: 2px dotted blue;
-  width: fit-content;
+  text-align: center;
+  border: 2px solid black;
+  width: 2.3rem;
+  background-color: aliceblue;
 }
 
 .btnAddQty {
-  background-color: greenyellow;
-  color: white;
+  background-color: green;
+  color: black;
   height: 1.5rem;
   width: 1.5rem;
 }

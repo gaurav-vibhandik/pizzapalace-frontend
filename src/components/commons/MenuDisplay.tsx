@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import PizzaDisplay from "../pizzaDisplay/PizzaDisplay";
 
 const MenuDisplay = () => {
   return (

@@ -1,0 +1,15 @@
+.orderDisplay {
+  width: 30vw;
+  background-color: lightblue;
+}
+
+.orderCart {
+  position: fixed;
+  top: 6rem;
+  right: 1rem;
+  width: 28vw;
+  height: 78vh;
+  margin-top: 3rem;
+  background-color: gray;
+  text-align: center;
+}

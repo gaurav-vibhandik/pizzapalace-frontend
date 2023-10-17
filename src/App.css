@@ -1,7 +1,5 @@
 .App {
-  /* border: 3px dotted black; */
   min-height: 100vh;
-  background-color: black;
 }
 
 .borderline {
@@ -11,11 +9,12 @@
 /*=======================> Header css =========================*/
 
 .header {
-  border: 2px dotted black;
+  /* border: 2px dotted black; */
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
+  /* z-index: 1; */
 }
 /*======= Menu display css =========================*/
 #menu {
@@ -23,14 +22,15 @@
   top: 4rem;
   left: 0;
   right: 0;
-
+  /* z-index: 1; */
   background-color: aliceblue;
 }
+
 /*=============================== Content Display css =========================*/
 
 .contentDisplay {
-  background-color: green;
-  border: 4px solid green;
+  /* background-color: green; */
+  border: 2px solid green;
   min-height: 84vh;
   margin-top: 7.5rem;
   display: flex;
@@ -40,84 +40,22 @@
 /*=============================== Pizza Display css =========================*/
 
 .pizzaDisplay {
-  border: 3px dotted red;
-  min-height: 84vh;
+  border: 3px dotted black;
+  /* min-height: 84vh; */
   width: 70vw;
-  background-color: red;
 }
 
 .pizzaCardsFlexBox {
+  /* border: 2px dotted red; */
+  /* background-color: red; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 1.2rem;
-  justify-content: space-evenly;
-}
-
-.veg {
-  background-color: chartreuse;
-  border: 3px dotted blue;
-}
-
-.nonVeg {
-  min-height: 600px;
-  background-color: brown;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1.2rem;
+  padding: 1rem;
+  gap: 1.5rem;
+  background-color: ghostwhite;
 }
 
 .sides {
   min-height: 300px;
-  background-color: burlywood;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1.2rem;
 }
-
-/*================= PizzaCard ===========*/
-/* .myPizzaCard {
-  width: 19rem;
-  position: static;
-  font-size: small;
-  z-index: 0;
-}
-
-.pizzaImageSection {
-  position: relative;
-}
-.pizzaFoodTypeLogo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1rem;
-}
-
-.myPizzaSizeSelect,
-.myPizzaCrustSelect {
-  font-size: 0.8rem;
-  color: darkcyan;
-}
-
-.myPizzaSizeSelect select,
-.myPizzaCrustSelect select {
-  font-size: 0.8rem;
-  color: green;
- .pizzaSizePrice {
-  color: green;
-} */
-
-/*=============================== Order Display css =========================*/
-
-.orderDisplay {
-  width: 30vw;
-
-  background-color: pink;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/*===========================================*/

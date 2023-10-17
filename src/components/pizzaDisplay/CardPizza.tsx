@@ -37,7 +37,11 @@ const CardPizza = (props: Pizza) => {
           src={props.type == "VEG" ? vegLogo : nonVegLogo}
           alt={props.type == "VEG" ? "vegLogo" : "nonVegLogo"}
         />
+        <div
+          className={styles.pizzaPrice}
+        >{`Rs. ${props.priceRegularSize}`}</div>
       </div>
+
       <Card.Body>
         <Card.Title className={styles.pizzaCardTitle}>{props.name}</Card.Title>
         <Card.Text className={styles.pizzaCardDescription}>
@@ -56,11 +60,7 @@ const CardPizza = (props: Pizza) => {
             >
               {priceList.map((pizzaPrice) => (
                 <option key={props.pizzaId} value={pizzaPrice.size}>
-                  {`${pizzaPrice.size}   Rs ${pizzaPrice.price}`}
-                  {/* {`${pizzaPrice.size}  `}
-                  <span className="pizzaPrice" style={{ color: "green" }}>
-                    {pizzaPrice.price}
-                  </span> */}
+                  {`${pizzaPrice.size}   Rs.${pizzaPrice.price}`}
                 </option>
               ))}
             </Form.Select>
@@ -91,14 +91,13 @@ const CardPizza = (props: Pizza) => {
         <div>
           <Row>
             <Col>
-              <Button
+              <button
                 type="button"
                 className={styles.btnAddToCart}
-                variant="primary"
                 onClick={handleAddToCart}
               >
                 Add to Cart
-              </Button>
+              </button>
             </Col>
             <Col>
               {isAddToCartClicked && (

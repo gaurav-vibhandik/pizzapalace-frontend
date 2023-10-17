@@ -27,36 +27,32 @@ const PizzaDisplay = () => {
 
   return (
     <React.Fragment>
-      {/* <div
-        className="pizzaDisplay scrollspy-example bg-body-tertiary"
-        data-bs-spy="scroll"
-        data-bs-target="body"
-        data-bs-root-margin="0px 0px -40%"
-        data-bs-smooth-scroll="true"
-        tabIndex={0}
-      > */}
       <div className="pizzaDisplay">
-        <div id="scrollSpyVeg" className="veg pizzaCardsFlexBox">
-          {pizzaList.length > 0 &&
-            pizzaList
-              .filter((p) => p.type == "VEG")
-              .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
-        </div>
         <div
-          id="scrollSpyNonVeg"
-          className="container-fluid  nonVeg pizzaCardsFlexBox"
+          className="scrollspy-example bg-body-tertiary"
+          data-bs-spy="scroll"
+          data-bs-target="body"
+          data-bs-root-margin="0px 0px -40%"
+          data-bs-smooth-scroll="true"
+          tabIndex={0}
+          style={{ position: "static" }}
         >
-          {pizzaList.length > 0 &&
-            pizzaList
-              .filter((p) => p.type == "NON-VEG")
-              .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
-        </div>
-        <div
-          id="scrollSpySides"
-          className="flex-row justify-content-center align-items-center   sides pizzaCardsFlexBox"
-        >
-          <h2>Comming Soon : Sides Details ...</h2>
-          <Spinner animation="border" variant="primary" />
+          <div id="scrollSpyVeg" className="veg pizzaCardsFlexBox ">
+            {pizzaList.length > 0 &&
+              pizzaList
+                .filter((p) => p.type == "VEG")
+                .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
+          </div>
+          <div id="scrollSpyNonVeg" className="nonVeg pizzaCardsFlexBox">
+            {pizzaList.length > 0 &&
+              pizzaList
+                .filter((p) => p.type == "NON-VEG")
+                .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
+          </div>
+          <div id="scrollSpySides" className="sides pizzaCardsFlexBox">
+            <h2>Sides Details :Comming Soon...</h2>
+            <Spinner animation="border" variant="primary" />
+          </div>
         </div>
       </div>
     </React.Fragment>
