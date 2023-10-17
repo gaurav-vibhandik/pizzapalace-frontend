@@ -4,10 +4,9 @@ import axios from "axios";
 import { Pizza } from "../interfaces/pizzaInterface";
 import CardPizza from "./CardPizza";
 const PizzaDisplay = () => {
-  const [pizzaList, setPizzaList] = useState<Pizza[]>([]);
-  console.log("Before useEffect pizzaList.length= " + pizzaList.length);
-
   const sides = [];
+
+  const [pizzaList, setPizzaList] = useState<Pizza[]>([]);
   useEffect(() => {
     console.log("into useEffect");
     console.log("PizzaList length = " + pizzaList.length);

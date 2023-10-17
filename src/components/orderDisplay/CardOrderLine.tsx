@@ -1,8 +1,8 @@
 import React from "react";
-import { orderLineCard } from "../interfaces/orderLineCardInterface";
+import { orderLine } from "../interfaces/orderLineInterface";
 import { UseSelector } from "react-redux/es/hooks/useSelector";
 
-const CardOrderLine = (props: orderLineCard) => {
+const CardOrderLine = (props: orderLine) => {
   return (
     <React.Fragment>
       <div className="card">

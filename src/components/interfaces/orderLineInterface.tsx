@@ -1,4 +1,4 @@
-export interface orderLineCard {
+export interface orderLine {
   pizzaId: string;
   size: string;
   crustType: string;
