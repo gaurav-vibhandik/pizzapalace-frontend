@@ -16,7 +16,9 @@ import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import BtnManageQuantity from "./BtnManageQuantity";
 import { orderLine } from "../interfaces/orderLineInterface";
 
-const CardPizza = (props: Pizza) => {
+const CardPizza = (props) => {
+  const 
+
   let priceList: pizzaCardPriceList[] = [
     { size: "REGULAR", price: props.priceRegularSize },
     { size: "MEDIUM", price: props.priceMediumSize },
@@ -42,7 +44,7 @@ const CardPizza = (props: Pizza) => {
 
   return (
     <React.Fragment>
-      <Card id={props.pizzaId} className={styles.myPizzaCard}>
+      {/* <Card id={props.pizzaId} className={styles.myPizzaCard}>
         <div className={styles.pizzaImageSection}>
           <Card.Img variant="top" src={props.imageUrl} />
           <Image
@@ -126,7 +128,7 @@ const CardPizza = (props: Pizza) => {
             </div>
           </div>
         </Card.Body>
-      </Card>
+      </Card> */}
     </React.Fragment>
   );
 };

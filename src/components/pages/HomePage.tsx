@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../commons/Header";
-import ContentDisplay from "../commons/ContentDisplay";
+import ContentDisplay from "../contentDisplay/ContentDisplay";
 import Footer from "../commons/Footer";
 
 const HomePage = () => {

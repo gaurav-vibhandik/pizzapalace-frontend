@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Nav, Navbar, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { Pizza } from "../interfaces/pizzaInterface";
 import CardPizza from "./CardPizza";
+import InitDataContext from "../../context/InitDataContext";
+
 const PizzaDisplay = () => {
-  const sides = [];
-
-  const [pizzaList, setPizzaList] = useState<Pizza[]>([]);
-  useEffect(() => {
-    console.log("into useEffect");
-    console.log("PizzaList length = " + pizzaList.length);
-    if (pizzaList.length === 0) {
-      axios
-        .get("http://localhost:8080/api/v1/pizzas")
-        .then((resp) => {
-          let myList: Pizza[] = resp.data.data.list;
-          console.log("Fetched List Length = " + myList.length);
-          console.log(myList);
-
-          setPizzaList(myList);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
+  const initData = useContext(InitDataContext);
+  const pizzaList: Pizza[] = initData.pizzaList;
+  const crustList: any = initData.crustList;
+  const sideList: any = initData.sideList;
 
   return (
     <React.Fragment>
@@ -49,8 +36,11 @@ const PizzaDisplay = () => {
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
           <div id="scrollSpySides" className="sides pizzaCardsFlexBox">
+          {sideList.length > 0 &&
+              sideList.map(s => <CardPizza key={s.}))}
             <h2>Sides Details :Comming Soon...</h2>
             <Spinner animation="border" variant="primary" />
+
           </div>
         </div>
       </div>
