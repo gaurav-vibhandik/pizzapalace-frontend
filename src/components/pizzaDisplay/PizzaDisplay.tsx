@@ -8,8 +8,12 @@ import InitDataContext from "../../context/InitDataContext";
 const PizzaDisplay = () => {
   const initData = useContext(InitDataContext);
   const pizzaList: Pizza[] = initData.pizzaList;
-  const crustList: any = initData.crustList;
   const sideList: any = initData.sideList;
+
+  console.log("====>In PizzaDetails Component , initData values are ");
+  console.log("pizzaList= " + pizzaList.length);
+  console.log("sideList= " + sideList.length);
+  console.log("<========================================");
 
   return (
     <React.Fragment>
@@ -36,11 +40,8 @@ const PizzaDisplay = () => {
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
           <div id="scrollSpySides" className="sides pizzaCardsFlexBox">
-          {sideList.length > 0 &&
-              sideList.map(s => <CardPizza key={s.}))}
             <h2>Sides Details :Comming Soon...</h2>
             <Spinner animation="border" variant="primary" />
-
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ const BtnManageQuantity = (props: any) => {
   const handleRemoveQuantity = () => {
     setPizzaQty((prevState) => {
       if (prevState == 1) {
-        props.onZeroQuantity(false);
+        props.setIsAddToCartClicked(false);
       }
       return prevState - 1;
     });
