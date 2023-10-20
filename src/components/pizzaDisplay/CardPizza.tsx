@@ -27,8 +27,10 @@ const CardPizza = (props: Pizza) => {
     : console.log("");
 
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
-  const [selectedPizzaSize, setSelectedPizzaSize] = useState("REGULAR");
-  const [selectedPizzaPrice, setSelectedPizzaPrice] = useState(0);
+  const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
+  const [selectedCrustType, setSelectedCrustType] = useState("");
+
+  let isCrustTypeAvailableForGivenSize = true;
 
   const chooseSize: any = useRef(null);
   const chooseCrust: any = useRef(null);
@@ -39,10 +41,25 @@ const CardPizza = (props: Pizza) => {
   const backendPizzaPriceList = initData.pizzaPriceList;
   const crustMap = initData.crustMap;
 
+  //Fetching crustTypes and its Prices for given selected PizzaSize
   const pizzaPriceListForCurrentPizza: PizzaPrice[] =
     backendPizzaPriceList.filter((p) => {
       return p.pizzaId == props.pizzaId && p.pizzaSize == selectedPizzaSize;
     });
+
+  //If for given size CrustList is not available then disabling the AddToCart btn
+  if (pizzaPriceListForCurrentPizza.length == 0) {
+    isCrustTypeAvailableForGivenSize = false;
+  }
+
+  //Fetching value for given size and given crustType
+  let price = 0;
+  if (selectedPizzaSize !== "" && selectedCrustType !== "") {
+    const curPizzaList = pizzaPriceListForCurrentPizza.filter((p) => {
+      return p.crustId == selectedCrustType;
+    });
+    price = curPizzaList[0].price;
+  }
 
   //==========================================
   const handleAddToCart = (event: any) => {
@@ -50,8 +67,8 @@ const CardPizza = (props: Pizza) => {
     setIsAddToCartClicked(true);
     const ol: orderLine = {
       pizzaId: props.pizzaId,
-      size: chooseSize.current.value,
-      crustType: chooseCrust.current.value,
+      size: selectedPizzaSize,
+      crustType: selectedCrustType,
       quantity: 1,
     };
     console.log(ol);
@@ -59,62 +76,17 @@ const CardPizza = (props: Pizza) => {
   //==========================================
   const handlePizzaSizeChange = () => {
     setSelectedPizzaSize(chooseSize.current.value);
+    setSelectedCrustType("");
+    //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
+    setIsAddToCartClicked(false);
   };
   //==========================================
-  const handlePriceChange = () => {
-    // console.log(event.target.value);
-    console.log("===========>");
-    const selectedSize = chooseSize.current.value;
-    const selectedCrust = chooseCrust.current.value;
-    console.log(
-      "In handlePrice change :  " + selectedSize + "  " + selectedCrust
-    );
-
-    if (selectedSize == "" || selectedCrust == "") {
-      console.log(
-        "returning bcoz one of size|crust is not selected = " +
-          selectedSize +
-          "  " +
-          selectedCrust
-      );
-      console.log("<==============");
-      return;
-    }
-    const curPizza: PizzaPrice[] = pizzaPriceListForCurrentPizza.filter((p) => {
-      return p.pizzaSize === selectedSize && p.crustId === selectedCrust;
-    });
-
-    if (curPizza.length == 0) {
-      console.log(
-        "Backend fetched pizzaPriceList in handleFunction= " +
-          backendPizzaPriceList.length
-      );
-      console.log(
-        "pizzaPriceListForCurrentPizza= " + pizzaPriceListForCurrentPizza.length
-      );
-      console.log(`Modified curPizza for ${props.pizzaId} for size: ${selectedSize} 
-      and crustType: ${selectedCrust} =  ${curPizza.length}`);
-
-      console.log("No price available..returning");
-      console.log("<==============");
-      return;
-    }
-    setSelectedPizzaPrice(curPizza[0].price);
-    console.log("handlePriceChange exited successfully...");
-    console.log("<==============");
+  const handleCrustTypeChange = () => {
+    setSelectedCrustType(chooseCrust.current.value);
   };
+
   //====================== Debugging=======>
   if (props.pizzaId == "ZA004") {
-    // console.log(`===>Inside CardPizza Component ${props.pizzaId} =========`);
-    // console.log("For pizzaId= " + props.pizzaId + "==========");
-    // console.log("initData.crustMap = " + crustMap.size);
-    // console.log(
-    //   "initData.backendPizzaPriceList= " + backendPizzaPriceList.length
-    // );
-
-    // console.log(
-    //   `pizzaPriceListForCurrentPizza :For pizzaId ${props.pizzaId} ,available crustTypes for size ${chooseSize} = ${pizzaPriceListForCurrentPizza.length}`
-    // );
     props.pizzaId == "ZA004"
       ? console.log("Rendering of CardComponent Finished")
       : console.log("");
@@ -132,9 +104,7 @@ const CardPizza = (props: Pizza) => {
             src={props.type == "VEG" ? vegLogo : nonVegLogo}
             alt={props.type == "VEG" ? "vegLogo" : "nonVegLogo"}
           />
-          <div className={styles.pizzaPrice}>
-            {selectedPizzaPrice != 0 && selectedPizzaPrice}
-          </div>
+          <div className={styles.pizzaPrice}>{price !== 0 && price}</div>
         </div>
 
         <Card.Body>
@@ -156,7 +126,7 @@ const CardPizza = (props: Pizza) => {
                   id="chooseSize"
                   className={styles.myCardSelect}
                   size="sm"
-                  onChange={handlePizzaSizeChange}
+                  onClick={handlePizzaSizeChange}
                   placeholder="Choose Pizza Size"
                 >
                   <option value="" selected disabled>
@@ -173,56 +143,69 @@ const CardPizza = (props: Pizza) => {
                   </option>
                 </Form.Select>
               </Col>
-              <Col className={styles.myPizzaCrustSelect}>
-                <FormLabel htmlFor="chooseCrust" className={styles.myCardLabel}>
-                  Crust
-                </FormLabel>
 
-                <Form.Select
-                  ref={chooseCrust}
-                  id="chooseCrust"
-                  size="sm"
-                  className={styles.myCardSelect}
-                  onChange={handlePriceChange}
-                >
-                  <option value="" selected disabled>
-                    Choose Crust Type
-                  </option>
-                  {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (
-                    <option
-                      key={crustWithPrice.crustId}
-                      value={crustWithPrice.crustId}
-                    >
-                      {crustMap.get(crustWithPrice.crustId)}
+              {isCrustTypeAvailableForGivenSize && (
+                <Col className={styles.myPizzaCrustSelect}>
+                  <FormLabel
+                    htmlFor="chooseCrust"
+                    className={styles.myCardLabel}
+                  >
+                    Crust
+                  </FormLabel>
+
+                  <Form.Select
+                    ref={chooseCrust}
+                    id="chooseCrust"
+                    size="sm"
+                    className={styles.myCardSelect}
+                    onChange={handleCrustTypeChange}
+                    onClick={handleCrustTypeChange}
+                  >
+                    <option selected disabled>
+                      Choose Crust Type
                     </option>
-                  ))}
-                </Form.Select>
-              </Col>
+                    {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (
+                      <option
+                        key={crustWithPrice.crustId}
+                        value={crustWithPrice.crustId}
+                      >
+                        {crustMap.get(crustWithPrice.crustId)}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+              )}
             </Row>
 
             <hr />
 
-            <div>
-              <Row>
-                <Col>
-                  <button
-                    onClick={handleAddToCart}
-                    type="submit"
-                    className={styles.btnAddToCart}
-                    disabled={isAddToCartClicked}
-                  >
-                    Add to Cart
-                  </button>
-                </Col>
-                <Col>
-                  {isAddToCartClicked && (
-                    <BtnManageQuantity
-                      setIsAddToCartClicked={setIsAddToCartClicked}
-                    />
-                  )}
-                </Col>
-              </Row>
-            </div>
+            {isCrustTypeAvailableForGivenSize && (
+              <div>
+                <Row>
+                  <Col>
+                    <button
+                      onClick={handleAddToCart}
+                      type="submit"
+                      className={styles.btnAddToCart}
+                      disabled={
+                        isAddToCartClicked ||
+                        !isCrustTypeAvailableForGivenSize ||
+                        selectedCrustType === ""
+                      }
+                    >
+                      Add to Cart
+                    </button>
+                  </Col>
+                  <Col>
+                    {isAddToCartClicked && (
+                      <BtnManageQuantity
+                        setIsAddToCartClicked={setIsAddToCartClicked}
+                      />
+                    )}
+                  </Col>
+                </Row>
+              </div>
+            )}
           </div>
         </Card.Body>
       </Card>
