@@ -13,7 +13,7 @@ import { Pizza } from "../interfaces/pizzaInterface";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import BtnManageQuantity from "./BtnManageQuantity";
-import { orderLine } from "../interfaces/orderLineInterface";
+import OrderLine from "../interfaces/orderLineInterface";
 import InitDataContext from "../../context/InitDataContext";
 import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
 
@@ -65,10 +65,10 @@ const CardPizza = (props: Pizza) => {
   const handleAddToCart = (event: any) => {
     event.preventDefault();
     setIsAddToCartClicked(true);
-    const ol: orderLine = {
+    const ol: any = {
       pizzaId: props.pizzaId,
       size: selectedPizzaSize,
-      crustType: selectedCrustType,
+      crustId: selectedCrustType,
       quantity: 1,
     };
     console.log(ol);

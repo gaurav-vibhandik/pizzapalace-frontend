@@ -1,6 +1,9 @@
-export interface orderLine {
+export default interface OrderLine {
   pizzaId: string;
   size: string;
-  crustType: string;
+  crustId: string;
   quantity: number;
+  extraCheese: boolean;
+  toppingList: [];
+  orderLinePrice: number;
 }
