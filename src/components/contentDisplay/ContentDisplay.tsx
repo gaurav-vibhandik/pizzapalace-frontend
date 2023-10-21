@@ -4,6 +4,7 @@ import OrderDisplay from "../orderDisplay/OrderDisplay";
 import MenuDisplay from "../commons/MenuDisplay";
 import axios from "axios";
 import InitDataContext from "../../context/InitDataContext";
+import OrderLineContextProvider from "../../context/OrderLineContextProvider";
 
 const ContentDisplay = () => {
   const [initData, setInitData] = useState({
@@ -85,8 +86,10 @@ const ContentDisplay = () => {
       <div className="contentDisplay">
         <MenuDisplay />
         <InitDataContext.Provider value={initData}>
-          <PizzaDisplay />
-          <OrderDisplay />
+          <OrderLineContextProvider>
+            <PizzaDisplay />
+            <OrderDisplay />
+          </OrderLineContextProvider>
         </InitDataContext.Provider>
       </div>
     </React.Fragment>

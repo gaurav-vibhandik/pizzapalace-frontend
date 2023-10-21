@@ -2,8 +2,12 @@ import React, { useReducer } from "react";
 import OrderLine from "../components/interfaces/orderLineInterface";
 import OrderLineContext from "./orderLineContext";
 
+let defaultValue = {
+  orderLineList: [],
+};
+
 const orderLineReducer = (
-  state: any,
+  state: { orderLineList: OrderLine[] },
   action: { type: string; item: OrderLine }
 ) => {
   if (action.type === "ADD") {
@@ -51,11 +55,15 @@ const orderLineReducer = (
     }
     return { orderLineList: updatedOrderLineList };
   }
+  //by adding extra return claue , it solves error of "orderLineState is maybe undefined"
+  /*This is necessary to ensure that the reducer always returns the state object, 
+  even when none of the specified actions is matched. 
+  Without this return statement, TypeScript might infer that the reducer can return undefined 
+  if none of the conditions are met. This is why the error is resolved by including the extra return clause.*/
+  return state;
 };
 
 const OrderLineContextProvider = (props: any) => {
-  const defaultValue = { orderLineList: [] as OrderLine[] };
-
   const [orderLineState, dispatchOrderLineStateAction] = useReducer(
     orderLineReducer,
     defaultValue
