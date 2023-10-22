@@ -40,7 +40,7 @@ const CardOrderLine = (props: any) => {
                 alt={curPizza.type == "VEG" ? "vegLogo" : "nonVegLogo"}
               />
             </Col>
-            <Col className="col-8" style={{ backgroundColor: }}>
+            <Col className="col-8">
               <Card.Body>
                 <Card.Title className={styles.olCardTitle}>
                   {curPizza.name}
