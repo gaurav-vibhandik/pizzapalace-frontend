@@ -31,4 +31,12 @@
   width: 100%;
   background-color: white;
   height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.price {
+  text-align: left;
+  color: green;
 }

@@ -1,5 +1,5 @@
 .orderLineCard {
-  width: 98%;
+  width: 90%;
   height: fit-content;
   box-shadow: 2px 3px 10px gray;
   padding: 0.2rem;
@@ -11,12 +11,14 @@
 .imageSection {
   position: relative;
   width: 100%;
+  height: auto;
+  background-color: aqua;
 }
 
 .foodTypeLogo {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0.2rem;
+  left: 1rem;
   width: 1rem;
 }
 
@@ -34,4 +36,12 @@
 }
 
 .btnOrderCartManageQty {
+  margin-top: 1rem;
+}
+
+.olPrice {
+  text-align: center;
+  margin-top: 1rem;
+  color: green;
+  font-size: medium;
 }
