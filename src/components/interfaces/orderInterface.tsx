@@ -1,4 +1,4 @@
-import { OrderLine } from "./orderLineInterface";
+import OrderLine from "./orderLineInterface";
 
 export default interface Order {
   customerId: string;

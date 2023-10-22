@@ -1,4 +1,4 @@
-.container {
+.btnContainer {
   display: flex;
   /* border: 1px dotted red; */
   flex-direction: row;
@@ -17,7 +17,7 @@
   /* border: 2px dotted black; */
 }
 
-.qty {
+.btnQty {
   text-align: center;
   border: 2px solid black;
   width: 2.3rem;

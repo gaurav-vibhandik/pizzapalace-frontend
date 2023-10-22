@@ -1,15 +1,34 @@
 .orderDisplay {
-  width: 30vw;
+  width: 40vw;
   background-color: lightblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80%;
 }
 
 .orderCart {
   position: fixed;
   top: 6rem;
-  right: 1rem;
-  width: 28vw;
-  height: 78vh;
+  width: 35vw;
   margin-top: 3rem;
+  height: 80%;
   background-color: gray;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.displayOrderLine {
+  width: 100%;
+  background-color: pink;
+  height: 80%;
+  overflow-y: scroll;
+}
+
+.orderCartPriceNCheckout {
+  width: 100%;
+  background-color: white;
+  height: 20%;
 }

@@ -41,8 +41,8 @@
 
 .pizzaDisplay {
   border: 3px dotted black;
-  /* min-height: 84vh; */
-  width: 70vw;
+  min-height: 84vh;
+  width: 60vw;
 }
 
 .pizzaCardsFlexBox {

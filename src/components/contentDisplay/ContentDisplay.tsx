@@ -5,11 +5,14 @@ import MenuDisplay from "../commons/MenuDisplay";
 import axios from "axios";
 import InitDataContext from "../../context/InitDataContext";
 import OrderLineContextProvider from "../../context/OrderLineContextProvider";
+import { Pizza } from "../interfaces/pizzaInterface";
+import { Crust } from "../interfaces/crustInterface";
 
 const ContentDisplay = () => {
   const [initData, setInitData] = useState({
     pizzaList: [],
-    crustMap: {},
+    pizzaMap: new Map<string, Pizza>(),
+    crustMap: new Map<string, Crust>(),
     pizzaPriceList: [],
     sideList: [] as any,
     loading: true, // Add a loading state
@@ -33,6 +36,9 @@ const ContentDisplay = () => {
         const crustList = crustResponse.data.data.list;
         const pizzaPriceList = priceResponse.data.data.list;
 
+        let pizzaMap: Map<string, Pizza> = new Map();
+        pizzaList.forEach((p: Pizza) => pizzaMap.set(p.pizzaId, p));
+
         let crustMap = new Map();
         for (let cr of crustList) {
           crustMap.set(cr.crustId, cr.crust);
@@ -45,6 +51,7 @@ const ContentDisplay = () => {
 
         setInitData({
           pizzaList,
+          pizzaMap,
           crustMap,
           pizzaPriceList,
           sideList,

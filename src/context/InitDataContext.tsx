@@ -5,7 +5,8 @@ import { PizzaPrice } from "../components/interfaces/pizzaPriceInterface";
 
 const InitDataContext = React.createContext({
   pizzaList: [] as Pizza[],
-  crustMap: [] as any,
+  pizzaMap: new Map<string, Pizza>(),
+  crustMap: new Map<string, Crust>(),
   pizzaPriceList: [] as PizzaPrice[],
   sideList: [],
 });
