@@ -1,16 +1,18 @@
 .orderLineCard {
-  width: 90%;
+  width: 98%;
   height: fit-content;
   box-shadow: 2px 3px 10px gray;
-  padding: 0.4rem;
+  padding: 0.2rem;
   margin: auto;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
   font-size: 0.7rem;
 }
 
 .imageSection {
   position: relative;
+  width: 100%;
 }
+
 .foodTypeLogo {
   position: absolute;
   top: 0;
@@ -24,9 +26,12 @@
 
 .olCardDescription {
   font-size: 105%;
-  margin-bottom: -0.7rem;
+  /* margin-bottom: -0.7rem; */
 }
 
 .borderLine {
   background-color: aquamarine;
+}
+
+.btnOrderCartManageQty {
 }

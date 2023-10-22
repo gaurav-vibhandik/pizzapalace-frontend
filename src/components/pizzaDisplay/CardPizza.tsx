@@ -258,7 +258,7 @@ const CardPizza = (props: Pizza) => {
                       Add to Cart
                     </button>
                   </Col>
-                  <Col>
+                  {/* <Col>
                     {isAddToCartClicked && (
                       <BtnManageQuantity
                         quantity={pizzaQty}
@@ -266,7 +266,7 @@ const CardPizza = (props: Pizza) => {
                         handleBtnRemove={handleBtnRemove}
                       />
                     )}
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             )}
