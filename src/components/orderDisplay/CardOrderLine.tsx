@@ -69,7 +69,13 @@ const CardOrderLine = (props: any) => {
                     <p>{curPizza.description}</p>
                   </div>
                   <div className={styles.sizeAndCrustDetails}>
-                    <p>{`${curPizzaSize}  |  ${curPizzaCrust}`}</p>
+                    <p>
+                      <b>
+                        <i>{curPizzaSize}</i>
+                      </b>
+                      {`   |   `}
+                      {curPizzaCrust}
+                    </p>
                   </div>
                   <div className={styles.toppingDetails}>
                     {ol.extraCheese && <p>Extra Cheese</p>}

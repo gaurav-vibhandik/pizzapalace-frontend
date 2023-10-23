@@ -34,12 +34,10 @@ const OrderDisplay = () => {
             </div>
 
             <div className="container">
-              <Button type="submit" href="/checkout">
+              <Button type="submit" href="/orderCart">
                 Checkout
               </Button>
             </div>
-
-            {/* <div className="container text-center ">CheckOut</div> */}
           </div>
         </div>
       </div>

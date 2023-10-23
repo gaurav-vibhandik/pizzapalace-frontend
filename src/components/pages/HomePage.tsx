@@ -12,6 +12,7 @@ const HomePage = () => {
           minHeight: "100vh",
         }}
       >
+        <div className="overlays"></div>
         <Header />
 
         <ContentDisplay />
