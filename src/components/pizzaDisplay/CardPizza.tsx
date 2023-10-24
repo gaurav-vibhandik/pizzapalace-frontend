@@ -33,7 +33,7 @@ const CardPizza = (props: Pizza) => {
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
   const [selectedCrustType, setSelectedCrustType] = useState("");
-  const [pizzaQty, setPizzaQty] = useState(1);
+  // const [pizzaQty, setPizzaQty] = useState(1);
   const [selectedToppings, setSelectedToppings] = useState([] as string[]);
   // const [pizzaPrice, setPizzaPrice] = useState(0);
   const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
