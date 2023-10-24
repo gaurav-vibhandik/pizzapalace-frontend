@@ -45,3 +45,10 @@
   color: green;
   font-size: medium;
 }
+
+.toppingDetails {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

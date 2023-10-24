@@ -18,6 +18,8 @@ const CardOrderLine = (props: any) => {
   const curPizzaCrust: string = crustMap.get(ol.crustId);
   const orderLineContext = useContext(OrderLineContext);
 
+  const toppingMap = initData.toppingMap;
+
   //====> Debugging ==========
   // if (ol.pizzaId == "ZA004") {
   //   console.log("CrustMap = " + crustMap.size);
@@ -78,13 +80,23 @@ const CardOrderLine = (props: any) => {
                     </p>
                   </div>
                   <div className={styles.toppingDetails}>
-                    {ol.extraCheese && <p>Extra Cheese</p>}
-                    <b>Extra Cheese</b>
-                    <p>Other Toppings If any:</p>
+                    {ol.extraCheese && <b>Extra Cheese</b>}
                   </div>
                 </Card.Text>
               </Card.Body>
             </Col>
+          </Row>
+          <Row>
+            {ol.toppingList.length > 0 && (
+              <div>
+                <p>Added Toppings: </p>
+                <ul className={styles.toppingDetails}>
+                  {ol.toppingList.map((t: any) => (
+                    <li key={t.toppingId}>{toppingMap.get(t)!.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Row>
         </Container>
       </Card>

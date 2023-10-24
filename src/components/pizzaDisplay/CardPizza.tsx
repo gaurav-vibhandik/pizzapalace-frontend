@@ -8,6 +8,7 @@ import {
   FormLabel,
   Row,
   Image,
+  Modal,
 } from "react-bootstrap";
 import { Pizza } from "../interfaces/pizzaInterface";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
@@ -18,6 +19,7 @@ import InitDataContext from "../../context/InitDataContext";
 import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
 import OrderLineContext from "../../context/orderLineContext";
 import { Crust } from "../interfaces/crustInterface";
+import Topping from "../interfaces/toppingInterface";
 
 const CardPizza = (props: Pizza) => {
   /* Assumptions :
@@ -32,6 +34,11 @@ const CardPizza = (props: Pizza) => {
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
   const [selectedCrustType, setSelectedCrustType] = useState("");
   const [pizzaQty, setPizzaQty] = useState(1);
+  const [selectedToppings, setSelectedToppings] = useState([] as string[]);
+  // const [pizzaPrice, setPizzaPrice] = useState(0);
+  const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
+
+  let pizzaPrice = 0;
 
   let isCrustTypeAvailableForGivenSize = true;
 
@@ -58,32 +65,27 @@ const CardPizza = (props: Pizza) => {
     isCrustTypeAvailableForGivenSize = false;
   }
 
-  //Fetching value for given size and given crustType
-  let price = 0;
+  //Setting pizzaPrice for selected pizzaSize,crustType,toppings and cheese :
   if (selectedPizzaSize !== "" && selectedCrustType !== "") {
     const curPizzaList = pizzaPriceListForCurrentPizza.filter((p) => {
       return p.crustId == selectedCrustType;
     });
-    price = curPizzaList[0].price;
-  }
+    //setting pizzaPrice for selected crusttype
+    pizzaPrice = curPizzaList[0].price;
+    //setting pizzaPrice for selected extra cheese
+    pizzaPrice += selectedExtraCheese ? +chooseExtraCheese.current.value : 0;
 
-  //==========================================
-  const handleAddToCart = (event: any) => {
-    event.preventDefault();
-    setIsAddToCartClicked(true);
-    const ol: OrderLine = {
-      pizzaId: props.pizzaId,
-      size: selectedPizzaSize,
-      crustId: selectedCrustType,
-      quantity: 1,
-      extraCheese: false,
-      toppingList: [],
-      orderLinePrice: price,
-    };
-    console.log(ol);
-    orderLineState.addToOrderLineList(ol);
-    console.log("addToCart finished");
-  };
+    //setting pizzaPrice for selected toppings
+    if (selectedToppings.length > 0) {
+      let toppingPrice = 0;
+      let topping;
+      for (let t of selectedToppings) {
+        topping = initData.toppingMap.get(t);
+        toppingPrice = topping ? topping.price : 0;
+        pizzaPrice += toppingPrice;
+      }
+    }
+  }
 
   //==========================================
   const handlePizzaSizeChange = () => {
@@ -100,49 +102,88 @@ const CardPizza = (props: Pizza) => {
   //========================================
   const handleChangeForQtyState = () => {
     if (isAddToCartClicked) {
-      setPizzaQty(1);
-      setIsAddToCartClicked(false);
+      // setPizzaQty(1);
+      // setIsAddToCartClicked(false);
     }
   };
   //=============================================
   //BtnQtyManagement Handler Functions
-  const handleBtnAdd = () => {
+  // const handleBtnAdd = () => {
+  //   const ol: OrderLine = {
+  //     pizzaId: props.pizzaId,
+  //     size: selectedPizzaSize,
+  //     crustId: selectedCrustType,
+  //     quantity: 1, //not necessary
+  //     extraCheese: false,
+  //     toppingList: [],
+  //     orderLinePrice: price,
+  //   };
+  //   orderLineState.addToOrderLineList(ol);
+  //   setPizzaQty((prevState) => {
+  //     return prevState + 1;
+  //   });
+  // };
+
+  // const handleBtnRemove = () => {
+  //   const ol: OrderLine = {
+  //     pizzaId: props.pizzaId,
+  //     size: selectedPizzaSize,
+  //     crustId: selectedCrustType,
+  //     quantity: 1, //not necessary
+  //     extraCheese: false,
+  //     toppingList: [],
+  //     orderLinePrice: price,
+  //   };
+  //   orderLineState.removeFromOrderLineList(ol);
+
+  //   setPizzaQty((prevState) => {
+  //     if (prevState == 1) {
+  //       setIsAddToCartClicked(false);
+  //       return 1;
+  //     } else {
+  //       return prevState - 1;
+  //     }
+  //   });
+  // };
+
+  //====> Handling Extra Cheese======================
+  const handleExtraCheese = () => {
+    setSelectedExtraCheese(!selectedExtraCheese);
+  };
+  //<===============================
+
+  //====> Handling Toppings selection======================
+
+  const handleToppingCheckboxChange = (e: any) => {
+    const { value, checked } = e.target;
+    //value holds toppingId
+    if (checked) {
+      setSelectedToppings((prevSelected) => [...prevSelected, value]);
+    } else {
+      setSelectedToppings((prevSelected) =>
+        prevSelected.filter((item: any) => item !== value)
+      );
+    }
+  };
+  //====>Handling AddToCart =======================
+  const handleAddToCart = (event: any) => {
+    event.preventDefault();
+    // setIsAddToCartClicked(true);
     const ol: OrderLine = {
       pizzaId: props.pizzaId,
       size: selectedPizzaSize,
       crustId: selectedCrustType,
-      quantity: 1, //not necessary
-      extraCheese: false,
-      toppingList: [],
-      orderLinePrice: price,
+      quantity: 1,
+      extraCheese: selectedExtraCheese,
+      toppingList: selectedToppings,
+      orderLinePrice: pizzaPrice,
     };
+    console.log(ol);
     orderLineState.addToOrderLineList(ol);
-    setPizzaQty((prevState) => {
-      return prevState + 1;
-    });
+    console.log("addToCart finished");
   };
 
-  const handleBtnRemove = () => {
-    const ol: OrderLine = {
-      pizzaId: props.pizzaId,
-      size: selectedPizzaSize,
-      crustId: selectedCrustType,
-      quantity: 1, //not necessary
-      extraCheese: false,
-      toppingList: [],
-      orderLinePrice: price,
-    };
-    orderLineState.removeFromOrderLineList(ol);
-
-    setPizzaQty((prevState) => {
-      if (prevState == 1) {
-        setIsAddToCartClicked(false);
-        return 1;
-      } else {
-        return prevState - 1;
-      }
-    });
-  };
+  //<===============================
 
   //====================== Debugging=======>
   if (props.pizzaId == "ZA004") {
@@ -163,7 +204,9 @@ const CardPizza = (props: Pizza) => {
             src={props.type == "VEG" ? vegLogo : nonVegLogo}
             alt={props.type == "VEG" ? "vegLogo" : "nonVegLogo"}
           />
-          <div className={styles.pizzaPrice}>{price !== 0 && price}</div>
+          <div className={styles.pizzaPrice}>
+            {pizzaPrice !== 0 && pizzaPrice}
+          </div>
         </div>
 
         <Card.Body>
@@ -238,7 +281,88 @@ const CardPizza = (props: Pizza) => {
                       ))}
                     </Form.Select>
                   </Col>
-                  <Col></Col>
+                  <hr />
+
+                  {selectedCrustType !== "" && (
+                    <div>
+                      <Col>
+                        <label className="form-check">
+                          <input
+                            ref={chooseExtraCheese}
+                            type="checkbox"
+                            onChange={handleExtraCheese}
+                            value={35}
+                          />
+                          Extra Cheese @35
+                        </label>
+                      </Col>
+                      <hr />
+                      <Col>
+                        {props.type === "VEG" && (
+                          <div>
+                            <p>Veg Toppings:</p>
+                            {initData.vegToppingList.map((topping) => (
+                              <div
+                                key={`topping_veg_${props.pizzaId}_${topping.toppingId}`}
+                              >
+                                <label htmlFor="toppingSelection">
+                                  <input
+                                    type="checkbox"
+                                    name="toppingSelection"
+                                    value={topping.toppingId}
+                                    onChange={handleToppingCheckboxChange}
+                                  />
+                                  {`${topping.name} @ Rs.${topping.price}`}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {props.type === "NON_VEG" && (
+                          <div>
+                            <p>Veg Toppings :</p>
+                            {initData.nonVegToppingList_veg.map((topping) => (
+                              <div
+                                key={`topping_nonVeg_veg_${props.pizzaId}_${topping.toppingId}`}
+                              >
+                                <label htmlFor="toppingSelection">
+                                  <input
+                                    type="checkbox"
+                                    name="toppingSelection"
+                                    value={topping.toppingId}
+                                    onChange={handleToppingCheckboxChange}
+                                  />
+                                  {`${topping.name} @ Rs.${topping.price}`}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {props.type === "NON_VEG" && (
+                          <div>
+                            <p>NonVeg Toppings :</p>
+                            {initData.nonVegToppingList_nonVeg.map(
+                              (topping) => (
+                                <div
+                                  key={`topping_nonVeg_nonVeg_${props.pizzaId}_${topping.toppingId}`}
+                                >
+                                  <label htmlFor="toppingSelection">
+                                    <input
+                                      type="checkbox"
+                                      name="toppingSelection"
+                                      value={topping.toppingId}
+                                      onChange={handleToppingCheckboxChange}
+                                    />
+                                    {`${topping.name} @ Rs.${topping.price}`}
+                                  </label>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        )}
+                      </Col>
+                    </div>
+                  )}
                 </div>
               )}
             </Row>
@@ -262,15 +386,6 @@ const CardPizza = (props: Pizza) => {
                       Add to Cart
                     </button>
                   </Col>
-                  {/* <Col>
-                    {isAddToCartClicked && (
-                      <BtnManageQuantity
-                        quantity={pizzaQty}
-                        handleBtnAdd={handleBtnAdd}
-                        handleBtnRemove={handleBtnRemove}
-                      />
-                    )}
-                  </Col> */}
                 </Row>
               </div>
             )}

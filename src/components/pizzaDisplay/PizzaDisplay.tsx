@@ -36,7 +36,7 @@ const PizzaDisplay = () => {
           <div id="scrollSpyNonVeg" className="nonVeg pizzaCardsFlexBox">
             {pizzaList.length > 0 &&
               pizzaList
-                .filter((p) => p.type == "NON-VEG")
+                .filter((p) => p.type == "NON_VEG")
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
           <div id="scrollSpySides" className="sides pizzaCardsFlexBox">

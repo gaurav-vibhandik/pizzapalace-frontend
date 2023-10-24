@@ -4,6 +4,6 @@ export default interface OrderLine {
   crustId: string;
   quantity: number;
   extraCheese: boolean;
-  toppingList: [];
+  toppingList: string[];
   orderLinePrice: number;
 }
