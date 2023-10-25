@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
 import InitDataContext from "../../context/InitDataContext";
 import { Pizza } from "../interfaces/pizzaInterface";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import styles from "./CardOrderLine.module.css";
 import BtnManageQuantity from "../BtnManageQuantity";
 import OrderLineContext from "../../context/orderLineContext";
+import OrderLine from "../interfaces/orderLineInterface";
 
 const CardOrderLine = (props: any) => {
-  const ol = props.ol;
+  const ol: OrderLine = props.ol;
   const initData = useContext(InitDataContext);
   const pizzaMap: Map<string, Pizza> = initData.pizzaMap;
   const crustMap: any = initData.crustMap;
@@ -19,6 +20,11 @@ const CardOrderLine = (props: any) => {
   const orderLineContext = useContext(OrderLineContext);
 
   const toppingMap = initData.toppingMap;
+
+  //Handling Customize Orderline
+  const handleCustomizeOrderLine = () => {
+    let pizzaToChange = pizzaMap.get(ol.pizzaId)!;
+  };
 
   //====> Debugging ==========
   // if (ol.pizzaId == "ZA004") {
@@ -57,7 +63,7 @@ const CardOrderLine = (props: any) => {
                   />
                 </div>
                 <div className={styles.olPrice}>
-                  <p>{`Rs. ${ol.orderLinePrice * ol.quantity} /-`}</p>
+                  <p>{`Rs. ${ol.totalPrice * ol.quantity} /-`}</p>
                 </div>
               </div>
             </Col>
@@ -81,6 +87,17 @@ const CardOrderLine = (props: any) => {
                   </div>
                   <div className={styles.toppingDetails}>
                     {ol.extraCheese && <b>Extra Cheese</b>}
+                  </div>
+
+                  <div>
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                    >
+                      Customize
+                    </Button>
                   </div>
                 </Card.Text>
               </Card.Body>

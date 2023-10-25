@@ -106,45 +106,6 @@ const CardPizza = (props: Pizza) => {
       // setIsAddToCartClicked(false);
     }
   };
-  //=============================================
-  //BtnQtyManagement Handler Functions
-  // const handleBtnAdd = () => {
-  //   const ol: OrderLine = {
-  //     pizzaId: props.pizzaId,
-  //     size: selectedPizzaSize,
-  //     crustId: selectedCrustType,
-  //     quantity: 1, //not necessary
-  //     extraCheese: false,
-  //     toppingList: [],
-  //     orderLinePrice: price,
-  //   };
-  //   orderLineState.addToOrderLineList(ol);
-  //   setPizzaQty((prevState) => {
-  //     return prevState + 1;
-  //   });
-  // };
-
-  // const handleBtnRemove = () => {
-  //   const ol: OrderLine = {
-  //     pizzaId: props.pizzaId,
-  //     size: selectedPizzaSize,
-  //     crustId: selectedCrustType,
-  //     quantity: 1, //not necessary
-  //     extraCheese: false,
-  //     toppingList: [],
-  //     orderLinePrice: price,
-  //   };
-  //   orderLineState.removeFromOrderLineList(ol);
-
-  //   setPizzaQty((prevState) => {
-  //     if (prevState == 1) {
-  //       setIsAddToCartClicked(false);
-  //       return 1;
-  //     } else {
-  //       return prevState - 1;
-  //     }
-  //   });
-  // };
 
   //====> Handling Extra Cheese======================
   const handleExtraCheese = () => {
@@ -176,7 +137,7 @@ const CardPizza = (props: Pizza) => {
       quantity: 1,
       extraCheese: selectedExtraCheese,
       toppingList: selectedToppings,
-      orderLinePrice: pizzaPrice,
+      totalPrice: pizzaPrice,
     };
     console.log(ol);
     orderLineState.addToOrderLineList(ol);

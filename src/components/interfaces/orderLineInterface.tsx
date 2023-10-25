@@ -5,5 +5,5 @@ export default interface OrderLine {
   quantity: number;
   extraCheese: boolean;
   toppingList: string[];
-  orderLinePrice: number;
+  totalPrice: number;
 }
