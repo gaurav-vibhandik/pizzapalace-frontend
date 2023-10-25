@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Image, Nav, Navbar } from "react-bootstrap";
 import logo from "../images/pizza_logo.jpg";
 import MenuDisplay from "./MenuDisplay";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -19,11 +20,52 @@ const Header = () => {
               />
               <b className="ms-2">Yummy Pizzas</b>
             </Navbar.Brand>
-            <Nav className="" style={{}}>
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#Admin">Admin</Nav.Link>
-              <Nav.Link href="#SignIn">SignIn</Nav.Link>
-              <Nav.Link href="#SignUp">Register</Nav.Link>
+            <Nav className="headerMenus d-flex p-1 gap-2" style={{}}>
+              <NavLink
+                to="/home"
+                className={({ isActive }) =>
+                  isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
+                }
+                end
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/orderCart"
+                className={({ isActive }) =>
+                  isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
+                }
+                end
+              >
+                My Cart
+              </NavLink>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
+                }
+                end
+              >
+                Admin
+              </NavLink>
+              <NavLink
+                to="/signIn"
+                className={({ isActive }) =>
+                  isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
+                }
+                end
+              >
+                SignIn
+              </NavLink>
+              <NavLink
+                to="/signUp"
+                className={({ isActive }) =>
+                  isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
+                }
+                end
+              >
+                Register
+              </NavLink>
             </Nav>
           </Container>
         </Navbar>

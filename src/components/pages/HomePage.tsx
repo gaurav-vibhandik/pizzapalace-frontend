@@ -1,22 +1,15 @@
-import React from "react";
-import Header from "../commons/Header";
-import ContentDisplay from "../contentDisplay/ContentDisplay";
-import Footer from "../commons/Footer";
+import React, { useEffect, useState } from "react";
+import PizzaDisplay from "../pizzaDisplay/PizzaDisplay";
+import OrderDisplay from "../orderDisplay/OrderDisplay";
+import MenuDisplay from "../commons/MenuDisplay";
 
 const HomePage = () => {
   return (
     <React.Fragment>
-      <div
-        style={{
-          border: "3px solid yellow",
-          minHeight: "100vh",
-        }}
-      >
-        <div className="overlays"></div>
-        <Header />
-
-        <ContentDisplay />
-        <Footer />
+      <div className="contentDisplay">
+        <MenuDisplay />
+        <PizzaDisplay />
+        <OrderDisplay />
       </div>
     </React.Fragment>
   );

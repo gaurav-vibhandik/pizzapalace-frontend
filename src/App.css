@@ -1,7 +1,19 @@
 .App {
-  min-height: 100vh;
+  background-color: blue;
 }
 
+.oulet {
+  background-color: brown;
+}
+.blockAfterHeader {
+  width: 100%;
+  margin-top: 4rem;
+}
+
+.orderCart {
+  background-color: black;
+  min-height: 100vh;
+}
 .borderline {
   border: 2px dotted blue;
 }
@@ -14,7 +26,21 @@
   top: 0;
   right: 0;
   left: 0;
-  /* z-index: 1; */
+  z-index: 10;
+}
+.activeHeaderMenu {
+  font-size: 110%;
+  color: white;
+  text-decoration: underline;
+}
+.inactiveHeaderMenu {
+  font-size: 100%;
+  color: none;
+  text-decoration: none;
+}
+.footer {
+  width: 100%;
+  text-align: center;
 }
 /*======= Menu display css =========================*/
 #menu {
@@ -22,7 +48,7 @@
   top: 4rem;
   left: 0;
   right: 0;
-  /* z-index: 1; */
+  z-index: 10;
   background-color: aliceblue;
 }
 

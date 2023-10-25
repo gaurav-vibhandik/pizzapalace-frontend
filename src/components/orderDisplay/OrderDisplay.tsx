@@ -6,12 +6,18 @@ import CardOrderLine from "./CardOrderLine";
 import { Button, Col, Row } from "react-bootstrap";
 import Order from "../interfaces/orderInterface";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const OrderDisplay = () => {
   const orderLineState = useContext(OrderLineContext);
   const orderLineList = orderLineState.orderLineList;
+
+  //Calculating Total Order Price
   let totalOrderPrice = 0;
   orderLineList.map((ol) => (totalOrderPrice += ol.quantity * ol.totalPrice));
+
+  //Handling Navigation Routing
+  const navigate = useNavigate();
 
   //====>Handle Checkout
   const handleCheckout = () => {
@@ -34,23 +40,9 @@ const OrderDisplay = () => {
       .catch((error) => {
         console.log(error);
       });
+
+    navigate("/orderCart");
   };
-
-  /*
-       private String orderId;
-    @NotBlank(message = "CustomerId is required")
-    private String customerId;
-    private String status ;
-    @NotNull(message = "non-zero amount must be mentioned")
-    private int totalAmount;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-    private LocalDateTime orderDateTime;
-    @NotNull(message = "delivery address must be mentioned")
-    private String deliveryAddress;
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OrderLine> orderLines = new ArrayList<>();
-    */
 
   //<===============
 
