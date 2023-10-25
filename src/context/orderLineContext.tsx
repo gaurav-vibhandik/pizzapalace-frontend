@@ -5,6 +5,13 @@ const OrderLineContext = React.createContext({
   orderLineList: [] as OrderLine[],
   addToOrderLineList: (ol: OrderLine) => {},
   removeFromOrderLineList: (ol: OrderLine) => {},
+  replaceOrderLineInOrderLineList: ({
+    oldOl,
+    newOl,
+  }: {
+    oldOl: OrderLine;
+    newOl: OrderLine;
+  }) => {},
 });
 
 export default OrderLineContext;

@@ -20,10 +20,11 @@ import ModalPizzaCard from "./ModalPizzaCard";
 
 const CardOrderLine = (props: any) => {
   const ol: OrderLine = props.ol;
+  const onReplace = props.onReplace;
   const initData = useContext(InitDataContext);
   const pizzaMap: Map<string, Pizza> = initData.pizzaMap;
   const crustMap: any = initData.crustMap;
-  const curPizza: Pizza | any = pizzaMap.get(ol.pizzaId);
+  const curPizza: Pizza = pizzaMap.get(ol.pizzaId)!;
   const curPizzaSize = ol.size;
   const curPizzaCrust: string = crustMap.get(ol.crustId);
   const orderLineContext = useContext(OrderLineContext);
@@ -149,12 +150,17 @@ const CardOrderLine = (props: any) => {
           </Modal.Header>
           <Modal.Body>
             <div className="myEditPizzaModalBody">
-              <ModalPizzaCard myPizza={pizzaMap.get(ol.pizzaId)} />
+              <ModalPizzaCard
+                myPizza={pizzaMap.get(ol.pizzaId)}
+                oldOl={ol}
+                onReplace={onReplace}
+                onHandleClose={handleClose}
+              />
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
+            <Button variant="danger" onClick={handleClose}>
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>

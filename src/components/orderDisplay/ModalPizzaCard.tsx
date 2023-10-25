@@ -13,15 +13,10 @@ import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import OrderLine from "../interfaces/orderLineInterface";
 
 const ModalPizzaCard = (props: any) => {
-  // const [curPizza, setCurPizza] = useState<Pizza>({
-  //   pizzaId: "ZA000",
-  //   name: "no name",
-  //   type: "no",
-  //   imageUrl: "none",
-  //   description: "yummy",
-  // });
-
   const curPizza = props.myPizza;
+  const oldOl: OrderLine = props.oldOl;
+  const onReplace = props.onReplace;
+  const onHandleClose = props.onHandleClose;
 
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
@@ -118,11 +113,11 @@ const ModalPizzaCard = (props: any) => {
       );
     }
   };
-  //====>Handling AddToCart =======================
-  const handleAddToCart = (event: any) => {
-    event.preventDefault();
-    // setIsAddToCartClicked(true);
-    const ol: OrderLine = {
+  //====>Handling "Save Changes" =======================
+  const handleUpdatecart = (event: any) => {
+    console.log("Inside handleSaveChanges");
+
+    const newOl: OrderLine = {
       pizzaId: curPizza.pizzaId,
       size: selectedPizzaSize,
       crustId: selectedCrustType,
@@ -131,9 +126,16 @@ const ModalPizzaCard = (props: any) => {
       toppingList: selectedToppings,
       totalPrice: pizzaPrice,
     };
-    console.log(ol);
-    orderLineState.addToOrderLineList(ol);
-    console.log("addToCart finished");
+
+    onReplace({ oldOl: oldOl, newOl: newOl });
+    console.log(`============================>
+    Editing Pizza: ${curPizza.pizzaId} \n 
+    before OL : ${oldOl.size} & ${oldOl.crustId}
+    new OL : ${selectedPizzaSize} & ${selectedCrustType}
+    `);
+
+    console.log("editing Pizza Finished");
+    onHandleClose();
   };
 
   //<===============================
@@ -162,183 +164,179 @@ const ModalPizzaCard = (props: any) => {
               {curPizza.description}
             </Card.Text>
             <hr />
-            <div className="form" onSubmit={handleAddToCart}>
-              <Row className={styles.selectContainer}>
-                <Col className={styles.myPizzaSizeSelect}>
-                  <FormLabel
-                    htmlFor="chooseSize"
-                    className={styles.myCardLabel}
-                  >
-                    Size
-                  </FormLabel>
-                  <Form.Select
-                    ref={chooseSize}
-                    id="chooseSize"
-                    className={styles.myCardSelect}
-                    size="sm"
-                    onClick={handlePizzaSizeChange}
-                    onChange={handleChangeForQtyState}
-                    placeholder="Choose Pizza Size"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Choose Pizza Size
-                    </option>
-                    <option key={curPizza.pizzaId + "REGULAR"} value="REGULAR">
-                      REGULAR
-                    </option>
-                    <option key={curPizza.pizzaId + "MEDIUM"} value="MEDIUM">
-                      MEDIUM
-                    </option>
-                    <option key={curPizza.pizzaId + "LARGE"} value="LARGE">
-                      LARGE
-                    </option>
-                  </Form.Select>
-                </Col>
 
-                {isCrustTypeAvailableForGivenSize && (
-                  <div>
-                    <Col className={styles.myPizzaCrustSelect}>
-                      <FormLabel
-                        htmlFor="chooseCrust"
-                        className={styles.myCardLabel}
-                      >
-                        Crust
-                      </FormLabel>
-
-                      <Form.Select
-                        ref={chooseCrust}
-                        id="chooseCrust"
-                        size="sm"
-                        className={styles.myCardSelect}
-                        onChange={() => {
-                          handleCrustTypeChange();
-                          handleChangeForQtyState();
-                        }}
-                        onClick={handleCrustTypeChange}
-                        defaultValue=""
-                      >
-                        <option disabled>Choose Crust Type</option>
-                        {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (
-                          <option
-                            key={crustWithPrice.crustId}
-                            value={crustWithPrice.crustId}
-                          >
-                            {crustMap.get(crustWithPrice.crustId)}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Col>
-                    <hr />
-
-                    {selectedCrustType !== "" && (
-                      <div>
-                        <Col>
-                          <label className="form-check">
-                            <input
-                              ref={chooseExtraCheese}
-                              type="checkbox"
-                              onChange={handleExtraCheese}
-                              value={35}
-                            />
-                            Extra Cheese @35
-                          </label>
-                        </Col>
-                        <hr />
-                        <Col>
-                          {curPizza.type === "VEG" && (
-                            <div>
-                              <p>Veg Toppings:</p>
-                              {initData.vegToppingList.map((topping) => (
-                                <div
-                                  key={`topping_veg_${curPizza.pizzaId}_${topping.toppingId}`}
-                                >
-                                  <label htmlFor="toppingSelection">
-                                    <input
-                                      type="checkbox"
-                                      name="toppingSelection"
-                                      value={topping.toppingId}
-                                      onChange={handleToppingCheckboxChange}
-                                    />
-                                    {`${topping.name} @ Rs.${topping.price}`}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                          {curPizza.type === "NON_VEG" && (
-                            <div>
-                              <p>Veg Toppings :</p>
-                              {initData.nonVegToppingList_veg.map((topping) => (
-                                <div
-                                  key={`topping_nonVeg_veg_${curPizza.pizzaId}_${topping.toppingId}`}
-                                >
-                                  <label htmlFor="toppingSelection">
-                                    <input
-                                      type="checkbox"
-                                      name="toppingSelection"
-                                      value={topping.toppingId}
-                                      onChange={handleToppingCheckboxChange}
-                                    />
-                                    {`${topping.name} @ Rs.${topping.price}`}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                          {curPizza.type === "NON_VEG" && (
-                            <div>
-                              <p>NonVeg Toppings :</p>
-                              {initData.nonVegToppingList_nonVeg.map(
-                                (topping) => (
-                                  <div
-                                    key={`topping_nonVeg_nonVeg_${curPizza.pizzaId}_${topping.toppingId}`}
-                                  >
-                                    <label htmlFor="toppingSelection">
-                                      <input
-                                        type="checkbox"
-                                        name="toppingSelection"
-                                        value={topping.toppingId}
-                                        onChange={handleToppingCheckboxChange}
-                                      />
-                                      {`${topping.name} @ Rs.${topping.price}`}
-                                    </label>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          )}
-                        </Col>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Row>
-
-              <hr />
+            <Row className={styles.selectContainer}>
+              <Col className={styles.myPizzaSizeSelect}>
+                <FormLabel htmlFor="chooseSize" className={styles.myCardLabel}>
+                  Size
+                </FormLabel>
+                <Form.Select
+                  ref={chooseSize}
+                  id="chooseSize"
+                  className={styles.myCardSelect}
+                  size="sm"
+                  onClick={handlePizzaSizeChange}
+                  onChange={handleChangeForQtyState}
+                  placeholder="Choose Pizza Size"
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Choose Pizza Size
+                  </option>
+                  <option key={curPizza.pizzaId + "REGULAR"} value="REGULAR">
+                    REGULAR
+                  </option>
+                  <option key={curPizza.pizzaId + "MEDIUM"} value="MEDIUM">
+                    MEDIUM
+                  </option>
+                  <option key={curPizza.pizzaId + "LARGE"} value="LARGE">
+                    LARGE
+                  </option>
+                </Form.Select>
+              </Col>
 
               {isCrustTypeAvailableForGivenSize && (
                 <div>
-                  <Row>
-                    <Col>
-                      <Button
-                        variant="success"
-                        onClick={handleAddToCart}
-                        type="submit"
-                        className={styles.btnAddToCart}
-                        disabled={
-                          isAddToCartClicked ||
-                          !isCrustTypeAvailableForGivenSize ||
-                          selectedCrustType === ""
-                        }
-                      >
-                        Save Changes
-                      </Button>
-                    </Col>
-                  </Row>
+                  <Col className={styles.myPizzaCrustSelect}>
+                    <FormLabel
+                      htmlFor="chooseCrust"
+                      className={styles.myCardLabel}
+                    >
+                      Crust
+                    </FormLabel>
+
+                    <Form.Select
+                      ref={chooseCrust}
+                      id="chooseCrust"
+                      size="sm"
+                      className={styles.myCardSelect}
+                      onChange={() => {
+                        handleCrustTypeChange();
+                        handleChangeForQtyState();
+                      }}
+                      onClick={handleCrustTypeChange}
+                      defaultValue=""
+                    >
+                      <option disabled>Choose Crust Type</option>
+                      {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (
+                        <option
+                          key={crustWithPrice.crustId}
+                          value={crustWithPrice.crustId}
+                        >
+                          {crustMap.get(crustWithPrice.crustId)}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                  <hr />
+
+                  {selectedCrustType !== "" && (
+                    <div>
+                      <Col>
+                        <label className="form-check">
+                          <input
+                            ref={chooseExtraCheese}
+                            type="checkbox"
+                            onChange={handleExtraCheese}
+                            value={35}
+                          />
+                          Extra Cheese @35
+                        </label>
+                      </Col>
+                      <hr />
+                      <Col>
+                        {curPizza.type === "VEG" && (
+                          <div>
+                            <p>Veg Toppings:</p>
+                            {initData.vegToppingList.map((topping) => (
+                              <div
+                                key={`topping_veg_${curPizza.pizzaId}_${topping.toppingId}`}
+                              >
+                                <label htmlFor="toppingSelection">
+                                  <input
+                                    type="checkbox"
+                                    name="toppingSelection"
+                                    value={topping.toppingId}
+                                    onChange={handleToppingCheckboxChange}
+                                  />
+                                  {`${topping.name} @ Rs.${topping.price}`}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {curPizza.type === "NON_VEG" && (
+                          <div>
+                            <p>Veg Toppings :</p>
+                            {initData.nonVegToppingList_veg.map((topping) => (
+                              <div
+                                key={`topping_nonVeg_veg_${curPizza.pizzaId}_${topping.toppingId}`}
+                              >
+                                <label htmlFor="toppingSelection">
+                                  <input
+                                    type="checkbox"
+                                    name="toppingSelection"
+                                    value={topping.toppingId}
+                                    onChange={handleToppingCheckboxChange}
+                                  />
+                                  {`${topping.name} @ Rs.${topping.price}`}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {curPizza.type === "NON_VEG" && (
+                          <div>
+                            <p>NonVeg Toppings :</p>
+                            {initData.nonVegToppingList_nonVeg.map(
+                              (topping) => (
+                                <div
+                                  key={`topping_nonVeg_nonVeg_${curPizza.pizzaId}_${topping.toppingId}`}
+                                >
+                                  <label htmlFor="toppingSelection">
+                                    <input
+                                      type="checkbox"
+                                      name="toppingSelection"
+                                      value={topping.toppingId}
+                                      onChange={handleToppingCheckboxChange}
+                                    />
+                                    {`${topping.name} @ Rs.${topping.price}`}
+                                  </label>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        )}
+                      </Col>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </Row>
+
+            <hr />
+
+            {isCrustTypeAvailableForGivenSize && (
+              <div>
+                <Row>
+                  <Col>
+                    <Button
+                      variant="success"
+                      type="button"
+                      className={styles.btnAddToCart}
+                      disabled={
+                        isAddToCartClicked ||
+                        !isCrustTypeAvailableForGivenSize ||
+                        selectedCrustType === ""
+                      }
+                      onClick={handleUpdatecart}
+                    >
+                      Update Cart
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            )}
           </Card.Body>
         </Card>
       </div>

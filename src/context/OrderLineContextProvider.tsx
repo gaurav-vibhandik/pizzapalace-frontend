@@ -6,9 +6,25 @@ let defaultValue = {
   orderLineList: [],
 };
 
+type actionAdd = {
+  type: "ADD";
+  item: OrderLine;
+};
+
+type actionRemove = {
+  type: "REMOVE";
+  item: OrderLine;
+};
+type actionReplace = {
+  type: "REPLACE";
+  item: { oldOl: OrderLine; newOl: OrderLine };
+};
+
+type finalAction = actionAdd | actionRemove | actionReplace;
+
 const orderLineReducer = (
   state: { orderLineList: OrderLine[] },
-  action: { type: string; item: OrderLine }
+  action: finalAction
 ) => {
   if (action.type === "ADD") {
     //This will add new OL entry or update existing one by incrementing existing quantity
@@ -74,6 +90,27 @@ const orderLineReducer = (
     }
     return { orderLineList: updatedOrderLineList };
   }
+
+  if (action.type === "REPLACE") {
+    //This will update existing OL entry by REPLACING existing Pizza Details only
+    let updatedOrderLineList: OrderLine[] = [...state.orderLineList];
+
+    const existingOrderLineIndex = state.orderLineList.findIndex(
+      (ol: OrderLine) => {
+        return (
+          ol.pizzaId === action.item.oldOl.pizzaId &&
+          ol.size === action.item.oldOl.size &&
+          ol.crustId === action.item.oldOl.crustId &&
+          ol.extraCheese === action.item.oldOl.extraCheese
+        );
+      }
+    );
+    updatedOrderLineList[existingOrderLineIndex] = {
+      ...action.item.newOl,
+    };
+    return { orderLineList: updatedOrderLineList };
+  }
+
   //by adding extra return claue , it solves error of "orderLineState is maybe undefined"
   /*This is necessary to ensure that the reducer always returns the state object, 
   even when none of the specified actions is matched. 
@@ -94,6 +131,10 @@ const OrderLineContextProvider = (props: any) => {
       dispatchOrderLineStateAction({ type: "ADD", item }),
     removeFromOrderLineList: (item: OrderLine) =>
       dispatchOrderLineStateAction({ type: "REMOVE", item }),
+    replaceOrderLineInOrderLineList: (item: {
+      oldOl: OrderLine;
+      newOl: OrderLine;
+    }) => dispatchOrderLineStateAction({ type: "REPLACE", item }),
   };
 
   return (
