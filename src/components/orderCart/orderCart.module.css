@@ -1,0 +1,24 @@
+.orderCart {
+  background-color: aliceblue;
+  min-height: 100vh;
+  border: 1px solid red;
+}
+.orderCartDisplayOrdersBlock {
+  display: flex;
+  width: 95%;
+  min-height: fit-content;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.accordianBodyDisplay {
+  background-color: ghostwhite;
+  border: 2px solid black;
+}
+
+.orderPrice1 {
+  color: green;
+}
+
+.oltable {
+}

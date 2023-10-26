@@ -27,7 +27,7 @@ const OrderDisplay = () => {
       deliveryAddress: "delivery address1",
       orderLines: orderLineList,
     };
-
+    console.log(order);
     axios
       .post("http://localhost:8080/api/v1/orders", order, {
         headers: {
@@ -72,7 +72,7 @@ const OrderDisplay = () => {
             </div>
 
             <div className="container">
-              <Button type="button" onClick={handleCheckout} href="/orderCart">
+              <Button type="button" onClick={handleCheckout}>
                 Checkout
               </Button>
             </div>

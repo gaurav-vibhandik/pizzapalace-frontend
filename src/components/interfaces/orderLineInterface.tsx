@@ -1,4 +1,5 @@
 export default interface OrderLine {
+  orderLineId?: string;
   pizzaId: string;
   size: string;
   crustId: string;
