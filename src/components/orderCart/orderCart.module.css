@@ -5,7 +5,7 @@
 }
 .orderCartDisplayOrdersBlock {
   display: flex;
-  width: 95%;
+  width: 100%;
   min-height: fit-content;
   flex-direction: column;
   margin-top: 3rem;
@@ -18,7 +18,4 @@
 
 .orderPrice1 {
   color: green;
-}
-
-.oltable {
 }

@@ -6,9 +6,6 @@ import OrderLine from "../interfaces/orderLineInterface";
 import { Accordion, Button, Col, Modal, Row, Table } from "react-bootstrap";
 import CardOrderLine from "../orderDisplay/CardOrderLine";
 import InitDataContext from "../../context/InitDataContext";
-import ModalWrapper from "../commons/ModalWrapper";
-import EditOrder from "./EditOrder";
-import TableForOrderLine from "./TableOfOrderLine";
 
 const OrderCart = () => {
   const [customerOrderData, setCustomerOrderData] = useState<{
@@ -98,20 +95,90 @@ const OrderCart = () => {
                             {o.totalAmount}
                           </span>
                         </Col>
+                        <Col>
+                          <Row>
+                            <Col>
+                              <Button type="button" variant="success">
+                                Edit Order
+                              </Button>
+                            </Col>
+                            <Col>
+                              <Button type="button" variant="danger">
+                                Delete Order
+                              </Button>
+                            </Col>
+                          </Row>
+                        </Col>
                       </Row>
                     </div>
-                    <TableForOrderLine
-                      orderLines={o.orderLines}
-                      pizzaMap={pizzaMap}
-                      toppingMap={toppingMap}
-                    />
-                    <div className="editOrderModal">
-                      <ModalWrapper>
-                        <EditOrder order={o} />
-                      </ModalWrapper>
+                    <div className={`${styles.olTable}`}>
+                      <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th className={styles.olTableHeading}>
+                              OrderlineId
+                            </th>
+                            <th className={styles.olTableName}>PizzaName</th>
+                            <th className={styles.olTableSize}>Size</th>
+                            <th className={styles.olTableQuantity}>Quantity</th>
+                            <th className={styles.olTablePrice}>Total Price</th>
+                            <th className={styles.olTableDescription}>
+                              Description
+                            </th>
+                            <th className={styles.olTableExtraCheese}>
+                              Extra Cheese
+                            </th>
+                            <th className={styles.olTableTopping}>Toppings</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {o.orderLines.map((ol) => (
+                            <tr>
+                              <td>{ol.orderLineId}</td>
+                              <td>{pizzaMap.get(ol.pizzaId)!.name}</td>
+                              <td>{ol.size}</td>
+                              <td>{ol.quantity}</td>
+                              <td>{ol.totalPrice}</td>
+                              <td>{pizzaMap.get(ol.pizzaId)!.description}</td>
+                              <td>{ol.extraCheese ? "Yes" : "No"}</td>
+                              <td>
+                                {ol.toppingList.length > 0
+                                  ? ol.toppingList
+                                      .map((tpId) => toppingMap.get(tpId)!.name)
+                                      .toString()
+                                  : "---"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
                     </div>
                   </Accordion.Body>
                 </Accordion.Item>
+
+                <div className="editOrderModal">
+                  <Button variant="primary" onClick={handleShow}>
+                    Launch demo modal
+                  </Button>
+
+                  <Modal show={show} onHide={handleClose} animation={false}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      Woohoo, you are reading this text in a modal of
+                      {o.orderId}...
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleClose}>
+                        Close
+                      </Button>
+                      <Button variant="primary" onClick={handleClose}>
+                        Save Changes
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </div>
               </div>
             ))}
           </Accordion>

@@ -1,0 +1,30 @@
+.oltable {
+}
+.olTableHeading {
+  width: 5%;
+}
+
+.olTableName {
+  width: 15%;
+}
+.olTableEdit {
+  width: 8%;
+}
+.olTableQuantity {
+  width: 5%;
+}
+.olTablePrice {
+  width: 8%;
+}
+.olTableDescription {
+  width: 28%;
+}
+.olTableExtraCheese {
+  width: 10%;
+}
+.olTableTopping {
+  width: fit-content;
+}
+.olTableEdit {
+  width: 5%;
+}

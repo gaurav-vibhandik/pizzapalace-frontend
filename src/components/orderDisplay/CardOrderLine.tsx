@@ -125,14 +125,16 @@ const CardOrderLine = (props: any) => {
           </Row>
           <Row>
             {ol.toppingList.length > 0 && (
-              <div>
-                <p>Added Toppings: </p>
-                <ul className={styles.toppingDetails}>
-                  {ol.toppingList.map((t: any) => (
-                    <li key={t.toppingId}>{toppingMap.get(t)!.name}</li>
-                  ))}
-                </ul>
-              </div>
+              <Row>
+                <Col className="col-3">Added Toppings: </Col>
+                <Col className="col-9">
+                  <ul className={styles.toppingDetails}>
+                    {ol.toppingList.map((t: any) => (
+                      <li key={t.toppingId}>{toppingMap.get(t)!.name}</li>
+                    ))}
+                  </ul>
+                </Col>
+              </Row>
             )}
           </Row>
         </Container>
