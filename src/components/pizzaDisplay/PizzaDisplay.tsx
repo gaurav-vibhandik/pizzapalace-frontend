@@ -40,7 +40,7 @@ const PizzaDisplay = () => {
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
           <div id="scrollSpySides" className="sides pizzaCardsFlexBox">
-            <h2>Sides Details :Comming Soon...</h2>
+            <h2>Sides :Comming Soon...</h2>
             <Spinner animation="border" variant="primary" />
           </div>
         </div>

@@ -25,7 +25,10 @@ const EditOrder = (props: PropsOrder) => {
           OrderLines:
           <ul className={styles.cardOrderLineDisplayBox}>
             {curOrder.orderLines.map((ol) => (
-              <li className={styles.cardOrderLine} key={ol.orderLineId}>
+              <li
+                className={styles.cardOrderLine}
+                key={`${ol.orderLineId}_` + Math.random()}
+              >
                 <CardOrderLine ol={ol} />
               </li>
             ))}

@@ -14,8 +14,8 @@ const ModalWrapper = (props: any) => {
       </Button>
       <Button variant="danger">Delete Order</Button>
 
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
+      <Modal show={show} animation={true} backdrop="static">
+        <Modal.Header>
           <Modal.Title>Edit OrderNo : {}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{props.children}</Modal.Body>

@@ -53,7 +53,7 @@ const OrderDisplay = () => {
           <div className={styles.displayOrderLine}>
             {orderLineList.map((ol) => (
               <CardOrderLine
-                key={`${ol.pizzaId}_${ol.crustId}`}
+                key={`${ol.pizzaId}_${ol.crustId}_` + Math.random()}
                 ol={ol}
                 onReplace={orderLineState.replaceOrderLineInOrderLineList}
               />
@@ -72,7 +72,13 @@ const OrderDisplay = () => {
             </div>
 
             <div className="container">
-              <Button type="button" onClick={handleCheckout}>
+              <Button
+                type="button"
+                onClick={handleCheckout}
+                disabled={
+                  orderLineState.orderLineList.length == 0 ? true : false
+                }
+              >
                 Checkout
               </Button>
             </div>

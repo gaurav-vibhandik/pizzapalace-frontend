@@ -12,6 +12,12 @@ type TableOLProp = {
 };
 
 const TableForOrderLine = (props: TableOLProp) => {
+  // console.log("======TableForOrderLine========>");
+  // console.log("OrderLines :\n");
+  // console.log(props.orderLines.length);
+  // console.log(props.pizzaMap.size);
+  // console.log(props.toppingMap.size);
+
   return (
     <React.Fragment>
       <div className={`${styles.olTable}`}>
@@ -30,7 +36,7 @@ const TableForOrderLine = (props: TableOLProp) => {
           </thead>
           <tbody>
             {props.orderLines.map((ol) => (
-              <tr>
+              <tr key={Math.random()}>
                 <td>{ol.orderLineId}</td>
                 <td>{props.pizzaMap.get(ol.pizzaId)!.name}</td>
                 <td>{ol.size}</td>

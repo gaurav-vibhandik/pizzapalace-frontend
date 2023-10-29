@@ -73,7 +73,7 @@ const CardPizza = (props: Pizza) => {
     //setting pizzaPrice for selected crusttype
     pizzaPrice = curPizzaList[0].price;
     //setting pizzaPrice for selected extra cheese
-    pizzaPrice += selectedExtraCheese ? +chooseExtraCheese.current.value : 0;
+    pizzaPrice += selectedExtraCheese ? 35 : 0;
 
     //setting pizzaPrice for selected toppings
     if (selectedToppings.length > 0) {
@@ -91,12 +91,20 @@ const CardPizza = (props: Pizza) => {
   const handlePizzaSizeChange = () => {
     setSelectedPizzaSize(chooseSize.current.value);
     setSelectedCrustType("");
+    //remove all previously selected toppings
+    setSelectedToppings((prev) => []);
+    //remove all previously selected cheese
+    setSelectedExtraCheese(false);
     //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
     setIsAddToCartClicked(false);
   };
   //==========================================
   const handleCrustTypeChange = () => {
     setSelectedCrustType(chooseCrust.current.value);
+    //remove all previously selected toppings
+    setSelectedToppings((prev) => []);
+    //remove all previously selected cheese
+    setSelectedExtraCheese(false);
   };
 
   //========================================
@@ -229,7 +237,7 @@ const CardPizza = (props: Pizza) => {
                         handleChangeForQtyState();
                       }}
                       onClick={handleCrustTypeChange}
-                      defaultValue=""
+                      // defaultValue=""
                     >
                       <option disabled>Choose Crust Type</option>
                       {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (

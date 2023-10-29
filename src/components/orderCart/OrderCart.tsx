@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import styles from "./orderCart.module.css";
 import Order from "../interfaces/orderInterface";
 import OrderLine from "../interfaces/orderLineInterface";
@@ -9,6 +9,7 @@ import InitDataContext from "../../context/InitDataContext";
 import ModalWrapper from "../commons/ModalWrapper";
 import EditOrder from "./EditOrder";
 import TableForOrderLine from "./TableOfOrderLine";
+import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
 
 const OrderCart = () => {
   const [customerOrderData, setCustomerOrderData] = useState<{
@@ -16,21 +17,22 @@ const OrderCart = () => {
     orders: Order[];
   }>({
     loading: true,
-    orders: [] as Order[],
+    orders: [],
   });
 
   const initData = useContext(InitDataContext);
-  const { pizzaMap, crustMap, toppingMap } = initData;
+  const { pizzaMap, toppingMap } = initData;
 
   //remaining :NOTE :must disable edit button after 15min of orderPlaced
   const [editOrder, setEditOrder] = useState(true);
 
-  //=====>Handling editOrderModal==============
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  //setting up stateReducer for orderState
+  const [orderState, dispatchOrderState] = useReducer(
+    reducerFunctionForEditOrder_EditOrderLines,
+    {
+      orderLines: [] as OrderLine[],
+    }
+  );
 
   //<===============================
 
@@ -41,16 +43,19 @@ const OrderCart = () => {
         const resp = await axios.get(
           "http://localhost:8080/api/v1/orders/customer/CUS003"
         );
+        console.log("===============>Fetched data :\n");
+        console.log(resp.data.data.list);
+
         setCustomerOrderData({
-          orders: resp.data.data.list,
           loading: false,
+          orders: [...resp.data.data.list],
         });
       } catch (error) {
         console.log("====>Error in OrderCart :\n" + error);
       }
     };
     loadOrderData();
-  });
+  }, []);
 
   if (customerOrderData.loading) {
     return (
@@ -68,6 +73,9 @@ const OrderCart = () => {
 
   return (
     <React.Fragment>
+      {/* {customerOrderData.orders.map((o) => (
+        <p>{o.orderId}</p>
+      ))} */}
       <div className={styles.orderCart}>
         <div className={styles.orderCartDisplayCustomerDetails}>
           <h2>Welcome Customer :"CUS003"</h2>

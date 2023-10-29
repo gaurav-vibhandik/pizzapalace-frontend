@@ -14,7 +14,7 @@ const RootLayout = () => {
   const [initData, setInitData] = useState({
     pizzaList: [],
     pizzaMap: new Map<string, Pizza>(),
-    crustMap: new Map<string, Crust>(),
+    crustMap: new Map<string, string>(),
     pizzaPriceList: [],
     toppingList: [],
     toppingMap: new Map<string, Topping>(),
@@ -47,7 +47,7 @@ const RootLayout = () => {
         let pizzaMap: Map<string, Pizza> = new Map();
         pizzaList.forEach((p: Pizza) => pizzaMap.set(p.pizzaId, p));
 
-        let crustMap = new Map();
+        let crustMap = new Map<string, string>();
         for (let cr of crustList) {
           crustMap.set(cr.crustId, cr.crust);
         }
@@ -100,12 +100,8 @@ const RootLayout = () => {
         );
         console.log("Fetched pizzaList = " + pizzaList.length);
         console.log("Fetched crustList = " + crustList.length);
-        console.log(
-          "Fetched crustMap = " +
-            crustMap +
-            "\n" +
-            crustMap.forEach((k, v) => console.log(k + "  " + v))
-        );
+        console.log("Fetched crustMap ====>= " + crustMap);
+        crustMap.forEach((k, v) => console.log("Key:" + k + "  " + v));
         console.log("Fetched pizzaPriceList = " + pizzaPriceList.length);
         console.log("Fetched ToppingList = " + toppingList.length);
         console.log("Fetched ToppingMap = " + toppingMap.size);

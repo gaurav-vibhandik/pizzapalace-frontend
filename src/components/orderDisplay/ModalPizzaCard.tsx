@@ -40,7 +40,7 @@ const ModalPizzaCard = (props: any) => {
   const orderLineState = useContext(OrderLineContext);
 
   const backendPizzaPriceList = initData.pizzaPriceList;
-  const crustMap: Map<string, Crust> | any = initData.crustMap;
+  const crustMap: Map<string, string> = initData.crustMap;
 
   //Fetching crustTypes and its Prices for given selected PizzaSize
   const pizzaPriceListForCurrentPizza: PizzaPrice[] =
@@ -61,7 +61,7 @@ const ModalPizzaCard = (props: any) => {
     //setting pizzaPrice for selected crusttype
     pizzaPrice = curPizzaList[0].price;
     //setting pizzaPrice for selected extra cheese
-    pizzaPrice += selectedExtraCheese ? +chooseExtraCheese.current.value : 0;
+    pizzaPrice += selectedExtraCheese ? 35 : 0;
 
     //setting pizzaPrice for selected toppings
     if (selectedToppings.length > 0) {

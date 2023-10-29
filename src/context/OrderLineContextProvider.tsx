@@ -35,7 +35,11 @@ const orderLineReducer = (
           ol.pizzaId === action.item.pizzaId &&
           ol.size === action.item.size &&
           ol.crustId === action.item.crustId &&
-          ol.extraCheese === action.item.extraCheese
+          ol.extraCheese === action.item.extraCheese &&
+          //checking first length of toppings is same or not
+          ol.toppingList.length == action.item.toppingList.length &&
+          new Set([...ol.toppingList]).size ===
+            new Set([...ol.toppingList, ...action.item.toppingList]).size
         );
       }
     );
@@ -67,7 +71,11 @@ const orderLineReducer = (
           ol.pizzaId === action.item.pizzaId &&
           ol.size === action.item.size &&
           ol.crustId === action.item.crustId &&
-          ol.extraCheese === action.item.extraCheese
+          ol.extraCheese === action.item.extraCheese &&
+          //checking first length of toppings is same or not
+          ol.toppingList.length == action.item.toppingList.length &&
+          new Set([...ol.toppingList]).size ==
+            new Set([...ol.toppingList, ...action.item.toppingList]).size
         );
       }
     );
@@ -80,7 +88,11 @@ const orderLineReducer = (
           ol.pizzaId !== action.item.pizzaId ||
           ol.size !== action.item.size ||
           ol.crustId !== action.item.crustId ||
-          ol.extraCheese !== action.item.extraCheese
+          ol.extraCheese !== action.item.extraCheese ||
+          //checking first length of toppings is same or not
+          ol.toppingList.length !== action.item.toppingList.length ||
+          new Set([...ol.toppingList]).size !==
+            new Set([...ol.toppingList, ...action.item.toppingList]).size
         );
       });
     } else {
@@ -94,6 +106,9 @@ const orderLineReducer = (
   if (action.type === "REPLACE") {
     //This will update existing OL entry by REPLACING existing Pizza Details only
     let updatedOrderLineList: OrderLine[] = [...state.orderLineList];
+    console.log(
+      "Before replacing , olList.length= " + updatedOrderLineList.length
+    );
 
     const existingOrderLineIndex = state.orderLineList.findIndex(
       (ol: OrderLine) => {
@@ -101,14 +116,60 @@ const orderLineReducer = (
           ol.pizzaId === action.item.oldOl.pizzaId &&
           ol.size === action.item.oldOl.size &&
           ol.crustId === action.item.oldOl.crustId &&
-          ol.extraCheese === action.item.oldOl.extraCheese
+          ol.extraCheese === action.item.oldOl.extraCheese &&
+          //checking first length of toppings is same or not
+          ol.toppingList.length == action.item.newOl.toppingList.length &&
+          new Set([...ol.toppingList]).size ==
+            new Set([...ol.toppingList, ...action.item.newOl.toppingList]).size
         );
       }
     );
-    updatedOrderLineList[existingOrderLineIndex] = {
-      ...action.item.newOl,
-    };
-    return { orderLineList: updatedOrderLineList };
+
+    //If newOL is same as one of existing orderLineList , increase its qty AND remove the oldOl entry
+    const existingOrderLineIndexForNewOl = state.orderLineList.findIndex(
+      (ol: OrderLine) => {
+        return (
+          ol.pizzaId === action.item.newOl.pizzaId &&
+          ol.size === action.item.newOl.size &&
+          ol.crustId === action.item.newOl.crustId &&
+          ol.extraCheese === action.item.newOl.extraCheese &&
+          //checking first length of toppings is same or not
+          ol.toppingList.length == action.item.newOl.toppingList.length &&
+          new Set([...ol.toppingList]).size ==
+            new Set([...ol.toppingList, ...action.item.newOl.toppingList]).size
+        );
+      }
+    );
+    if (updatedOrderLineList[existingOrderLineIndexForNewOl]) {
+      //increase qty by one
+      updatedOrderLineList[existingOrderLineIndexForNewOl].quantity += 1;
+      //remove oldOL entry
+      updatedOrderLineList = updatedOrderLineList.filter((ol: OrderLine) => {
+        return (
+          ol.pizzaId !== action.item.oldOl.pizzaId ||
+          ol.size !== action.item.oldOl.size ||
+          ol.crustId !== action.item.oldOl.crustId ||
+          ol.extraCheese !== action.item.oldOl.extraCheese ||
+          //checking first length of toppings is same or not
+          ol.toppingList.length !== action.item.oldOl.toppingList.length ||
+          new Set([...ol.toppingList]).size !==
+            new Set([...ol.toppingList, ...action.item.oldOl.toppingList]).size
+        );
+      });
+      console.log(
+        "After replacing , olList.length= " + updatedOrderLineList.length
+      );
+      return { orderLineList: updatedOrderLineList };
+    } else {
+      //if not simply replace oldOl entry
+      updatedOrderLineList[existingOrderLineIndex] = {
+        ...action.item.newOl,
+      };
+      console.log(
+        "After replacing , olList.length= " + updatedOrderLineList.length
+      );
+      return { orderLineList: updatedOrderLineList };
+    }
   }
 
   //by adding extra return claue , it solves error of "orderLineState is maybe undefined"

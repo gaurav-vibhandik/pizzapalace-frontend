@@ -7,7 +7,7 @@ import Topping from "../components/interfaces/toppingInterface";
 const InitDataContext = React.createContext({
   pizzaList: [] as Pizza[],
   pizzaMap: new Map<string, Pizza>(),
-  crustMap: new Map<string, Crust>(),
+  crustMap: new Map<string, string>(),
   pizzaPriceList: [] as PizzaPrice[],
   toppingList: [] as Topping[],
   toppingMap: new Map<string, Topping>(),
