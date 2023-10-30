@@ -23,10 +23,78 @@ const OrderCart = () => {
   const initData = useContext(InitDataContext);
   const { pizzaMap, toppingMap } = initData;
 
-  //remaining :NOTE :must disable edit button after 15min of orderPlaced
+  //========> remaining :NOTE :must disable edit button after 15min of orderPlaced
   const [editOrder, setEditOrder] = useState(true);
 
   //<===============================
+
+  //=========> Declaring Reducer to handle Order n OrderLine changes
+  const [orderState, dispatchToOrderState] = useReducer(
+    reducerFunctionForEditOrder_EditOrderLines,
+    {
+      orderList: [] as Order[],
+    }
+  );
+  const handleBtnAddQuantity = (orderId: string, orderLineId: string) => {
+    dispatchToOrderState({
+      type: "ADD",
+      item: { orderId, orderLineId },
+    });
+  };
+
+  const handleBtnRemoveQuantity = (
+    orderId: string,
+    orderLineId: string,
+    curQuantity: number
+  ) => {
+    //NOTE : This method will take two paramters : olID,curQty
+    //If curQty is not one , simply decrease qty by one
+    dispatchToOrderState({ type: "DECREASE", item: { orderId, orderLineId } });
+    //If curQty is 1 , then delete OL entry
+    if (curQuantity == 1) {
+      dispatchToOrderState({
+        type: "DELETE_ORDERLINE",
+        item: { orderId, orderLineId },
+      });
+    }
+  };
+
+  const handleEditOrderLine = (
+    orderId: string,
+    curOl: OrderLine,
+    newOl: OrderLine
+  ) => {
+    dispatchToOrderState({
+      type: "EDIT",
+      item: { orderId: orderId, curOl: curOl, newOl: newOl },
+    });
+  };
+
+  const handleCancelEditOrder = (orderId: string) => {
+    const curOrderIndex = customerOrderData.orders.findIndex(
+      (o) => o.orderId === orderId
+    );
+    const originalOrderLineListForCurOrder =
+      customerOrderData.orders[curOrderIndex].orderLines;
+    dispatchToOrderState({
+      type: "RESET_ORDERLINE",
+      item: {
+        orderId: orderId,
+        orderLineList: originalOrderLineListForCurOrder,
+      },
+    });
+  };
+
+  const handleSaveChanges = (
+    newOrderData: Order,
+    updatedOrderLineList: OrderLine[]
+  ) => {
+    //upon clicking on "SAVE CHANGES" , collect form data in EditModal for change in DeliveryAddress and
+    //collect updatedorderLineList
+    //Pass these two params from ModalEditOrderCart_EditOrderLine
+  };
+
+  //<==================================
 
   useEffect(() => {
     const loadOrderData = async () => {
@@ -41,6 +109,11 @@ const OrderCart = () => {
         setCustomerOrderData({
           loading: false,
           orders: [...resp.data.data.list],
+        });
+
+        dispatchToOrderState({
+          type: "POPULATE_ORDERSTATE",
+          item: resp.data.data.list,
         });
       } catch (error) {
         console.log("====>Error in OrderCart :\n" + error);
@@ -74,7 +147,7 @@ const OrderCart = () => {
         </div>
         <div className={styles.orderCartDisplayOrdersBlock}>
           <Accordion className="">
-            {customerOrderData.orders.map((o) => (
+            {orderState.orderList.map((o) => (
               <div>
                 <Accordion.Item eventKey={o.orderId!}>
                   <Accordion.Header>
@@ -106,8 +179,17 @@ const OrderCart = () => {
                       toppingMap={toppingMap}
                     />
                     <div className="editOrderModal">
-                      <ModalWrapper>
-                        <EditOrder order={o} />
+                      <ModalWrapper
+                        curOrder={o}
+                        onBtnCancelEditOrder={handleCancelEditOrder}
+                        onBtnSaveChanges={handleSaveChanges}
+                      >
+                        <EditOrder
+                          curOrder={o}
+                          onBtnAddQuantity={handleBtnAddQuantity}
+                          onBtnRemoveQuantity={handleBtnRemoveQuantity}
+                          onBtnEditOrderLine={handleEditOrderLine}
+                        />
                       </ModalWrapper>
                     </div>
                   </Accordion.Body>

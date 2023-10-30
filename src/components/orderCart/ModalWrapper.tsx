@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Order from "../interfaces/orderInterface";
+import OrderLine from "../interfaces/orderLineInterface";
 
-const ModalWrapper = (props: any) => {
+type curProps = {
+  children: any;
+  curOrder: Order;
+  onBtnCancelEditOrder: (orderId: string) => void;
+  onBtnSaveChanges: (
+    newOrderData: Order,
+    updatedOrderLineList: OrderLine[]
+  ) => void;
+};
+
+const ModalWrapper = (props: curProps) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -22,15 +34,16 @@ const ModalWrapper = (props: any) => {
         </Modal.Header>
         <Modal.Body>{props.children}</Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={handleClose}>
-            Cancel
-          </Button>
           <Button
-            variant="success"
+            variant="danger"
             onClick={() => {
-              navigate("/orderCart");
+              props.onBtnCancelEditOrder(props.curOrder.orderId!);
+              handleClose();
             }}
           >
+            Cancel
+          </Button>
+          <Button variant="success" onClick={() => {}}>
             Update Order
           </Button>
         </Modal.Footer>

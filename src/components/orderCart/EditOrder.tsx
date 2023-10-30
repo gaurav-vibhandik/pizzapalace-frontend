@@ -5,58 +5,24 @@ import styles from "../orderDisplay/CardOrderLine.module.css";
 import ModalEditOrderCart_EditOrderLine from "./ModalEditOrderCart_EditOrderLine";
 import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
 import OrderLine from "../interfaces/orderLineInterface";
-type PropsOrder = {
-  order: Order;
-};
 
-const EditOrder = (props: PropsOrder) => {
-  const curOrder = props.order;
-  const [orderLineState, dispatchToOrderLineState] = useReducer(
-    reducerFunctionForEditOrder_EditOrderLines,
-    {
-      orderLines: curOrder.orderLines,
-    }
-  );
-
-  const handleBtnAddQuantity = (orderLineId: string) => {
-    dispatchToOrderLineState({ type: "ADD", item: orderLineId });
-  };
-
-  const handleBtnRemoveQuantity = (
+type curProps = {
+  curOrder: Order;
+  onBtnAddQuantity: (orderId: string, orderLineId: string) => void;
+  onBtnRemoveQuantity: (
+    orderId: string,
     orderLineId: string,
     curQuantity: number
-  ) => {
-    //NOTE : This method will take two paramters : olID,curQty
-    //If curQty is not one , simply decrease qty by one
-    dispatchToOrderLineState({ type: "DECREASE", item: orderLineId });
-    //If curQty is 1 , then delete OL entry
-    if (curQuantity == 1) {
-      dispatchToOrderLineState({ type: "DELETE_ORDERLINE", item: orderLineId });
-    }
-  };
+  ) => void;
+  onBtnEditOrderLine: (
+    orderId: string,
+    curOl: OrderLine,
+    newOl: OrderLine
+  ) => void;
+};
 
-  const handleEditOrderLine = (curOl: OrderLine, newOl: OrderLine) => {
-    dispatchToOrderLineState({
-      type: "EDIT",
-      item: { curOl: curOl, newOl: newOl },
-    });
-  };
-
-  const handleCancelEditOrder = () => {
-    dispatchToOrderLineState({
-      type: "RESET_ORDERLINE",
-      item: curOrder.orderLines,
-    });
-  };
-
-  const handleSaveChanges = (
-    newOrderData: Order,
-    updatedOrderLineList: OrderLine[]
-  ) => {
-    //upon clicking on "SAVE CHANGES" , collect form data in EditModal for change in DeliveryAddress and
-    //collect updatedorderLineList
-    //Pass these two params from ModalEditOrderCart_EditOrderLine
-  };
+const EditOrder = (props: curProps) => {
+  const curOrder = props.curOrder;
 
   return (
     <React.Fragment>
@@ -73,18 +39,16 @@ const EditOrder = (props: PropsOrder) => {
         <Row>
           OrderLines:
           <ul className={styles.cardOrderLineDisplayBox}>
-            {orderLineState.orderLines.map((ol) => (
+            {props.curOrder.orderLines.map((ol) => (
               <li
                 className={styles.cardOrderLine}
                 key={`${ol.orderLineId}_` + Math.random()}
               >
                 <ModalEditOrderCart_EditOrderLine
                   ol={ol}
-                  onBtnAddQuantity={handleBtnAddQuantity}
-                  onBtnRemoveQuantity={handleBtnRemoveQuantity}
-                  onBtnEditOrderLine={handleEditOrderLine}
-                  onBtnCancelEditOrder={handleCancelEditOrder}
-                  onBtnSaveChanges={handleSaveChanges}
+                  onBtnAddQuantity={(orderId) => props.onBtnAddQuantity()}
+                  onBtnRemoveQuantity={props.onBtnRemoveQuantity}
+                  onBtnEditOrderLine={props.onBtnEditOrderLine}
                 />
               </li>
             ))}
