@@ -1,0 +1,65 @@
+.myPizzaCard {
+  width: 17rem;
+  height: fit-content;
+  font-size: small;
+  box-shadow: 2px 2px 7px gray;
+}
+
+.pizzaImageSection {
+  position: relative;
+}
+.pizzaFoodTypeLogo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+}
+
+.pizzaCardTitle {
+  margin-top: -1rem;
+}
+
+.pizzaCardDescription {
+  font-size: 105%;
+  /* border: 2px dotted blue; */
+  margin-bottom: -0.7rem;
+}
+
+.selectContainer {
+  /* border: 2px dotted blue; */
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: -1%;
+}
+
+.myPizzaSizeSelect,
+.myPizzaCrustSelect {
+  font-size: 0.8rem;
+  color: darkcyan;
+}
+
+.myPizzaSizeSelect select,
+.myPizzaCrustSelect select,
+.myPizzaSizeSelect select ~ option {
+  font-size: 0.7rem;
+  width: 100%;
+  /* color: green; */
+}
+
+.pizzaPrice {
+  background-color: whitesmoke;
+  color: green;
+  font-size: large;
+  position: absolute;
+  top: 7.9rem;
+  height: fit-content;
+}
+
+#id_pizzaSizePrice {
+  color: red;
+}
+.btnAddToCart {
+  font-size: 0.8rem;
+  box-shadow: 2px 2px 2px gray;
+}

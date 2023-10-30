@@ -18,7 +18,7 @@ const Header = () => {
                 height="40"
                 className="d-inline-block align-top "
               />
-              <b className="ms-2">Yummy Pizzas</b>
+              <b className="ms-2">Yummy Pizzas 2.0</b>
             </Navbar.Brand>
             <Nav className="headerMenus d-flex p-1 gap-2" style={{}}>
               <NavLink

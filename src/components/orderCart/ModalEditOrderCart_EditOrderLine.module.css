@@ -1,0 +1,54 @@
+.orderLineCard {
+  width: 95%;
+  height: fit-content;
+  box-shadow: 2px 3px 10px gray;
+  padding: 0.2rem;
+  margin: auto;
+  margin-top: 0.7rem;
+  font-size: 0.7rem;
+}
+
+.imageSection {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-color: aqua;
+}
+
+.foodTypeLogo {
+  position: absolute;
+  top: 0.2rem;
+  left: 1rem;
+  width: 1rem;
+}
+
+.olCardTitle {
+  margin-top: 0rem;
+}
+
+.olCardDescription {
+  font-size: 105%;
+  /* margin-bottom: -0.7rem; */
+}
+
+.borderLine {
+  background-color: aquamarine;
+}
+
+.btnOrderCartManageQty {
+  margin-top: 1rem;
+}
+
+.olPrice {
+  text-align: center;
+  margin-top: 1rem;
+  color: green;
+  font-size: medium;
+}
+
+.toppingDetails {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

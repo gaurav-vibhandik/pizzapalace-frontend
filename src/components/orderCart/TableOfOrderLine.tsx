@@ -4,6 +4,7 @@ import { Pizza } from "../interfaces/pizzaInterface";
 import Topping from "../interfaces/toppingInterface";
 import styles from "./tableOfOrderLine.module.css";
 import OrderLine from "../interfaces/orderLineInterface";
+import { wrap } from "module";
 
 type TableOLProp = {
   orderLines: OrderLine[];

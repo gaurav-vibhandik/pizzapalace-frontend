@@ -17,14 +17,19 @@ type btnDecreaseQuantity = {
 
 type editOrderLine = {
   type: "EDIT";
-  item: { oldOl: OrderLine; newOl: OrderLine };
+  item: { curOl: OrderLine; newOl: OrderLine };
+};
+type btnResetOrderLine = {
+  type: "RESET_ORDERLINE";
+  item: OrderLine[];
 };
 
 type finalActionEditOrder =
   | deleteOrderLine
   | btnAddQuantity
   | btnDecreaseQuantity
-  | editOrderLine;
+  | editOrderLine
+  | btnResetOrderLine;
 
 const reducerFunctionForEditOrder_EditOrderLines = (
   state: {
@@ -32,35 +37,39 @@ const reducerFunctionForEditOrder_EditOrderLines = (
   },
   action: finalActionEditOrder
 ) => {
-  let updatedOrderLineList = [...state.orderLines];
+  let updatedOrderLineList;
   let existingIndex;
   let existingOl;
   switch (action.type) {
     case "ADD":
+      updatedOrderLineList = [...state.orderLines];
       existingIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item
       );
       existingOl = updatedOrderLineList[existingIndex];
-      existingOl.quantity += existingOl.quantity;
-      return { orderLines: updatedOrderLineList };
+      existingOl.quantity += 1;
+      return { ...state, orderLines: updatedOrderLineList };
 
     case "DECREASE":
+      updatedOrderLineList = [...state.orderLines];
       existingIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item
       );
-      existingOl = updatedOrderLineList[existingIndex];
-      existingOl.quantity -= existingOl.quantity;
-      return { orderLines: updatedOrderLineList };
+      updatedOrderLineList[existingIndex].quantity -= 1;
+
+      return { ...state, orderLines: updatedOrderLineList };
 
     case "DELETE_ORDERLINE":
+      updatedOrderLineList = [...state.orderLines];
       updatedOrderLineList = updatedOrderLineList.filter(
         (ol) => ol.orderLineId !== action.item
       );
-      return { orderLines: updatedOrderLineList };
+      return { ...state, orderLines: updatedOrderLineList };
 
     case "EDIT":
+      updatedOrderLineList = [...state.orderLines];
       existingIndex = updatedOrderLineList.findIndex(
-        (ol) => ol.orderLineId === action.item.oldOl.orderLineId
+        (ol) => ol.orderLineId === action.item.curOl.orderLineId
       );
       //check if new OL is already existing by comparing with all list elements
       //if yes just increase its qty by 1
@@ -70,7 +79,18 @@ const reducerFunctionForEditOrder_EditOrderLines = (
 
       updatedOrderLineList[existingIndex] = action.item.newOl;
 
-      return { orderLines: updatedOrderLineList };
+      return { ...state, orderLines: updatedOrderLineList };
+
+    case "RESET_ORDERLINE":
+      console.log("=======>Resetting Ol :");
+      console.log("======>Cur state of OL : ");
+      state.orderLines.forEach((ol) => console.log(ol.orderLineId));
+      console.log("<============");
+      console.log("======>Resetted state of OL : ");
+      action.item.forEach((ol) => console.log(ol.orderLineId));
+      console.log("<============");
+
+      return { ...state, orderLines: [...action.item] };
 
     default:
       return state;

@@ -7,15 +7,15 @@ import OrderLineContext from "../../context/orderLineContext";
 import { Crust } from "../interfaces/crustInterface";
 import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
 import { Row, Col, Card } from "react-bootstrap";
-import styles from "../pizzaDisplay/CardPizza.module.css";
+import styles from "./ModalEditOrderCart_EditOrderLine_EditPizzaCard.module.css";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import OrderLine from "../interfaces/orderLineInterface";
 
-const ModalPizzaCard = (props: any) => {
+const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
   const curPizza = props.myPizza;
-  const oldOl: OrderLine = props.oldOl;
-  const onReplace = props.onReplace;
+  const curOl: OrderLine = props.curOl;
+  const onBtnEditOrderLine = props.onBtnEditOrderLine;
   const onHandleClose = props.onHandleClose;
 
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
@@ -37,7 +37,6 @@ const ModalPizzaCard = (props: any) => {
   //Fetching Crust Details from CrustList for given each given pizza as per availability in PizzaPrice
 
   const initData = useContext(InitDataContext);
-  const orderLineState = useContext(OrderLineContext);
 
   const backendPizzaPriceList = initData.pizzaPriceList;
   const crustMap: Map<string, string> = initData.crustMap;
@@ -77,9 +76,7 @@ const ModalPizzaCard = (props: any) => {
   //==========================================
   const handlePizzaSizeChange = () => {
     setSelectedPizzaSize(chooseSize.current.value);
-    setSelectedCrustType("");
-    //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
-    setIsAddToCartClicked(false);
+    // setSelectedCrustType("");
   };
   //==========================================
   const handleCrustTypeChange = () => {
@@ -87,12 +84,6 @@ const ModalPizzaCard = (props: any) => {
   };
 
   //========================================
-  const handleChangeForQtyState = () => {
-    if (isAddToCartClicked) {
-      // setPizzaQty(1);
-      // setIsAddToCartClicked(false);
-    }
-  };
 
   //====> Handling Extra Cheese======================
   const handleExtraCheese = () => {
@@ -113,9 +104,9 @@ const ModalPizzaCard = (props: any) => {
       );
     }
   };
-  //====>Handling "Save Changes" =======================
-  const handleUpdatecart = (event: any) => {
-    console.log("Inside handleSaveChanges");
+  //====>Handling "Update Pizza details" =======================
+  const handlePizzaDetails = (event: any) => {
+    console.log("Inside handle Update Pizza Changes");
 
     const newOl: OrderLine = {
       pizzaId: curPizza.pizzaId,
@@ -127,11 +118,11 @@ const ModalPizzaCard = (props: any) => {
       totalPrice: pizzaPrice,
     };
 
-    onReplace({ oldOl: oldOl, newOl: newOl });
+    onBtnEditOrderLine(curOl, newOl);
     console.log(`============================>
     Editing Pizza: ${curPizza.pizzaId} \n 
-    before OL : ${oldOl.size} & ${oldOl.crustId}
-    new OL : ${selectedPizzaSize} & ${selectedCrustType}
+    before OL : ${curOl.size} & ${curOl.crustId}
+    new OL : ${newOl.size} & ${newOl.crustId}
     `);
 
     console.log("editing Pizza Finished");
@@ -176,9 +167,9 @@ const ModalPizzaCard = (props: any) => {
                   className={styles.myCardSelect}
                   size="sm"
                   onClick={handlePizzaSizeChange}
-                  onChange={handleChangeForQtyState}
+                  onChange={(e) => setSelectedPizzaSize(e.target.value)}
                   placeholder="Choose Pizza Size"
-                  defaultValue=""
+                  defaultValue={curPizza.size}
                 >
                   <option value="" disabled>
                     Choose Pizza Size
@@ -210,10 +201,9 @@ const ModalPizzaCard = (props: any) => {
                       id="chooseCrust"
                       size="sm"
                       className={styles.myCardSelect}
-                      onChange={() => {
-                        handleCrustTypeChange();
-                        handleChangeForQtyState();
-                      }}
+                      onChange={(event) =>
+                        setSelectedCrustType(event.target.value)
+                      }
                       onClick={handleCrustTypeChange}
                       defaultValue=""
                     >
@@ -328,9 +318,9 @@ const ModalPizzaCard = (props: any) => {
                         !isCrustTypeAvailableForGivenSize ||
                         selectedCrustType === ""
                       }
-                      onClick={handleUpdatecart}
+                      onClick={handlePizzaDetails}
                     >
-                      Update Cart
+                      Update Pizza Details
                     </Button>
                   </Col>
                 </Row>
@@ -343,4 +333,4 @@ const ModalPizzaCard = (props: any) => {
   );
 };
 
-export default ModalPizzaCard;
+export default ModalEditOrderCart_EditOrderLine_EditPizzaCard;

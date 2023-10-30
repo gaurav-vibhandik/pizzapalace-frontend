@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import OrderCart from "../orderCart/OrderCart";
+import { useNavigate } from "react-router-dom";
 
 const ModalWrapper = (props: any) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const navigate = useNavigate();
 
   return (
     <React.Fragment>
@@ -14,7 +16,7 @@ const ModalWrapper = (props: any) => {
       </Button>
       <Button variant="danger">Delete Order</Button>
 
-      <Modal show={show} animation={true} backdrop="static">
+      <Modal show={show} backdrop="static">
         <Modal.Header>
           <Modal.Title>Edit OrderNo : {}</Modal.Title>
         </Modal.Header>
@@ -23,8 +25,13 @@ const ModalWrapper = (props: any) => {
           <Button variant="danger" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button
+            variant="success"
+            onClick={() => {
+              navigate("/orderCart");
+            }}
+          >
+            Update Order
           </Button>
         </Modal.Footer>
       </Modal>
