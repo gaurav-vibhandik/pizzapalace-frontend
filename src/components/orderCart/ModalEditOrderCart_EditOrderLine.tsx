@@ -22,13 +22,16 @@ import EditOrder_BtnManageQuantity from "./EditOrder_BtnManageQuantity";
 
 type curProps = {
   ol: OrderLine;
-  onBtnAddQuantity: (orderLineId: string) => void;
-  onBtnRemoveQuantity: (orderLineId: string, curQuantity: number) => void;
-  onBtnEditOrderLine: (curOl: OrderLine, newOl: OrderLine) => void;
-  onBtnCancelEditOrder: () => void;
-  onBtnSaveChanges: (
-    newOrderData: Order,
-    updatedOrderLineList: OrderLine[]
+  onBtnAddQuantity: (orderId: string, orderLineId: string) => void;
+  onBtnRemoveQuantity: (
+    orderId: string,
+    orderLineId: string,
+    curQuantity: number
+  ) => void;
+  onBtnEditOrderLine: (
+    orderId: string,
+    curOl: OrderLine,
+    newOl: OrderLine
   ) => void;
 };
 
@@ -57,6 +60,9 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
 
   //====> Debugging ==========
 
+  // const handleBtnAddClick = () => {
+  //   props.onBtnAddQuantity(ol.orderId, ol.orderLineId);
+  // };
   //<======================
 
   return (
@@ -80,7 +86,7 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
                 </div>
                 <div className={`container ${styles.btnOrderCartManageQty}`}>
                   <EditOrder_BtnManageQuantity
-                    curOrderLineId={ol.orderLineId}
+                    curOrderLine={ol}
                     quantity={ol.quantity}
                     handleBtnAdd={props.onBtnAddQuantity}
                     handleBtnRemove={props.onBtnRemoveQuantity}

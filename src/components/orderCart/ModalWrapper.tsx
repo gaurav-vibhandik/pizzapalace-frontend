@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { RefObject, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Order from "../interfaces/orderInterface";
@@ -7,26 +7,27 @@ import OrderLine from "../interfaces/orderLineInterface";
 type curProps = {
   children: any;
   curOrder: Order;
+  refModalWrapperClose: any;
   onBtnCancelEditOrder: (orderId: string) => void;
-  onBtnSaveChanges: (
-    newOrderData: Order,
-    updatedOrderLineList: OrderLine[]
-  ) => void;
+  onBtnDeleteOrder: (orderId: string) => void;
 };
 
 const ModalWrapper = (props: curProps) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
-  const navigate = useNavigate();
-
+  const refHandleModalClose = props.refModalWrapperClose;
   return (
     <React.Fragment>
       <Button variant="primary" onClick={handleShow}>
         Edit My Order
       </Button>
-      <Button variant="danger">Delete Order</Button>
+      <Button
+        variant="danger"
+        onClick={() => props.onBtnDeleteOrder(props.curOrder.orderId!)}
+      >
+        Delete Order
+      </Button>
 
       <Modal show={show} backdrop="static">
         <Modal.Header>
@@ -43,8 +44,16 @@ const ModalWrapper = (props: curProps) => {
           >
             Cancel
           </Button>
-          <Button variant="success" onClick={() => {}}>
-            Update Order
+
+          <Button
+            ref={refHandleModalClose}
+            className="d-none"
+            variant="success"
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            Handle Close Modal By EditOrder
           </Button>
         </Modal.Footer>
       </Modal>

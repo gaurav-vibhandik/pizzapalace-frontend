@@ -25,9 +25,17 @@ type editOrderLine = {
   item: { orderId: string; curOl: OrderLine; newOl: OrderLine };
 };
 
-type btnResetOrderLine = {
-  type: "RESET_ORDERLINE";
-  item: { orderId: string; orderLineList: OrderLine[] };
+type btnResetOrder = {
+  type: "RESET_ORDER";
+  item: { orderId: string; order: Order };
+};
+type btnDeleteOrder = {
+  type: "DELETE_ORDER";
+  item: string;
+};
+type btnUpdateOrder = {
+  type: "UPDATE_ORDER";
+  item: Order;
 };
 
 type finalActionEditOrder =
@@ -35,8 +43,10 @@ type finalActionEditOrder =
   | btnAddQuantity
   | btnDecreaseQuantity
   | editOrderLine
-  | btnResetOrderLine
-  | populateOrderState;
+  | btnResetOrder
+  | populateOrderState
+  | btnDeleteOrder
+  | btnUpdateOrder;
 
 const reducerFunctionForEditOrder_EditOrderLines = (
   state: {
@@ -48,6 +58,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
   let updatedOrderLineList;
   let existingOrderIndex;
   let existingOrderLineIndex;
+  let existingOrder;
   let existingOl;
   switch (action.type) {
     case "POPULATE_ORDERSTATE":
@@ -58,12 +69,20 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      updatedOrderLineList = updatedOrderList[existingOrderIndex].orderLines;
+      existingOrder = updatedOrderList[existingOrderIndex];
+      updatedOrderLineList = existingOrder.orderLines;
+
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.orderLineId
       );
+      updatedOrderLineList[existingOrderLineIndex].quantity += 1;
+
+      //increase totalPrice of order also
       existingOl = updatedOrderLineList[existingOrderLineIndex];
-      existingOl.quantity += 1;
+      existingOrder.totalAmount += existingOl.totalPrice;
+      existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
+      updatedOrderList[existingOrderIndex] = existingOrder;
+
       return { orderList: [...updatedOrderList] };
 
     case "DECREASE":
@@ -71,11 +90,18 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      updatedOrderLineList = updatedOrderList[existingOrderIndex].orderLines;
+      existingOrder = updatedOrderList[existingOrderIndex];
+      updatedOrderLineList = existingOrder.orderLines;
+
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.orderLineId
       );
       updatedOrderLineList[existingOrderLineIndex].quantity -= 1;
+      //decrease totalPrice of order also
+      existingOl = updatedOrderLineList[existingOrderLineIndex];
+      existingOrder.totalAmount -= existingOl.totalPrice;
+      existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
+      updatedOrderList[existingOrderIndex] = existingOrder;
 
       return { orderList: [...updatedOrderList] };
 
@@ -84,10 +110,26 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      updatedOrderLineList = updatedOrderList[existingOrderIndex].orderLines;
+      existingOrder = updatedOrderList[existingOrderIndex];
+      updatedOrderLineList = existingOrder.orderLines;
+      console.log("Before OL.length()=" + updatedOrderLineList.length);
+
+      //decrease totalPrice of order also
+      existingOrderLineIndex = updatedOrderLineList.findIndex(
+        (ol) => ol.orderLineId == action.item.orderLineId
+      );
+      existingOrder.totalAmount -=
+        updatedOrderLineList[existingOrderLineIndex].totalPrice;
+
       updatedOrderLineList = updatedOrderLineList.filter(
         (ol) => ol.orderLineId !== action.item.orderLineId
       );
+      console.log("After OL.length()=" + updatedOrderLineList.length);
+      existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
+      console.log(
+        "After OL.length() in OrderList=" + existingOrder.orderLines.length
+      );
+      updatedOrderList[existingOrderIndex] = existingOrder;
       return { orderList: [...updatedOrderList] };
 
     case "EDIT":
@@ -95,29 +137,55 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      updatedOrderLineList = updatedOrderList[existingOrderIndex].orderLines;
+      existingOrder = updatedOrderList[existingOrderIndex];
+      updatedOrderLineList = existingOrder.orderLines;
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.curOl.orderLineId
       );
-      //check if new OL is already existing by comparing with all list elements
-      //if yes just increase its qty by 1
-      //to be done later
-
-      //if no , just replace oldOL entry by newOl
 
       updatedOrderLineList[existingOrderLineIndex] = action.item.newOl;
 
-      return { orderList: [...updatedOrderList] };
+      //change order's totalAmount = totalPrice of new OL
+      existingOrder.totalAmount =
+        existingOrder.totalAmount -
+        action.item.curOl.totalPrice * action.item.curOl.quantity +
+        action.item.newOl.totalPrice * action.item.newOl.quantity;
 
-    case "RESET_ORDERLINE":
+      existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
+      updatedOrderList[existingOrderIndex] = existingOrder;
+      return { ...state, orderList: [...updatedOrderList] };
+
+    case "RESET_ORDER":
+      console.log(
+        "inside reset_ol===> action.item.order.orderLines.quantity = " +
+          action.item.order.orderLines[0].quantity
+      );
+
       updatedOrderList = [...state.orderList];
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      updatedOrderList[existingOrderIndex].orderLines =
-        action.item.orderLineList;
+
+      updatedOrderList[existingOrderIndex] = action.item.order;
 
       return { orderList: [...updatedOrderList] };
+
+    case "DELETE_ORDER":
+      updatedOrderList = [...state.orderList];
+      updatedOrderList = updatedOrderList.filter(
+        (o) => o.orderId !== action.item
+      );
+      return { ...state, orderList: updatedOrderList };
+
+    case "UPDATE_ORDER":
+      updatedOrderList = [...state.orderList];
+
+      existingOrderIndex = updatedOrderList.findIndex(
+        (o) => o.orderId === action.item.orderId
+      );
+      updatedOrderList[existingOrderIndex] = action.item;
+
+      return { ...state, orderList: updatedOrderList };
 
     default:
       return state;

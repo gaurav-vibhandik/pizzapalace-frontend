@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "../BtnManageQuantity.module.css";
+import OrderLine from "../interfaces/orderLineInterface";
 
 const EditOrder_BtnManageQuantity = (props: any) => {
-  const { curOrderLineId, quantity, handleBtnAdd, handleBtnRemove } = props;
-
+  const { quantity, handleBtnAdd, handleBtnRemove } = props;
+  const curOL: OrderLine = props.curOrderLine;
   return (
     <React.Fragment>
       <div className={styles.btnContainer}>
@@ -12,7 +13,13 @@ const EditOrder_BtnManageQuantity = (props: any) => {
             type="button"
             className={styles.btnRemoveQty}
             onClick={() => {
-              handleBtnRemove(curOrderLineId, quantity);
+              if (quantity == 1) {
+                console.log(
+                  "orderId= " + curOL.orderId + "  olID=" + curOL.orderLineId
+                );
+              }
+
+              handleBtnRemove(curOL.orderId, curOL.orderLineId, quantity);
             }}
           >
             -
@@ -25,7 +32,7 @@ const EditOrder_BtnManageQuantity = (props: any) => {
             type="button"
             className={styles.btnAddQty}
             onClick={() => {
-              handleBtnAdd(curOrderLineId);
+              handleBtnAdd(curOL.orderId, curOL.orderLineId);
             }}
           >
             +

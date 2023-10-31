@@ -1,5 +1,11 @@
 import axios from "axios";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import styles from "./orderCart.module.css";
 import Order from "../interfaces/orderInterface";
 import OrderLine from "../interfaces/orderLineInterface";
@@ -10,6 +16,7 @@ import ModalWrapper from "./ModalWrapper";
 import EditOrder from "./EditOrder";
 import TableForOrderLine from "./TableOfOrderLine";
 import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
+import { useNavigate } from "react-router-dom";
 
 const OrderCart = () => {
   const [customerOrderData, setCustomerOrderData] = useState<{
@@ -20,6 +27,8 @@ const OrderCart = () => {
     orders: [],
   });
 
+  const navigate = useNavigate();
+  const ref_editOrderModalClose = useRef<HTMLButtonElement>(null);
   const initData = useContext(InitDataContext);
   const { pizzaMap, toppingMap } = initData;
 
@@ -40,6 +49,19 @@ const OrderCart = () => {
       type: "ADD",
       item: { orderId, orderLineId },
     });
+
+    console.log(
+      "In customerOrderData.orders[0].orderId= " +
+        customerOrderData.orders[0].orderId
+    );
+    console.log(
+      "In customerOrderData.orders[0].orderLines[0].orderLineId= " +
+        customerOrderData.orders[0].orderLines[0].orderLineId
+    );
+    console.log(
+      "In customerOrderData.orders[0].orderLines[0].quantity= " +
+        customerOrderData.orders[0].orderLines[0].quantity
+    );
   };
 
   const handleBtnRemoveQuantity = (
@@ -47,13 +69,21 @@ const OrderCart = () => {
     orderLineId: string,
     curQuantity: number
   ) => {
-    //NOTE : This method will take two paramters : olID,curQty
-    //If curQty is not one , simply decrease qty by one
-    dispatchToOrderState({ type: "DECREASE", item: { orderId, orderLineId } });
     //If curQty is 1 , then delete OL entry
-    if (curQuantity == 1) {
+    if (curQuantity === 1) {
+      console.log(
+        "here in dispatcher handleBtnRemoveQuantity:Deleting OrderLine: "
+      );
+      console.log(orderId + "  " + orderLineId);
+
       dispatchToOrderState({
         type: "DELETE_ORDERLINE",
+        item: { orderId, orderLineId },
+      });
+    } else {
+      //If curQty is not one , simply decrease qty by one
+      dispatchToOrderState({
+        type: "DECREASE",
         item: { orderId, orderLineId },
       });
     }
@@ -70,28 +100,63 @@ const OrderCart = () => {
     });
   };
 
-  const handleCancelEditOrder = (orderId: string) => {
+  const handleCancelEditOrder = (resetOrderId: string) => {
+    console.log("Inside reset handler");
+
     const curOrderIndex = customerOrderData.orders.findIndex(
-      (o) => o.orderId === orderId
+      (o) => o.orderId === resetOrderId
     );
-    const originalOrderLineListForCurOrder =
-      customerOrderData.orders[curOrderIndex].orderLines;
+    const originalOrder = customerOrderData.orders[curOrderIndex];
+    console.log(
+      "originalOrder ol.quantity: " + originalOrder.orderLines[0].quantity
+    );
+
     dispatchToOrderState({
-      type: "RESET_ORDERLINE",
+      type: "RESET_ORDER",
       item: {
-        orderId: orderId,
-        orderLineList: originalOrderLineListForCurOrder,
+        orderId: resetOrderId,
+        order: originalOrder,
       },
     });
   };
 
-  const handleSaveChanges = (
-    newOrderData: Order,
-    updatedOrderLineList: OrderLine[]
-  ) => {
-    //upon clicking on "SAVE CHANGES" , collect form data in EditModal for change in DeliveryAddress and
-    //collect updatedorderLineList
-    //Pass these two params from ModalEditOrderCart_EditOrderLine
+  const handleUpdateOrder = (newOrder: Order) => {
+    //hit backend for updating Order .If success update entry in reducer state also
+    axios
+      .put("http://localhost:8080/api/v1/orders/" + newOrder.orderId, newOrder)
+      .then((resp) => {
+        if (resp.data.success) {
+          //if backend orderData has been updated , reflect same in given orderState
+          dispatchToOrderState({ type: "UPDATE_ORDER", item: newOrder });
+          console.log("resp succes:state updated");
+          ref_editOrderModalClose.current!.click();
+        }
+      })
+      .catch((error) => {
+        console.log("Failed to update order details :" + error.data.message);
+        //reset changes done current orderState
+        handleCancelEditOrder(newOrder.orderId!);
+      });
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    //hit backend for deleting Order .If success remove entry from reducer state also
+    axios
+      .delete("http://localhost:8080/api/v1/orders/" + orderId)
+      .then((resp) => {
+        //console.log(resp);
+
+        if (resp.status == 204) {
+          //if backend orderData has been deleted , reflect same in given orderState
+          dispatchToOrderState({ type: "DELETE_ORDER", item: orderId });
+          console.log("resp succes:state deleted: " + orderId);
+        }
+      })
+      .catch((error) => {
+        console.log("Failed to delete orderId :" + orderId);
+        //reset changes done current orderState
+        handleCancelEditOrder(orderId!);
+      });
   };
 
   //<==================================
@@ -106,14 +171,16 @@ const OrderCart = () => {
         console.log("===============>Fetched data :\n");
         console.log(resp.data.data.list);
 
+        const fetchedOrderListForState: Order[] = [...resp.data.data.list];
+
         setCustomerOrderData({
           loading: false,
-          orders: [...resp.data.data.list],
+          orders: fetchedOrderListForState,
         });
-
+        const fetchedOrderListForReducer: Order[] = [...resp.data.data.list];
         dispatchToOrderState({
           type: "POPULATE_ORDERSTATE",
-          item: resp.data.data.list,
+          item: fetchedOrderListForReducer,
         });
       } catch (error) {
         console.log("====>Error in OrderCart :\n" + error);
@@ -148,7 +215,7 @@ const OrderCart = () => {
         <div className={styles.orderCartDisplayOrdersBlock}>
           <Accordion className="">
             {orderState.orderList.map((o) => (
-              <div>
+              <div key={"orderCart_" + o.orderId}>
                 <Accordion.Item eventKey={o.orderId!}>
                   <Accordion.Header>
                     <Row className="w-100 d-flex justify-justify-content-end ">
@@ -178,17 +245,25 @@ const OrderCart = () => {
                       pizzaMap={pizzaMap}
                       toppingMap={toppingMap}
                     />
-                    <div className="editOrderModal">
+                    <div
+                      className="editOrderModal"
+                      key={"orderCart_ModalWrapper_" + o.orderId}
+                    >
                       <ModalWrapper
                         curOrder={o}
+                        refModalWrapperClose={ref_editOrderModalClose}
                         onBtnCancelEditOrder={handleCancelEditOrder}
-                        onBtnSaveChanges={handleSaveChanges}
+                        onBtnDeleteOrder={handleDeleteOrder}
                       >
                         <EditOrder
-                          curOrder={o}
+                          key={"orderCart_ModalWrapper_EditOrder_" + o.orderId}
+                          orderList={orderState.orderList}
+                          curOrderId={o.orderId!}
                           onBtnAddQuantity={handleBtnAddQuantity}
                           onBtnRemoveQuantity={handleBtnRemoveQuantity}
                           onBtnEditOrderLine={handleEditOrderLine}
+                          onBtnDeleteOrder={handleDeleteOrder}
+                          onBtnUpdateOrder={handleUpdateOrder}
                         />
                       </ModalWrapper>
                     </div>

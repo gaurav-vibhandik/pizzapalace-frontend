@@ -21,9 +21,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
   const [selectedCrustType, setSelectedCrustType] = useState("");
-  // const [pizzaQty, setPizzaQty] = useState(1);
   const [selectedToppings, setSelectedToppings] = useState([] as string[]);
-  // const [pizzaPrice, setPizzaPrice] = useState(0);
   const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
 
   let pizzaPrice = 0;
@@ -105,10 +103,11 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
     }
   };
   //====>Handling "Update Pizza details" =======================
-  const handlePizzaDetails = (event: any) => {
+  const handleUpdatePizzaDetails = (event: any) => {
     console.log("Inside handle Update Pizza Changes");
 
     const newOl: OrderLine = {
+      orderLineId: curOl.orderLineId,
       pizzaId: curPizza.pizzaId,
       size: selectedPizzaSize,
       crustId: selectedCrustType,
@@ -118,7 +117,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
       totalPrice: pizzaPrice,
     };
 
-    onBtnEditOrderLine(curOl, newOl);
+    onBtnEditOrderLine(curOl.orderId, curOl, newOl);
     console.log(`============================>
     Editing Pizza: ${curPizza.pizzaId} \n 
     before OL : ${curOl.size} & ${curOl.crustId}
@@ -169,7 +168,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                   onClick={handlePizzaSizeChange}
                   onChange={(e) => setSelectedPizzaSize(e.target.value)}
                   placeholder="Choose Pizza Size"
-                  defaultValue={curPizza.size}
+                  defaultValue=""
                 >
                   <option value="" disabled>
                     Choose Pizza Size
@@ -314,11 +313,10 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                       type="button"
                       className={styles.btnAddToCart}
                       disabled={
-                        isAddToCartClicked ||
                         !isCrustTypeAvailableForGivenSize ||
                         selectedCrustType === ""
                       }
-                      onClick={handlePizzaDetails}
+                      onClick={handleUpdatePizzaDetails}
                     >
                       Update Pizza Details
                     </Button>
