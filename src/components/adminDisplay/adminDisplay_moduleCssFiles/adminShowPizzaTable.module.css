@@ -1,0 +1,44 @@
+.containerPizzaTable {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+.pizzaTable {
+  width: 82vw;
+}
+
+.btnDeletePizza {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: white;
+}
+
+.pizzaActionStatusSuccess {
+  background-color: white;
+  color: green;
+}
+
+.pizzaActionStatusFail {
+  background-color: white;
+  color: red;
+}
+
+.mainFormContainer {
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.pizzaForm {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 1rem;
+  justify-content: center;
+}
+
+.modalEditPizza {
+  background-color: gainsboro;
+}

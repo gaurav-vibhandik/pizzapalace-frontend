@@ -1,5 +1,5 @@
 export interface Pizza {
-  pizzaId: string;
+  pizzaId?: string;
   name: string;
   description: string;
   type: string;

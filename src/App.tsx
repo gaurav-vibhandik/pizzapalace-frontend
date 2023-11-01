@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import OrderCartPage from "./components/pages/OrderCartPage";
 import RootLayout from "./components/Routing/RootLayout";
+import AdminPage from "./components/pages/AdminPage";
 
 function App() {
   //=========> Routing using JS object ========
@@ -22,6 +23,7 @@ function App() {
       children: [
         { path: "/home", element: <HomePage /> },
         { path: "/orderCart", element: <OrderCartPage /> },
+        { path: "/admin", element: <AdminPage /> },
       ],
     },
   ]);

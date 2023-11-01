@@ -2,8 +2,9 @@
   background-color: blue;
 }
 
-.oulet {
-  background-color: brown;
+.outlet {
+  background-color: aliceblue;
+  min-height: 100vh;
 }
 .blockAfterHeader {
   width: 100%;

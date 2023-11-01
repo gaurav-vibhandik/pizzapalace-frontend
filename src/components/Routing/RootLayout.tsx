@@ -45,7 +45,7 @@ const RootLayout = () => {
         const toppingList = toppingResponse.data.data.list;
 
         let pizzaMap: Map<string, Pizza> = new Map();
-        pizzaList.forEach((p: Pizza) => pizzaMap.set(p.pizzaId, p));
+        pizzaList.forEach((p: Pizza) => pizzaMap.set(p.pizzaId!, p));
 
         let crustMap = new Map<string, string>();
         for (let cr of crustList) {

@@ -139,7 +139,7 @@ const CardPizza = (props: Pizza) => {
     event.preventDefault();
     // setIsAddToCartClicked(true);
     const ol: OrderLine = {
-      pizzaId: props.pizzaId,
+      pizzaId: props.pizzaId!,
       size: selectedPizzaSize,
       crustId: selectedCrustType,
       quantity: 1,
