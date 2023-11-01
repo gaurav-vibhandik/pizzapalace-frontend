@@ -18,7 +18,7 @@ import OrderLine from "../interfaces/orderLineInterface";
 import InitDataContext from "../../context/InitDataContext";
 import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
 import OrderLineContext from "../../context/orderLineContext";
-import { Crust } from "../interfaces/crustInterface";
+import Crust from "../interfaces/crustInterface";
 import Topping from "../interfaces/toppingInterface";
 
 const CardPizza = (props: Pizza) => {

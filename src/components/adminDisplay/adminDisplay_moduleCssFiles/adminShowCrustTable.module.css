@@ -1,27 +1,27 @@
-.containerPizzaTable {
+.containerCrustTable {
   background-color: white;
   display: flex;
   justify-content: center;
   max-height: 75vh;
   overflow-y: scroll;
 }
-.pizzaTable {
+.crustTable {
   margin-top: 1rem;
   width: 82vw;
 }
 
-.btnDeletePizza {
+.btnDeleteCrust {
   width: 2.2rem;
   height: 2.2rem;
   color: white;
 }
 
-.pizzaActionStatusSuccess {
+.crustActionStatusSuccess {
   background-color: white;
   color: green;
 }
 
-.pizzaActionStatusFail {
+.crustActionStatusFail {
   background-color: white;
   color: red;
 }
@@ -31,7 +31,7 @@
   width: fit-content;
 }
 
-.pizzaForm {
+.crustForm {
   gap: 1rem;
   display: flex;
   flex-direction: column;
@@ -40,6 +40,6 @@
   justify-content: center;
 }
 
-.modalEditPizza {
+.modalEditCrust {
   background-color: gainsboro;
 }

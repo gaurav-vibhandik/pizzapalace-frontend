@@ -9,11 +9,16 @@ import AdminCreatePizza from "../adminDisplay/AdminCreatePizza";
 import AdminCreateTopping from "../adminDisplay/AdminCreateTopping";
 import { reducerFunctionForAdminPage_ToppingStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_ToppingStateReducer";
 import AdminShowToppingTable from "../adminDisplay/AdminShowToppingTable";
+import AdminCreateCrust from "../adminDisplay/AdminCreateCrust";
+import AdminShowCrustTable from "../adminDisplay/AdminShowCrustTable";
+import { reducerFunctionForAdminPage_CrustStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_CrustStateReducer";
 
 const AdminPage = () => {
   const initData = useContext(InitDataContext);
   const pizzaList = initData.pizzaList;
   const toppingList = initData.toppingList;
+  const crustMap = initData.crustMap;
+  const crustList = initData.crustList;
   const pizzaMap = initData.pizzaMap;
   const toppingMap = initData.toppingMap;
 
@@ -28,6 +33,12 @@ const AdminPage = () => {
     reducerFunctionForAdminPage_ToppingStateReducer,
     {
       toppingList: toppingList,
+    }
+  );
+  const [crustStateReducer, dispatchToCrustStateReducer] = useReducer(
+    reducerFunctionForAdminPage_CrustStateReducer,
+    {
+      crustList: crustList,
     }
   );
 
@@ -62,7 +73,17 @@ const AdminPage = () => {
           </Tab>
           <Tab eventKey="Crust" title="Crust">
             <div className={styles.adminPageContent}>
-              <div className={styles.block}>Tab content for Crust</div>
+              <div className="addCrustContainer">
+                <AdminCreateCrust
+                  crustList={crustStateReducer.crustList}
+                  dispatchToCrustStateReducer={dispatchToCrustStateReducer}
+                />
+              </div>
+              <AdminShowCrustTable
+                crustMap={crustMap}
+                crustList={crustStateReducer.crustList}
+                dispatchToCrustStateReducer={dispatchToCrustStateReducer}
+              />
             </div>
           </Tab>
           <Tab eventKey="Topping" title="Topping">

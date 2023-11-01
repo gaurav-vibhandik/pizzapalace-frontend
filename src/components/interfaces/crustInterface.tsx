@@ -1,4 +1,4 @@
-export interface Crust {
-  crustId: string;
+export default interface Crust {
+  crustId?: string;
   crust: string;
 }

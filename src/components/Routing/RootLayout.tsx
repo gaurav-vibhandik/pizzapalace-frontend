@@ -7,13 +7,14 @@ import OrderLineContextProvider from "../../context/OrderLineContextProvider";
 import Topping from "../interfaces/toppingInterface";
 import { Pizza } from "../interfaces/pizzaInterface";
 import axios from "axios";
-import { Crust } from "../interfaces/crustInterface";
+import Crust from "../interfaces/crustInterface";
 
 const RootLayout = () => {
   // Fetching required all context data so that it can be provided to all children components replacing outlet component
   const [initData, setInitData] = useState({
     pizzaList: [],
     pizzaMap: new Map<string, Pizza>(),
+    crustList: [],
     crustMap: new Map<string, string>(),
     pizzaPriceList: [],
     toppingList: [],
@@ -85,6 +86,7 @@ const RootLayout = () => {
         setInitData({
           pizzaList,
           pizzaMap,
+          crustList,
           crustMap,
           pizzaPriceList,
           toppingList,
