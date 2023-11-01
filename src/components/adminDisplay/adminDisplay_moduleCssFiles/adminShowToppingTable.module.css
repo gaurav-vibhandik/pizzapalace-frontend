@@ -1,0 +1,44 @@
+.containerToppingTable {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+.toppingTable {
+  width: 82vw;
+}
+
+.btnDeleteTopping {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: white;
+}
+
+.toppingActionStatusSuccess {
+  background-color: white;
+  color: green;
+}
+
+.toppingActionStatusFail {
+  background-color: white;
+  color: red;
+}
+
+.mainFormContainer {
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.toppingForm {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 1rem;
+  justify-content: center;
+}
+
+.modalEditTopping {
+  background-color: gainsboro;
+}

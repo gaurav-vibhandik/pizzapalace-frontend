@@ -1,5 +1,5 @@
 export default interface Topping {
-  toppingId: string;
+  toppingId?: string;
   name: string;
   type: string;
   price: number;

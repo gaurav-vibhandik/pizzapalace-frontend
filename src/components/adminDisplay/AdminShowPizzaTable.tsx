@@ -15,6 +15,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 import axios from "axios";
 
 type curProps = {
+  pizzaMap: Map<string, Pizza>;
   pizzaList: Pizza[];
   dispatchToPizzaStateReducer: (input: any) => void;
 };
@@ -24,11 +25,7 @@ const AdminShowPizzaTable = (props: curProps) => {
   const [statusFail, setStatusFail] = useState("");
   const [pizzaToEdit, setPizzaToEdit] = useState<Pizza>();
 
-  //creating pizzaMap
-  const pizzaMap = new Map<string, Pizza>();
-  props.pizzaList.forEach((p) => {
-    pizzaMap.set(p.pizzaId!, p);
-  });
+  const pizzaMap = props.pizzaMap;
 
   //modal pizza edit
   const [show, setShow] = useState(false);

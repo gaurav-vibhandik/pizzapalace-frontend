@@ -6,16 +6,32 @@ import styles from "./adminPage.module.css";
 import InitDataContext from "../../context/InitDataContext";
 import { reducerFunctionForAdminPage_PizzaStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_PizzaStateReducer";
 import AdminCreatePizza from "../adminDisplay/AdminCreatePizza";
+import AdminCreateTopping from "../adminDisplay/AdminCreateTopping";
+import { reducerFunctionForAdminPage_ToppingStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_ToppingStateReducer";
+import AdminShowToppingTable from "../adminDisplay/AdminShowToppingTable";
 
 const AdminPage = () => {
   const initData = useContext(InitDataContext);
   const pizzaList = initData.pizzaList;
+  const toppingList = initData.toppingList;
+  const pizzaMap = initData.pizzaMap;
+  const toppingMap = initData.toppingMap;
+
   const [pizzaStateReducer, dispatchToPizzaStateReducer] = useReducer(
     reducerFunctionForAdminPage_PizzaStateReducer,
     {
       pizzaList: pizzaList,
     }
   );
+
+  const [toppingStateReducer, dispatchToToppingStateReducer] = useReducer(
+    reducerFunctionForAdminPage_ToppingStateReducer,
+    {
+      toppingList: toppingList,
+    }
+  );
+
+  //Showing Tabs for navigation
   const [key, setKey] = useState("Pizza");
 
   return (
@@ -36,12 +52,11 @@ const AdminPage = () => {
                     dispatchToPizzaStateReducer={dispatchToPizzaStateReducer}
                   />
                 </div>
-                <div className={styles.blockB1}>
-                  <AdminShowPizzaTable
-                    pizzaList={pizzaStateReducer.pizzaList}
-                    dispatchToPizzaStateReducer={dispatchToPizzaStateReducer}
-                  />
-                </div>
+                <AdminShowPizzaTable
+                  pizzaMap={pizzaMap}
+                  pizzaList={pizzaStateReducer.pizzaList}
+                  dispatchToPizzaStateReducer={dispatchToPizzaStateReducer}
+                />
               </div>
             </div>
           </Tab>
@@ -52,7 +67,21 @@ const AdminPage = () => {
           </Tab>
           <Tab eventKey="Topping" title="Topping">
             <div className={styles.adminPageContent}>
-              <div className={styles.block}>Tab content for Toppings</div>
+              <div className="showTopping">
+                <div className="addToppingContainer">
+                  <AdminCreateTopping
+                    toppingList={toppingStateReducer.toppingList}
+                    dispatchToToppingStateReducer={
+                      dispatchToToppingStateReducer
+                    }
+                  />
+                </div>
+                <AdminShowToppingTable
+                  toppingMap={toppingMap}
+                  toppingList={toppingStateReducer.toppingList}
+                  dispatchToToppingStateReducer={dispatchToToppingStateReducer}
+                />
+              </div>
             </div>
           </Tab>
           <Tab eventKey="Inventory Control" title="Inventory Control">
