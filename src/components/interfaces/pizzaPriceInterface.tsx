@@ -1,4 +1,4 @@
-export interface PizzaPrice {
+export default interface PizzaPrice {
   id?: number;
   pizzaId: string;
   crustId: string;

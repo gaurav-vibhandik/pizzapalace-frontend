@@ -1,7 +1,7 @@
 import React from "react";
 import { Pizza } from "../components/interfaces/pizzaInterface";
 import Crust from "../components/interfaces/crustInterface";
-import { PizzaPrice } from "../components/interfaces/pizzaPriceInterface";
+import PizzaPrice from "../components/interfaces/pizzaPriceInterface";
 import Topping from "../components/interfaces/toppingInterface";
 
 const InitDataContext = React.createContext({

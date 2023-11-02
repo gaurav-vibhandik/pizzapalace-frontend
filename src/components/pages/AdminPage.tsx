@@ -12,6 +12,9 @@ import AdminShowToppingTable from "../adminDisplay/AdminShowToppingTable";
 import AdminCreateCrust from "../adminDisplay/AdminCreateCrust";
 import AdminShowCrustTable from "../adminDisplay/AdminShowCrustTable";
 import { reducerFunctionForAdminPage_CrustStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_CrustStateReducer";
+import AdminCreatePizzaPrice from "../adminDisplay/AdminCreatePizzaPrice";
+import AdminShowPizzaPriceTable from "../adminDisplay/AdminShowPizzaPriceTable";
+import { reducerFunctionForAdminPage_PizzaPriceStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_PizzaPriceStateReducer";
 
 const AdminPage = () => {
   const initData = useContext(InitDataContext);
@@ -21,6 +24,7 @@ const AdminPage = () => {
   const crustList = initData.crustList;
   const pizzaMap = initData.pizzaMap;
   const toppingMap = initData.toppingMap;
+  const pizzaPriceList = initData.pizzaPriceList;
 
   const [pizzaStateReducer, dispatchToPizzaStateReducer] = useReducer(
     reducerFunctionForAdminPage_PizzaStateReducer,
@@ -35,10 +39,10 @@ const AdminPage = () => {
       toppingList: toppingList,
     }
   );
-  const [crustStateReducer, dispatchToCrustStateReducer] = useReducer(
-    reducerFunctionForAdminPage_CrustStateReducer,
+  const [pizzaPriceStateReducer, dispatchToPizzaPriceStateReducer] = useReducer(
+    reducerFunctionForAdminPage_PizzaPriceStateReducer,
     {
-      crustList: crustList,
+      pizzaPriceList: pizzaPriceList,
     }
   );
 
@@ -71,18 +75,21 @@ const AdminPage = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="Crust" title="Crust">
+          <Tab eventKey="PizzaPrice" title="PizzaPrice">
             <div className={styles.adminPageContent}>
-              <div className="addCrustContainer">
-                <AdminCreateCrust
-                  crustList={crustStateReducer.crustList}
-                  dispatchToCrustStateReducer={dispatchToCrustStateReducer}
+              <div className="addPizzaPriceContainer">
+                <AdminCreatePizzaPrice
+                  pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
+                  dispatchToPizzaPriceStateReducer={
+                    dispatchToPizzaPriceStateReducer
+                  }
                 />
               </div>
-              <AdminShowCrustTable
-                crustMap={crustMap}
-                crustList={crustStateReducer.crustList}
-                dispatchToCrustStateReducer={dispatchToCrustStateReducer}
+              <AdminShowPizzaPriceTable
+                pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
+                dispatchToPizzaPriceStateReducer={
+                  dispatchToPizzaPriceStateReducer
+                }
               />
             </div>
           </Tab>
@@ -119,49 +126,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-
-// NOE : Working without menuTabs
-// import React, { useContext, useReducer } from "react";
-
-// import { Col, Row } from "react-bootstrap";
-// import AdminShowPizzaTable from "../adminDisplay/AdminShowPizzaTable";
-// import styles from "./adminPage.module.css";
-// import InitDataContext from "../../context/InitDataContext";
-// import { reducerFunctionForAdminPage_PizzaStateReducer } from "../adminDisplay/reducerFunctionsAdminDisplay/reducerFunctionForAdminPage_PizzaStateReducer";
-// import AdminCreatePizza from "../adminDisplay/AdminCreatePizza";
-
-// const AdminPage = () => {
-//   const initData = useContext(InitDataContext);
-//   const pizzaList = initData.pizzaList;
-//   const [pizzaStateReducer, dispatchToPizzaStateReducer] = useReducer(
-//     reducerFunctionForAdminPage_PizzaStateReducer,
-//     {
-//       pizzaList: pizzaList,
-//     }
-//   );
-
-//   return (
-//     <React.Fragment>
-//       <div className={`container-fluid ${styles.adminPageMenu}`}></div>
-
-//       <div className={styles.adminPageContent}>
-//         <div className="showPizza">
-//           <div className="addPizzaContainer">
-//             <AdminCreatePizza
-//               pizzaList={pizzaStateReducer.pizzaList}
-//               dispatchToPizzaStateReducer={dispatchToPizzaStateReducer}
-//             />
-//           </div>
-//           <div className={styles.blockB1}>
-//             <AdminShowPizzaTable
-//               pizzaList={pizzaStateReducer.pizzaList}
-//               dispatchToPizzaStateReducer={dispatchToPizzaStateReducer}
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </React.Fragment>
-//   );
-// };
-
-// export default AdminPage;

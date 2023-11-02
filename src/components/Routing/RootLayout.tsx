@@ -36,7 +36,7 @@ const RootLayout = () => {
           await Promise.all([
             axios.get("http://localhost:8080/api/v1/pizzas"),
             axios.get("http://localhost:8080/api/v1/crust"),
-            axios.get("http://localhost:8080/api/v1/data/pizza_price"),
+            axios.get("http://localhost:8080/api/v1/pizzaPrices"),
             axios.get("http://localhost:8080/api/v1/data/topping"),
           ]);
 

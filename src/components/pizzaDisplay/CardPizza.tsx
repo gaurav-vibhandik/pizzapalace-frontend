@@ -16,7 +16,7 @@ import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import BtnManageQuantity from "../BtnManageQuantity";
 import OrderLine from "../interfaces/orderLineInterface";
 import InitDataContext from "../../context/InitDataContext";
-import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
+import PizzaPrice from "../interfaces/pizzaPriceInterface";
 import OrderLineContext from "../../context/orderLineContext";
 import Crust from "../interfaces/crustInterface";
 import Topping from "../interfaces/toppingInterface";

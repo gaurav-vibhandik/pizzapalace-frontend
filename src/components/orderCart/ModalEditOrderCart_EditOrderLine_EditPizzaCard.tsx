@@ -5,7 +5,7 @@ import { Pizza } from "../interfaces/pizzaInterface";
 import InitDataContext from "../../context/InitDataContext";
 import OrderLineContext from "../../context/orderLineContext";
 import Crust from "../interfaces/crustInterface";
-import { PizzaPrice } from "../interfaces/pizzaPriceInterface";
+import PizzaPrice from "../interfaces/pizzaPriceInterface";
 import { Row, Col, Card } from "react-bootstrap";
 import styles from "./ModalEditOrderCart_EditOrderLine_EditPizzaCard.module.css";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
