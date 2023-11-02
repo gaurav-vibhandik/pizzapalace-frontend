@@ -146,6 +146,7 @@ const CardPizza = (props: Pizza) => {
       extraCheese: selectedExtraCheese,
       toppingList: selectedToppings,
       totalPrice: pizzaPrice,
+      singlePizzaPrice: pizzaPrice,
     };
     console.log(ol);
     orderLineState.addToOrderLineList(ol);

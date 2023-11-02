@@ -93,7 +93,7 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
                   />
                 </div>
                 <div className={styles.olPrice}>
-                  <p>{`Rs. ${ol.totalPrice * ol.quantity} /-`}</p>
+                  <p>{`Rs. ${ol.totalPrice} /-`}</p>
                 </div>
               </div>
             </Col>

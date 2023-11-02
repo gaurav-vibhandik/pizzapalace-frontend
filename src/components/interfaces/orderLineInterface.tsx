@@ -7,5 +7,6 @@ export default interface OrderLine {
   quantity: number;
   extraCheese: boolean;
   toppingList: string[];
-  totalPrice: number;
+  totalPrice: number; //shows totalOrderLine Price for all quantity
+  singlePizzaPrice?: number; //shows price of single pizza
 }

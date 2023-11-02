@@ -5,7 +5,7 @@ import styles from "../orderDisplay/CardOrderLine.module.css";
 import ModalEditOrderCart_EditOrderLine from "./ModalEditOrderCart_EditOrderLine";
 import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
 import OrderLine from "../interfaces/orderLineInterface";
-import axios, { Axios } from "axios";
+import axios from "axios";
 
 type curProps = {
   orderList: Order[];
@@ -34,7 +34,7 @@ const EditOrder = (props: curProps) => {
   // Providing a type annotation for addressRef
   const addressRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleSaveChanges = () => {
+  const handleUpdateOrder = () => {
     //console.log("textArea= " + addressRef.current!.value);
     const newOrder = {
       ...curOrder,
@@ -60,7 +60,7 @@ const EditOrder = (props: curProps) => {
             <Button
               variant="success"
               onClick={() => {
-                handleSaveChanges();
+                handleUpdateOrder();
               }}
               style={{ width: "fit-content" }}
             >

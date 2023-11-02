@@ -59,12 +59,14 @@ const reducerFunctionForEditOrder_EditOrderLines = (
   let existingOrderIndex;
   let existingOrderLineIndex;
   let existingOrder;
-  let existingOl;
+  let existingOrderLine;
   switch (action.type) {
     case "POPULATE_ORDERSTATE":
       return { orderList: [...action.item] };
 
     case "ADD":
+      console.log("inside add reducer");
+
       updatedOrderList = [...state.orderList];
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
@@ -75,11 +77,15 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.orderLineId
       );
-      updatedOrderLineList[existingOrderLineIndex].quantity += 1;
+      existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
+      existingOrderLine.quantity += 1;
+      console.log(existingOrderLine.singlePizzaPrice);
 
+      existingOrderLine.totalPrice += existingOrderLine.singlePizzaPrice!;
+      //save changes done back to updatedOrderLineList
+      updatedOrderLineList[existingOrderLineIndex] = existingOrderLine;
       //increase totalPrice of order also
-      existingOl = updatedOrderLineList[existingOrderLineIndex];
-      existingOrder.totalAmount += existingOl.totalPrice;
+      existingOrder.totalAmount += existingOrderLine.singlePizzaPrice!;
       existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
       updatedOrderList[existingOrderIndex] = existingOrder;
 
@@ -96,10 +102,13 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.orderLineId
       );
-      updatedOrderLineList[existingOrderLineIndex].quantity -= 1;
+      existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
+      existingOrderLine.quantity -= 1;
+      existingOrderLine.totalPrice -= existingOrderLine.singlePizzaPrice!;
+      //save changes done back to updatedOrderLineList
+      updatedOrderLineList[existingOrderLineIndex] = existingOrderLine;
       //decrease totalPrice of order also
-      existingOl = updatedOrderLineList[existingOrderLineIndex];
-      existingOrder.totalAmount -= existingOl.totalPrice;
+      existingOrder.totalAmount -= existingOrderLine.singlePizzaPrice!;
       existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
       updatedOrderList[existingOrderIndex] = existingOrder;
 
@@ -118,8 +127,9 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId == action.item.orderLineId
       );
-      existingOrder.totalAmount -=
-        updatedOrderLineList[existingOrderLineIndex].totalPrice;
+
+      existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
+      existingOrder.totalAmount -= existingOrderLine.totalPrice;
 
       updatedOrderLineList = updatedOrderLineList.filter(
         (ol) => ol.orderLineId !== action.item.orderLineId
@@ -142,14 +152,13 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.curOl.orderLineId
       );
-
       updatedOrderLineList[existingOrderLineIndex] = action.item.newOl;
 
       //change order's totalAmount = totalPrice of new OL
       existingOrder.totalAmount =
         existingOrder.totalAmount -
-        action.item.curOl.totalPrice * action.item.curOl.quantity +
-        action.item.newOl.totalPrice * action.item.newOl.quantity;
+        action.item.curOl.totalPrice +
+        action.item.newOl.totalPrice;
 
       existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
       updatedOrderList[existingOrderIndex] = existingOrder;
@@ -157,7 +166,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
 
     case "RESET_ORDER":
       console.log(
-        "inside reset_ol===> action.item.order.orderLines.quantity = " +
+        "inside reset_ol===> Passed OL[0].quantity = " +
           action.item.order.orderLines[0].quantity
       );
 

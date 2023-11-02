@@ -1,15 +1,7 @@
 import React, { useContext, useState } from "react";
 import InitDataContext from "../../context/InitDataContext";
 import { Pizza } from "../interfaces/pizzaInterface";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import styles from "./CardOrderLine.module.css";
@@ -30,11 +22,6 @@ const CardOrderLine = (props: any) => {
   const orderLineContext = useContext(OrderLineContext);
 
   const toppingMap = initData.toppingMap;
-
-  //Handling Customize Orderline
-  const handleCustomizeOrderLine = () => {
-    let pizzaToChange = pizzaMap.get(ol.pizzaId)!;
-  };
 
   //====> Modal Handling :
   const [show, setShow] = useState(false);
@@ -75,7 +62,7 @@ const CardOrderLine = (props: any) => {
                   />
                 </div>
                 <div className={styles.olPrice}>
-                  <p>{`Rs. ${ol.totalPrice * ol.quantity} /-`}</p>
+                  <p>{`Rs. ${ol.totalPrice} /-`}</p>
                 </div>
               </div>
             </Col>

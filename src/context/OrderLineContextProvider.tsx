@@ -28,8 +28,8 @@ const orderLineReducer = (
 ) => {
   if (action.type === "ADD") {
     //This will add new OL entry or update existing one by incrementing existing quantity
-    let updatedOrderLineList: OrderLine[];
-    const existingOrderLineIndex = state.orderLineList.findIndex(
+    let updatedOrderLineList = [...state.orderLineList];
+    const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.pizzaId &&
@@ -45,12 +45,14 @@ const orderLineReducer = (
     );
 
     //if OL exists increase its quantity
-    let existingOrderLine = state.orderLineList[existingOrderLineIndex];
+    let existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
     if (existingOrderLine) {
       //NOTE : We must not change prev state as it may be refer by other also
       //Make isolated changes and then return them
-      updatedOrderLineList = [...state.orderLineList];
-      updatedOrderLineList[existingOrderLineIndex].quantity += 1;
+
+      existingOrderLine.quantity += 1;
+      existingOrderLine.totalPrice += existingOrderLine.singlePizzaPrice!;
+      updatedOrderLineList[existingOrderLineIndex] = existingOrderLine;
     } else {
       //NOTE : We must not change prev state as it may be refer by other also
       //Make isolated changes and then return them
@@ -64,8 +66,8 @@ const orderLineReducer = (
   if (action.type === "REMOVE") {
     //This will update existing OL entry by decrementing existing quantity or
     // remove OL from olList if quantity reaches zero
-    let updatedOrderLineList: OrderLine[];
-    const existingOrderLineIndex = state.orderLineList.findIndex(
+    let updatedOrderLineList = [...state.orderLineList];
+    const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.pizzaId &&
@@ -79,11 +81,11 @@ const orderLineReducer = (
         );
       }
     );
-    const existingOrderLine = state.orderLineList[existingOrderLineIndex];
+    const existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
     const existingQuantity = existingOrderLine.quantity;
     if (existingQuantity == 1) {
       //remove the OL entry from olList
-      updatedOrderLineList = state.orderLineList.filter((ol: OrderLine) => {
+      updatedOrderLineList = updatedOrderLineList.filter((ol: OrderLine) => {
         return (
           ol.pizzaId !== action.item.pizzaId ||
           ol.size !== action.item.size ||
@@ -97,8 +99,9 @@ const orderLineReducer = (
       });
     } else {
       //decrement ol quantity by 1
-      updatedOrderLineList = [...state.orderLineList];
-      updatedOrderLineList[existingOrderLineIndex].quantity -= 1;
+      existingOrderLine.quantity -= 1;
+      existingOrderLine.totalPrice -= existingOrderLine.singlePizzaPrice!;
+      updatedOrderLineList[existingOrderLineIndex] = existingOrderLine;
     }
     return { orderLineList: updatedOrderLineList };
   }
