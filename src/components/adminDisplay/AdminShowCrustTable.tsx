@@ -196,8 +196,7 @@ const AdminShowCrustTable = (props: curProps) => {
                   <Button
                     type="submit"
                     variant="danger"
-                    className="ms-2 "
-                    style={{ minWidth: "2rem", height: "2rem" }}
+                    className={styles.btnDeleteCrust}
                     onClick={handleDeleteCrust}
                     value={c.crustId}
                   >

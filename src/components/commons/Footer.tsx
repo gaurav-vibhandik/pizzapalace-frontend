@@ -5,7 +5,10 @@ const Footer = () => {
     <React.Fragment>
       <div className="footer borderline">
         <h2>Yummy Pizza 2.0</h2>
-        <p>All Rights Reserved. Copyright © Gaurav_Vibhandik@Techbulls Ltd.</p>
+        <p>
+          All Rights Reserved. Copyright © Gaurav_Vibhandik @ TechBulls SoftTech
+          Pvt. Ltd.
+        </p>
       </div>
     </React.Fragment>
   );

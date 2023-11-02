@@ -35,6 +35,14 @@ const AdminShowPizzaTable = (props: curProps) => {
 
   //=======> handler Functions==========================================
 
+  //======>Handle PizzaToEdit=====
+  const handleSetPizzaToEdit = (e: any) => {
+    const pizzaToEdit = props.pizzaList.find(
+      (p) => p.pizzaId === e.target.value
+    );
+    setPizzaToEdit(pizzaToEdit);
+  };
+
   //======> handle Edit pizza entry ===========
 
   const handleEditPizza = (e: any) => {
@@ -146,8 +154,9 @@ const AdminShowPizzaTable = (props: curProps) => {
                 <td id={`${p.pizzaId}_p`}>
                   <Button
                     type="submit"
+                    className={styles.btnEditPizza}
                     onClick={(e: any) => {
-                      setPizzaToEdit(pizzaMap.get(e.target.value)!);
+                      handleSetPizzaToEdit(e);
                       handleShow();
                     }}
                     value={p.pizzaId}
@@ -157,8 +166,7 @@ const AdminShowPizzaTable = (props: curProps) => {
                   <Button
                     type="submit"
                     variant="danger"
-                    className="ms-2 "
-                    style={{ minWidth: "2rem", height: "2rem" }}
+                    className={styles.btnDeletePizza}
                     onClick={handleDeletePizza}
                     value={p.pizzaId}
                   >
@@ -256,112 +264,3 @@ const AdminShowPizzaTable = (props: curProps) => {
 };
 
 export default AdminShowPizzaTable;
-
-// Not working on every click : on delete btn click , id is not fetching every time
-// import React, { useState } from "react";
-// import { Button, Table } from "react-bootstrap";
-// import styles from "./adminDisplay_moduleCssFiles/adminShowPizzaTable.module.css";
-// import { Pizza } from "../interfaces/pizzaInterface";
-// import { BsFillTrashFill } from "react-icons/bs";
-// import axios from "axios";
-
-// type curProps = {
-//   pizzaList: Pizza[];
-//   dispatchToPizzaStateReducer: (input: any) => void;
-// };
-
-// const AdminShowPizzaTable = (props: curProps) => {
-//   const [statusSuccess, setStatusSuccess] = useState("");
-//   const [statusFail, setStatusFail] = useState("");
-//   const [pizzaToEdit, setPizzaToEdit] = useState(null);
-//   const [pizzaIdToDelete, setPizzaIdToDelete] = useState("ZA000");
-
-//   //handler Functions
-//   const handleDeletePizza = (e: any) => {
-//     e.preventDefault();
-//     const pizzaIdToDelete = e.target.value;
-
-//     //===>fetch pizzaId to be deleted
-//     // console.log("ppId= " + e.target.parentNode.parentNode.id);
-//     // console.log("pId= " + e.target.parentNode.id);
-//     console.log(e.target.value);
-//     //<=======
-
-//     axios
-//       .delete(`http://localhost:8080/api/v1/pizzas/${pizzaIdToDelete}`)
-//       .then((resp) => {
-//         if (resp.status == 204) {
-//           //if yes , delete entry from  pizzaStateReducer
-//           props.dispatchToPizzaStateReducer({
-//             type: "DeletePizza",
-//             item: pizzaIdToDelete,
-//           });
-//           setStatusSuccess(
-//             `PizzaId =${pizzaIdToDelete} deleted successfully !!!`
-//           );
-//           setTimeout(() => {
-//             setStatusSuccess("");
-//           }, 9000);
-//         }
-//       })
-//       .catch((err) => {
-//         setStatusFail(`Failed to delete PizzaId =${pizzaIdToDelete}  ...`);
-//         setTimeout(() => {
-//           setStatusFail("");
-//         }, 5000);
-//       });
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <span className={`${styles.pizzaActionStatusSuccess} text-align-center`}>
-//         {statusSuccess}
-//       </span>
-//       <span className={`${styles.pizzaActionStatusFail}`}>{statusFail}</span>
-
-//       <div className={styles.containerPizzaTable}>
-//         <Table
-//           className={`table-light table-hover  table-bordered ${styles.pizzaTable}`}
-//         >
-//           <thead>
-//             <tr>
-//               <th>PizzaId</th>
-//               <th>Name</th>
-//               <th>Description</th>
-//               <th>Type</th>
-//               <th>ImageURL</th>
-//               <th></th>
-//             </tr>
-//           </thead>
-
-//           <tbody className={`${styles.tableBody}`}>
-//             {props.pizzaList.map((p) => (
-//               <tr key={"key_" + p.pizzaId} id={`${p.pizzaId}_pp`}>
-//                 <td>{p.pizzaId}</td>
-//                 <td>{p.name}</td>
-//                 <td>{p.description}</td>
-//                 <td>{p.type}</td>
-//                 <td>{p.imageUrl}</td>
-//                 <td id={`${p.pizzaId}_p`}>
-//                   <Button>Edit Pizza</Button>
-//                   <Button
-//                     type="submit"
-//                     variant="danger"
-//                     className="ms-2 "
-//                     style={{ minWidth: "2rem", height: "2rem" }}
-//                     onClick={handleDeletePizza}
-//                     value={p.pizzaId}
-//                   >
-//                     <BsFillTrashFill />
-//                   </Button>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </Table>
-//       </div>
-//     </React.Fragment>
-//   );
-// };
-
-// export default AdminShowPizzaTable;

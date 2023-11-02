@@ -4,6 +4,8 @@
   justify-content: center;
   max-height: 75vh;
   overflow-y: scroll;
+  width: 85vw;
+  font-size: medium;
 }
 .pizzaTable {
   margin-top: 1rem;
@@ -11,9 +13,13 @@
 }
 
 .btnDeletePizza {
-  width: 2.2rem;
-  height: 2.2rem;
+  margin-left: 1rem;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
   color: white;
+  padding: 0rem;
+  font-size: medium;
 }
 
 .pizzaActionStatusSuccess {

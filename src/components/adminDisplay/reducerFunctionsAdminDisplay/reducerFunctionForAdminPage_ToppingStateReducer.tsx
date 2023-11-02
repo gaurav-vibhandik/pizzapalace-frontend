@@ -40,7 +40,7 @@ const reducerFunctionForAdminPage_ToppingStateReducer = (
       );
       updatedToppingList[existingToppingIndex] = action.item;
 
-      return { toppingList: updatedToppingList };
+      return { toppingList: [...updatedToppingList] };
 
     default:
       return state;

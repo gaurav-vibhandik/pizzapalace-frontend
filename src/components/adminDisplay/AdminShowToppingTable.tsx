@@ -35,6 +35,13 @@ const AdminShowToppingTable = (props: curProps) => {
 
   //=======> handler Functions==========================================
 
+  const handleSetToppingIdToEdit = (e: any) => {
+    const toppingToEdit = props.toppingList.find(
+      (tp) => tp.toppingId === e.target.value
+    );
+    setToppingToEdit(toppingToEdit);
+  };
+
   //======> handle Edit topping entry ===========
 
   const handleEditTopping = (e: any) => {
@@ -191,7 +198,7 @@ const AdminShowToppingTable = (props: curProps) => {
                   <Button
                     type="submit"
                     onClick={(e: any) => {
-                      setToppingToEdit(toppingMap.get(e.target.value)!);
+                      handleSetToppingIdToEdit(e);
                       handleShow();
                     }}
                     value={t.toppingId}
@@ -201,8 +208,7 @@ const AdminShowToppingTable = (props: curProps) => {
                   <Button
                     type="submit"
                     variant="danger"
-                    className="ms-2 "
-                    style={{ minWidth: "2rem", height: "2rem" }}
+                    className={styles.btnDeleteTopping}
                     onClick={handleDeleteTopping}
                     value={t.toppingId}
                   >

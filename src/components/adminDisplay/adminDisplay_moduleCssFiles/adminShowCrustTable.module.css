@@ -11,9 +11,13 @@
 }
 
 .btnDeleteCrust {
-  width: 2.2rem;
-  height: 2.2rem;
+  margin-left: 1rem;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
   color: white;
+  padding: 0rem;
+  font-size: medium;
 }
 
 .crustActionStatusSuccess {
