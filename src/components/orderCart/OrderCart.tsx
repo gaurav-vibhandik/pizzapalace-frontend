@@ -9,14 +9,12 @@ import React, {
 import styles from "./orderCart.module.css";
 import Order from "../interfaces/orderInterface";
 import OrderLine from "../interfaces/orderLineInterface";
-import { Accordion, Button, Col, Modal, Row, Table } from "react-bootstrap";
-import CardOrderLine from "../orderDisplay/CardOrderLine";
+import { Accordion, Col, Row } from "react-bootstrap";
 import InitDataContext from "../../context/InitDataContext";
 import ModalWrapper from "./ModalWrapper";
 import EditOrder from "./EditOrder";
 import TableForOrderLine from "./TableOfOrderLine";
 import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
-import { getDeepNestedArrayCopyFrom } from "../../utils/utilityFunctions";
 
 const OrderCart = () => {
   const [customerOrderData, setCustomerOrderData] = useState<{
@@ -37,14 +35,14 @@ const OrderCart = () => {
   //<===============================
 
   //=========> Declaring Reducer to handle Order n OrderLine changes
-  const [orderState, dispatchToOrderState] = useReducer(
+  const [orderStateReducer, dispatchToOrderStateReducer] = useReducer(
     reducerFunctionForEditOrder_EditOrderLines,
     {
       orderList: [] as Order[],
     }
   );
   const handleBtnAddQuantity = (orderId: string, orderLineId: string) => {
-    dispatchToOrderState({
+    dispatchToOrderStateReducer({
       type: "ADD",
       item: { orderId, orderLineId },
     });
@@ -75,13 +73,13 @@ const OrderCart = () => {
       );
       console.log(orderId + "  " + orderLineId);
 
-      dispatchToOrderState({
+      dispatchToOrderStateReducer({
         type: "DELETE_ORDERLINE",
         item: { orderId, orderLineId },
       });
     } else {
       //If curQty is not one , simply decrease qty by one
-      dispatchToOrderState({
+      dispatchToOrderStateReducer({
         type: "DECREASE",
         item: { orderId, orderLineId },
       });
@@ -93,7 +91,7 @@ const OrderCart = () => {
     curOl: OrderLine,
     newOl: OrderLine
   ) => {
-    dispatchToOrderState({
+    dispatchToOrderStateReducer({
       type: "EDIT",
       item: { orderId: orderId, curOl: curOl, newOl: newOl },
     });
@@ -106,12 +104,7 @@ const OrderCart = () => {
       (o) => o.orderId === resetOrderId
     );
     const originalOrder = customerOrderData.orders[curOrderIndex];
-    console.log(
-      "originalCustomerOrderData ol[0].quantity: " +
-        originalOrder.orderLines[0].quantity
-    );
-
-    dispatchToOrderState({
+    dispatchToOrderStateReducer({
       type: "RESET_ORDER",
       item: {
         orderId: resetOrderId,
@@ -126,15 +119,30 @@ const OrderCart = () => {
       .put("http://localhost:8080/api/v1/orders/" + newOrder.orderId, newOrder)
       .then((resp) => {
         if (resp.data.success) {
-          //if backend orderData has been updated , reflect same in given orderState
-          dispatchToOrderState({ type: "UPDATE_ORDER", item: newOrder });
+          //if backend orderData has been updated , reflect same in given customerOrderData.orders and
+          //  orderStateReducer
+
+          const updatedCustomerOrderDataOrderList = [
+            ...customerOrderData.orders,
+          ];
+
+          const existingOrderIndex = customerOrderData.orders.findIndex(
+            (o) => o.orderId === newOrder.orderId
+          );
+          updatedCustomerOrderDataOrderList[existingOrderIndex] = newOrder;
+          setCustomerOrderData({
+            loading: false,
+            orders: updatedCustomerOrderDataOrderList,
+          });
+
+          dispatchToOrderStateReducer({ type: "UPDATE_ORDER", item: newOrder });
           console.log("resp succes:state updated");
           ref_editOrderModalClose.current!.click();
         }
       })
       .catch((error) => {
         console.log("Failed to update order details :" + error.data.message);
-        //reset changes done current orderState
+        //reset changes done current orderStateReducer
         handleCancelEditOrder(newOrder.orderId!);
       });
   };
@@ -147,14 +155,28 @@ const OrderCart = () => {
         //console.log(resp);
 
         if (resp.status == 204) {
-          //if backend orderData has been deleted , reflect same in given orderState
-          dispatchToOrderState({ type: "DELETE_ORDER", item: orderId });
+          //if backend orderData has been deleted , reflect same in fetched customerDataOrderList and orderStateReducer
+
+          let updatedCustomerOrderDataOrderList = [...customerOrderData.orders];
+
+          const existingOrderIndex = customerOrderData.orders.findIndex(
+            (o) => o.orderId === orderId
+          );
+          updatedCustomerOrderDataOrderList =
+            updatedCustomerOrderDataOrderList.filter(
+              (o) => o.orderId !== orderId
+            );
+          setCustomerOrderData({
+            loading: false,
+            orders: updatedCustomerOrderDataOrderList,
+          });
+          dispatchToOrderStateReducer({ type: "DELETE_ORDER", item: orderId });
           console.log("resp succes:state deleted: " + orderId);
         }
       })
       .catch((error) => {
         console.log("Failed to delete orderId :" + orderId);
-        //reset changes done current orderState
+        //reset changes done current orderStateReducer
         handleCancelEditOrder(orderId!);
       });
   };
@@ -181,23 +203,25 @@ const OrderCart = () => {
         });
 
         /*//Method 1 : universal deep object copy solution
-        const fetchedOrderListForState = structuredClone(backendOrderList);
+        const fetchedBackendOrderList = structuredClone(backendOrderList);
 
         const fetchedOrderListForReducer = structuredClone(backendOrderList);
         */
 
         //Method 2 : deep copying using "const destArr = JSON.parse(JSON.stringify(srcArr))"
-        const fetchedOrderListForState = JSON.parse(
+        const fetchedBackendOrderList = JSON.parse(
           JSON.stringify(backendOrderList)
+          // JSON.stringify([...backendOrderList])
         );
 
         const fetchedOrderListForReducer = JSON.parse(
           JSON.stringify(backendOrderList)
+          // JSON.stringify([...backendOrderList])
         );
 
         /*// Method 3 : using custom deepCopy functions 
         // Following getDeepNestedArrayCopyFrom must be designed to handle nesting of objects in given srcArr item , so its not universal deep copy function
-        const fetchedOrderListForState =
+        const fetchedBackendOrderList =
           getDeepNestedArrayCopyFrom(backendOrderList);
         const fetchedOrderListForReducer =
           getDeepNestedArrayCopyFrom(backendOrderList);
@@ -207,20 +231,27 @@ const OrderCart = () => {
         //following data is used for backup of original orderList when we cancels an UpdateOrder
         setCustomerOrderData({
           loading: false,
-          orders: fetchedOrderListForState!,
+          orders: fetchedBackendOrderList!,
         });
 
         //following data is used for local reference(of above data) after page has loaded
         //(ideally its changes should not reflect in above customerOrderData)
-        dispatchToOrderState({
+        dispatchToOrderStateReducer({
           type: "POPULATE_ORDERSTATE",
           item: fetchedOrderListForReducer!,
         });
 
-        console.log("================>  Ordercart dispatched");
-
-        console.log(fetchedOrderListForState);
-        console.log(fetchedOrderListForReducer);
+        /*
+        //For Debugging ONLY :
+        console.log("======Debugging starts==========>  Ordercart dispatched");
+        console.log(
+          "==============>Checking deep clone copy of fetchedOListForReducer and fetchedOListForState  "
+        );
+        fetchedOrderListForReducer[0].orderLines[0].totalPrice = 999999;
+        console.log(fetchedBackendOrderList[0].orderLines[0]);
+        console.log(fetchedOrderListForReducer[0].orderLines[0]);
+        console.log("<====Debugging Ends==================");
+        */
       } catch (error) {
         console.log("====>Error in OrderCart :\n" + error);
       }
@@ -253,7 +284,7 @@ const OrderCart = () => {
         </div>
         <div className={styles.orderCartDisplayOrdersBlock}>
           <Accordion className="">
-            {orderState.orderList.map((o) => (
+            {customerOrderData.orders.map((o) => (
               <div key={"orderCart_" + o.orderId}>
                 <Accordion.Item eventKey={o.orderId!}>
                   <Accordion.Header>
@@ -296,7 +327,7 @@ const OrderCart = () => {
                       >
                         <EditOrder
                           key={"orderCart_ModalWrapper_EditOrder_" + o.orderId}
-                          orderList={orderState.orderList}
+                          orderList={orderStateReducer.orderList}
                           curOrderId={o.orderId!}
                           onBtnAddQuantity={handleBtnAddQuantity}
                           onBtnRemoveQuantity={handleBtnRemoveQuantity}
@@ -320,7 +351,7 @@ const OrderCart = () => {
 export default OrderCart;
 
 //NOTE : backdrop :
-//SHALLOW COPY  : both fetchedOrderListForState and fetchedOrderListForReducer points to same array element objects.
+//SHALLOW COPY  : both fetchedBackendOrderList and fetchedOrderListForReducer points to same array element objects.
 //Using Array.from() method,array's map n filter method , all gives SHALLOW COPY for nested ArrayElements.
 // array gets generated newly but its element objects does not n still point to original src arr object memory space
 
@@ -363,14 +394,14 @@ export default OrderCart;
 //   //<===============================
 
 //   //=========> Declaring Reducer to handle Order n OrderLine changes
-//   const [orderState, dispatchToOrderState] = useReducer(
+//   const [orderStateReducer, dispatchToOrderStateReducer] = useReducer(
 //     reducerFunctionForEditOrder_EditOrderLines,
 //     {
 //       orderList: [] as Order[],
 //     }
 //   );
 //   const handleBtnAddQuantity = (orderId: string, orderLineId: string) => {
-//     dispatchToOrderState({
+//     dispatchToOrderStateReducer({
 //       type: "ADD",
 //       item: { orderId, orderLineId },
 //     });
@@ -401,13 +432,13 @@ export default OrderCart;
 //       );
 //       console.log(orderId + "  " + orderLineId);
 
-//       dispatchToOrderState({
+//       dispatchToOrderStateReducer({
 //         type: "DELETE_ORDERLINE",
 //         item: { orderId, orderLineId },
 //       });
 //     } else {
 //       //If curQty is not one , simply decrease qty by one
-//       dispatchToOrderState({
+//       dispatchToOrderStateReducer({
 //         type: "DECREASE",
 //         item: { orderId, orderLineId },
 //       });
@@ -419,7 +450,7 @@ export default OrderCart;
 //     curOl: OrderLine,
 //     newOl: OrderLine
 //   ) => {
-//     dispatchToOrderState({
+//     dispatchToOrderStateReducer({
 //       type: "EDIT",
 //       item: { orderId: orderId, curOl: curOl, newOl: newOl },
 //     });
@@ -436,7 +467,7 @@ export default OrderCart;
 //       "originalOrder ol.quantity: " + originalOrder.orderLines[0].quantity
 //     );
 
-//     dispatchToOrderState({
+//     dispatchToOrderStateReducer({
 //       type: "RESET_ORDER",
 //       item: {
 //         orderId: resetOrderId,
@@ -451,15 +482,15 @@ export default OrderCart;
 //       .put("http://localhost:8080/api/v1/orders/" + newOrder.orderId, newOrder)
 //       .then((resp) => {
 //         if (resp.data.success) {
-//           //if backend orderData has been updated , reflect same in given orderState
-//           dispatchToOrderState({ type: "UPDATE_ORDER", item: newOrder });
+//           //if backend orderData has been updated , reflect same in given orderStateReducer
+//           dispatchToOrderStateReducer({ type: "UPDATE_ORDER", item: newOrder });
 //           console.log("resp succes:state updated");
 //           ref_editOrderModalClose.current!.click();
 //         }
 //       })
 //       .catch((error) => {
 //         console.log("Failed to update order details :" + error.data.message);
-//         //reset changes done current orderState
+//         //reset changes done current orderStateReducer
 //         handleCancelEditOrder(newOrder.orderId!);
 //       });
 //   };
@@ -472,14 +503,14 @@ export default OrderCart;
 //         //console.log(resp);
 
 //         if (resp.status == 204) {
-//           //if backend orderData has been deleted , reflect same in given orderState
-//           dispatchToOrderState({ type: "DELETE_ORDER", item: orderId });
+//           //if backend orderData has been deleted , reflect same in given orderStateReducer
+//           dispatchToOrderStateReducer({ type: "DELETE_ORDER", item: orderId });
 //           console.log("resp succes:state deleted: " + orderId);
 //         }
 //       })
 //       .catch((error) => {
 //         console.log("Failed to delete orderId :" + orderId);
-//         //reset changes done current orderState
+//         //reset changes done current orderStateReducer
 //         handleCancelEditOrder(orderId!);
 //       });
 //   };
@@ -505,15 +536,15 @@ export default OrderCart;
 //         //   });
 //         // });
 
-//         // const fetchedOrderListForState: Order[] = [...backendOrderList];
+//         // const fetchedBackendOrderList: Order[] = [...backendOrderList];
 //         // const fetchedOrderListForReducer: Order[] = [...backendOrderList];
 //         //<====check1==============================================================
 
-//         const fetchedOrderListForState: Order[] = Array.from(
+//         const fetchedBackendOrderList: Order[] = Array.from(
 //           resp.data.data.list
 //         );
-//         //modify this fetchedOrderListForState, to add singlePizzaPrice value in each OrderLine of OLList of Order of  orderList
-//         fetchedOrderListForState.forEach((fetchedOrder) => {
+//         //modify this fetchedBackendOrderList, to add singlePizzaPrice value in each OrderLine of OLList of Order of  orderList
+//         fetchedBackendOrderList.forEach((fetchedOrder) => {
 //           fetchedOrder.orderLines.forEach((fetchedOL) => {
 //             fetchedOL.singlePizzaPrice =
 //               fetchedOL.totalPrice / fetchedOL.quantity;
@@ -523,7 +554,7 @@ export default OrderCart;
 //         //following data is used for backup of original orderList when we cancels an UpdateOrder
 //         setCustomerOrderData({
 //           loading: false,
-//           orders: fetchedOrderListForState,
+//           orders: fetchedBackendOrderList,
 //         });
 
 //         const fetchedOrderListForReducer: Order[] = Array.from(
@@ -536,15 +567,15 @@ export default OrderCart;
 //               fetchedOL.totalPrice / fetchedOL.quantity;
 //           });
 //         });
-//         dispatchToOrderState({
+//         dispatchToOrderStateReducer({
 //           type: "POPULATE_ORDERSTATE",
 //           item: fetchedOrderListForReducer,
-//           //item: fetchedOrderListForState,
+//           //item: fetchedBackendOrderList,
 //         });
 
 //         console.log("================>  Ordercart dispatched");
 
-//         console.log(fetchedOrderListForState);
+//         console.log(fetchedBackendOrderList);
 //         console.log(fetchedOrderListForReducer);
 //       } catch (error) {
 //         console.log("====>Error in OrderCart :\n" + error);
@@ -578,7 +609,7 @@ export default OrderCart;
 //         </div>
 //         <div className={styles.orderCartDisplayOrdersBlock}>
 //           <Accordion className="">
-//             {orderState.orderList.map((o) => (
+//             {orderStateReducer.orderList.map((o) => (
 //               <div key={"orderCart_" + o.orderId}>
 //                 <Accordion.Item eventKey={o.orderId!}>
 //                   <Accordion.Header>
@@ -621,7 +652,7 @@ export default OrderCart;
 //                       >
 //                         <EditOrder
 //                           key={"orderCart_ModalWrapper_EditOrder_" + o.orderId}
-//                           orderList={orderState.orderList}
+//                           orderList={orderStateReducer.orderList}
 //                           curOrderId={o.orderId!}
 //                           onBtnAddQuantity={handleBtnAddQuantity}
 //                           onBtnRemoveQuantity={handleBtnRemoveQuantity}

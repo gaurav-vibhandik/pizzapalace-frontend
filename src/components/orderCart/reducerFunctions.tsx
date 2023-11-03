@@ -54,20 +54,18 @@ const reducerFunctionForEditOrder_EditOrderLines = (
   },
   action: finalActionEditOrder
 ) => {
-  let updatedOrderList;
-  let updatedOrderLineList;
+  let updatedOrderList: Order[];
+  let updatedOrderLineList: OrderLine[];
   let existingOrderIndex;
   let existingOrderLineIndex;
-  let existingOrder;
-  let existingOrderLine;
+  let existingOrder: Order;
+  let existingOrderLine: OrderLine;
   switch (action.type) {
     case "POPULATE_ORDERSTATE":
-      return { orderList: [...action.item] };
+      return { orderList: action.item };
 
     case "ADD":
-      console.log("inside add reducer");
-
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
@@ -92,7 +90,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       return { orderList: [...updatedOrderList] };
 
     case "DECREASE":
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
@@ -115,7 +113,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       return { orderList: [...updatedOrderList] };
 
     case "DELETE_ORDERLINE":
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
@@ -143,7 +141,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       return { orderList: [...updatedOrderList] };
 
     case "EDIT":
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
@@ -166,11 +164,10 @@ const reducerFunctionForEditOrder_EditOrderLines = (
 
     case "RESET_ORDER":
       console.log(
-        "inside reset_ol===> Passed OL[0].quantity = " +
-          action.item.order.orderLines[0].quantity
+        "inside reset_ol===> " + action.item.order.orderLines[0].quantity
       );
 
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
@@ -180,14 +177,14 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       return { orderList: [...updatedOrderList] };
 
     case "DELETE_ORDER":
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
       updatedOrderList = updatedOrderList.filter(
         (o) => o.orderId !== action.item
       );
       return { ...state, orderList: updatedOrderList };
 
     case "UPDATE_ORDER":
-      updatedOrderList = [...state.orderList];
+      updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
 
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId === action.item.orderId

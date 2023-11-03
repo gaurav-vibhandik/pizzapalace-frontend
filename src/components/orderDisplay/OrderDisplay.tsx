@@ -40,6 +40,8 @@ const OrderDisplay = () => {
         console.log(error);
       });
 
+    //Handle idle time to wait before navigating(so that data can be fetched in OrderCart)
+    // such that user can not click multiple times checkouts
     setTimeout(() => {
       navigate("/orderCart");
     }, 10);

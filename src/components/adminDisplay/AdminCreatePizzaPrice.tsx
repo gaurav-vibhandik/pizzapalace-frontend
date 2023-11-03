@@ -80,7 +80,7 @@ const AdminCreatePizzaPrice = (props: curProps) => {
         }
       })
       .catch((err) => {
-        setFormSubmitStatus_Fail("Failed to create new pizzaPrice");
+        setFormSubmitStatus_Fail("Entry already exists");
         console.log(err.response.data);
 
         setTimeout(() => {

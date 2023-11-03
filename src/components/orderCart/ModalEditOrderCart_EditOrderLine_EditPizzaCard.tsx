@@ -1,10 +1,6 @@
-import React, { FC, useContext, useRef, useState } from "react";
-import { Button, Form, FormLabel, Image, Modal } from "react-bootstrap";
-import CardPizza from "../pizzaDisplay/CardPizza";
-import { Pizza } from "../interfaces/pizzaInterface";
+import React, { useContext, useRef, useState } from "react";
+import { Button, Form, FormLabel, Image } from "react-bootstrap";
 import InitDataContext from "../../context/InitDataContext";
-import OrderLineContext from "../../context/orderLineContext";
-import Crust from "../interfaces/crustInterface";
 import PizzaPrice from "../interfaces/pizzaPriceInterface";
 import { Row, Col, Card } from "react-bootstrap";
 import styles from "./ModalEditOrderCart_EditOrderLine_EditPizzaCard.module.css";
@@ -18,7 +14,6 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
   const onBtnEditOrderLine = props.onBtnEditOrderLine;
   const onHandleClose = props.onHandleClose;
 
-  const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
   const [selectedCrustType, setSelectedCrustType] = useState("");
   const [selectedToppings, setSelectedToppings] = useState([] as string[]);

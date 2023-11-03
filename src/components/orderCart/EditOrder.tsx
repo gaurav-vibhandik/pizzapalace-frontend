@@ -1,11 +1,9 @@
-import React, { useMemo, useReducer, useRef } from "react";
-import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
+import React, { useRef } from "react";
+import { Button, Col, FormLabel, Row } from "react-bootstrap";
 import Order from "../interfaces/orderInterface";
 import styles from "../orderDisplay/CardOrderLine.module.css";
 import ModalEditOrderCart_EditOrderLine from "./ModalEditOrderCart_EditOrderLine";
-import { reducerFunctionForEditOrder_EditOrderLines } from "./reducerFunctions";
 import OrderLine from "../interfaces/orderLineInterface";
-import axios from "axios";
 
 type curProps = {
   orderList: Order[];

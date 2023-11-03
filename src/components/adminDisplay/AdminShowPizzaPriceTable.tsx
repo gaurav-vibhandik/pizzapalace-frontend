@@ -50,7 +50,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
   const handleEditPizzaPrice = (e: any) => {
     e.preventDefault();
     const newPizzaPrice: PizzaPrice = {
-      id: e.target.value,
+      id: e.target.id.value,
       pizzaId: e.target.pizzaId.value,
       crustId: e.target.crustId.value,
       pizzaSize: e.target.pizzaSize.value,
@@ -250,14 +250,15 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
                 <div className={`col-11 me-auto  ${styles.pizzaPriceForm}`}>
                   <Row>
                     <FormLabel htmlFor="id">
-                      Id:{pizzaPriceToEdit?.id}
-                      <FormControl
-                        type="number"
-                        name="id"
-                        value={pizzaPriceToEdit?.id}
-                        readOnly
-                      />
+                      Id: {pizzaPriceToEdit?.id}
                     </FormLabel>
+
+                    <FormControl
+                      type="number"
+                      name="id"
+                      value={pizzaPriceToEdit?.id}
+                      readOnly
+                    />
                   </Row>
                   <Row>
                     <FormLabel htmlFor="pizzaId">
