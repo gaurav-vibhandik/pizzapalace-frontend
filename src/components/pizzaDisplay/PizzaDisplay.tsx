@@ -27,19 +27,19 @@ const PizzaDisplay = () => {
           tabIndex={0}
           style={{ position: "static" }}
         >
-          <div id="scrollSpyVeg" className="veg pizzaCardsFlexBox ">
+          <div id="veg" className="veg pizzaCardsFlexBox ">
             {pizzaList.length > 0 &&
               pizzaList
                 .filter((p) => p.type == "VEG")
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
-          <div id="scrollSpyNonVeg" className="nonVeg pizzaCardsFlexBox">
+          <div id="nonVeg" className="nonVeg pizzaCardsFlexBox">
             {pizzaList.length > 0 &&
               pizzaList
                 .filter((p) => p.type == "NON_VEG")
                 .map((p) => <CardPizza key={p.pizzaId} {...p} />)}
           </div>
-          <div id="scrollSpySides" className="sides pizzaCardsFlexBox">
+          <div id="sides" className="sides pizzaCardsFlexBox">
             <h2>Sides :Comming Soon...</h2>
             <Spinner animation="border" variant="primary" />
           </div>

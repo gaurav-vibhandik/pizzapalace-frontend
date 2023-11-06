@@ -26,16 +26,11 @@ const CardPizza = (props: Pizza) => {
           //For now , not validating PizzaInventory for pizzaSize to show for given pizza.
             Showing all sizes as hardcoded
 */
-  props.pizzaId == "ZA004"
-    ? console.log("Rendering of CardComponent Started")
-    : console.log("");
 
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
   const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
   const [selectedCrustType, setSelectedCrustType] = useState("");
-  // const [pizzaQty, setPizzaQty] = useState(1);
   const [selectedToppings, setSelectedToppings] = useState([] as string[]);
-  // const [pizzaPrice, setPizzaPrice] = useState(0);
   const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
 
   let pizzaPrice = 0;
@@ -52,7 +47,7 @@ const CardPizza = (props: Pizza) => {
   const orderLineState = useContext(OrderLineContext);
 
   const backendPizzaPriceList = initData.pizzaPriceList;
-  const crustMap: Map<string, Crust> | any = initData.crustMap;
+  const crustMap: Map<string, string> = initData.crustMap;
 
   //Fetching crustTypes and its Prices for given selected PizzaSize
   const pizzaPriceListForCurrentPizza: PizzaPrice[] =
@@ -107,14 +102,6 @@ const CardPizza = (props: Pizza) => {
     setSelectedExtraCheese(false);
   };
 
-  //========================================
-  const handleChangeForQtyState = () => {
-    if (isAddToCartClicked) {
-      // setPizzaQty(1);
-      // setIsAddToCartClicked(false);
-    }
-  };
-
   //====> Handling Extra Cheese======================
   const handleExtraCheese = () => {
     setSelectedExtraCheese(!selectedExtraCheese);
@@ -137,7 +124,6 @@ const CardPizza = (props: Pizza) => {
   //====>Handling AddToCart =======================
   const handleAddToCart = (event: any) => {
     event.preventDefault();
-    // setIsAddToCartClicked(true);
     const ol: OrderLine = {
       pizzaId: props.pizzaId!,
       size: selectedPizzaSize,
@@ -156,12 +142,7 @@ const CardPizza = (props: Pizza) => {
   //<===============================
 
   //====================== Debugging=======>
-  if (props.pizzaId == "ZA004") {
-    props.pizzaId == "ZA004"
-      ? console.log("Rendering of CardComponent Finished")
-      : console.log("");
-    console.log("<=========================");
-  }
+
   //<=========Debugging===========================
   //===========================================================================================
   return (
@@ -199,7 +180,7 @@ const CardPizza = (props: Pizza) => {
                   className={styles.myCardSelect}
                   size="sm"
                   onClick={handlePizzaSizeChange}
-                  onChange={handleChangeForQtyState}
+                  onChange={(e) => setSelectedPizzaSize(e.target.value)}
                   placeholder="Choose Pizza Size"
                   defaultValue=""
                 >
@@ -233,12 +214,10 @@ const CardPizza = (props: Pizza) => {
                       id="chooseCrust"
                       size="sm"
                       className={styles.myCardSelect}
-                      onChange={() => {
-                        handleCrustTypeChange();
-                        handleChangeForQtyState();
-                      }}
+                      onChange={(event) =>
+                        setSelectedCrustType(event.target.value)
+                      }
                       onClick={handleCrustTypeChange}
-                      // defaultValue=""
                     >
                       <option disabled>Choose Crust Type</option>
                       {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (

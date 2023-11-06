@@ -3,7 +3,7 @@
 }
 
 .outlet {
-  background-color: aliceblue;
+  background-color: lightblue;
   min-height: 100vh;
 }
 .blockAfterHeader {
@@ -12,7 +12,7 @@
 }
 
 .borderline {
-  border: 2px dotted blue;
+  /* border: 2px dotted blue; */
 }
 
 /*=======================> Header css =========================*/
@@ -38,6 +38,7 @@
 .footer {
   width: 100%;
   text-align: center;
+  background-color: aliceblue;
 }
 /*======= Menu display css =========================*/
 #menu {
@@ -53,7 +54,7 @@
 
 .contentDisplay {
   /* background-color: green; */
-  border: 2px solid green;
+  /* border: 2px solid green; */
   min-height: 84vh;
   margin-top: 7.5rem;
   display: flex;
@@ -63,7 +64,7 @@
 /*=============================== Pizza Display css =========================*/
 
 .pizzaDisplay {
-  border: 3px dotted black;
+  /* border: 3px dotted black; */
   min-height: 84vh;
   width: 60vw;
 }
@@ -76,7 +77,7 @@
   flex-wrap: wrap;
   padding: 1rem;
   gap: 1.5rem;
-  background-color: ghostwhite;
+  background-color: lightblue;
 }
 
 .sides {

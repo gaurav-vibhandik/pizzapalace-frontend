@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PizzaDisplay from "../pizzaDisplay/PizzaDisplay";
 import OrderDisplay from "../orderDisplay/OrderDisplay";
 import MenuDisplay from "../commons/MenuDisplay";

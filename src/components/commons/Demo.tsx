@@ -41,6 +41,7 @@ const Demo = () => {
                 value={t}
                 onChange={handleCheckboxChange}
               />
+
               <label className="form-check-label" htmlFor="ip">
                 {t}
               </label>

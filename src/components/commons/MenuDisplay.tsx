@@ -7,9 +7,9 @@ const MenuDisplay = () => {
       <Navbar id="menu" className="menu navbar">
         <Container className="flex-row justify-content-center ">
           <Nav className="nav-pills">
-            <Nav.Link href="#scrollSpyVeg">Veg Pizza</Nav.Link>
-            <Nav.Link href="#scrollSpyNonVeg">Non-Veg Pizza</Nav.Link>
-            <Nav.Link href="#scrollSpySides">Sides</Nav.Link>
+            <Nav.Link href="#veg">Veg Pizza</Nav.Link>
+            <Nav.Link href="#nonVeg">Non-Veg Pizza</Nav.Link>
+            <Nav.Link href="#sides">Sides</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

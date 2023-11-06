@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import styles from "./OrderDisplay.module.css";
 import OrderLineContext from "../../context/orderLineContext";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import Order from "../interfaces/orderInterface";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CardOrderLine from "./CardOrderLine";
+import EmptyOrderDisplayImage from "../images/EmptyOrderDisplayImage/EmptyOrderDisplayImage.jpg";
 
 const OrderDisplay = () => {
   const orderLineState = useContext(OrderLineContext);
@@ -52,41 +53,58 @@ const OrderDisplay = () => {
   return (
     <React.Fragment>
       <div className={styles.orderDisplay}>
-        <div className={styles.orderCart}>
-          <div className={styles.displayOrderLine}>
-            {orderLineList.map((ol) => (
-              <CardOrderLine
-                key={`${ol.pizzaId}_${ol.crustId}_` + Math.random()}
-                ol={ol}
-                onReplace={orderLineState.replaceOrderLineInOrderLineList}
-              />
-            ))}
-          </div>
-          <div className={styles.orderCartPriceNCheckout}>
-            <div className="container">
-              {
-                <b>
-                  {`SubTotal : Rs. `}
-                  <span className={styles.price}>
-                    {totalOrderPrice > 0 ? totalOrderPrice : ""}
-                  </span>
-                </b>
-              }
+        {orderLineState.orderLineList.length > 0 && (
+          <div className={styles.orderCart}>
+            <div className={styles.displayOrderLine}>
+              {orderLineList.map((ol) => (
+                <CardOrderLine
+                  key={`${ol.pizzaId}_${ol.crustId}_` + Math.random()}
+                  ol={ol}
+                  onReplace={orderLineState.replaceOrderLineInOrderLineList}
+                />
+              ))}
             </div>
-
-            <div className="container">
-              <Button
-                type="button"
-                onClick={handleCheckout}
-                disabled={
-                  orderLineState.orderLineList.length == 0 ? true : false
+            <div className={styles.orderCartPriceNCheckout}>
+              <div className="container">
+                {
+                  <b>
+                    {`SubTotal : Rs. `}
+                    <span className={styles.price}>
+                      {totalOrderPrice > 0 ? totalOrderPrice : ""}
+                    </span>
+                  </b>
                 }
-              >
-                Checkout
-              </Button>
+              </div>
+
+              <div className="container">
+                <Button
+                  type="button"
+                  onClick={handleCheckout}
+                  disabled={
+                    orderLineState.orderLineList.length == 0 ? true : false
+                  }
+                >
+                  Checkout
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {orderLineState.orderLineList.length == 0 && (
+          <div className={styles.orderCart}>
+            <div className={styles.emptyOrderBlock}>
+              <Image
+                className={styles.emptyOrderDisplayImage}
+                src={EmptyOrderDisplayImage}
+              />
+              <p>
+                <b>YOUR CART IS EMPTY</b>
+              </p>
+              <p>Please add some items from the menu.</p>
+            </div>
+          </div>
+        )}
       </div>
     </React.Fragment>
   );

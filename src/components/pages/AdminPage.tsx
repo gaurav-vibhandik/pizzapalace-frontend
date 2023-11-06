@@ -75,24 +75,6 @@ const AdminPage = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="PizzaPrice" title="PizzaPrice">
-            <div className={styles.adminPageContent}>
-              <div className="addPizzaPriceContainer">
-                <AdminCreatePizzaPrice
-                  pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
-                  dispatchToPizzaPriceStateReducer={
-                    dispatchToPizzaPriceStateReducer
-                  }
-                />
-              </div>
-              <AdminShowPizzaPriceTable
-                pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
-                dispatchToPizzaPriceStateReducer={
-                  dispatchToPizzaPriceStateReducer
-                }
-              />
-            </div>
-          </Tab>
           <Tab eventKey="Topping" title="Topping">
             <div className={styles.adminPageContent}>
               <div className="showTopping">
@@ -112,6 +94,25 @@ const AdminPage = () => {
               </div>
             </div>
           </Tab>
+          <Tab eventKey="PizzaPrice" title="PizzaPrice">
+            <div className={styles.adminPageContent}>
+              <div className="addPizzaPriceContainer">
+                <AdminCreatePizzaPrice
+                  pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
+                  dispatchToPizzaPriceStateReducer={
+                    dispatchToPizzaPriceStateReducer
+                  }
+                />
+              </div>
+              <AdminShowPizzaPriceTable
+                pizzaPriceList={pizzaPriceStateReducer.pizzaPriceList}
+                dispatchToPizzaPriceStateReducer={
+                  dispatchToPizzaPriceStateReducer
+                }
+              />
+            </div>
+          </Tab>
+
           <Tab eventKey="Inventory Control" title="Inventory Control">
             <div className={styles.adminPageContent}>
               <div className={styles.block}>

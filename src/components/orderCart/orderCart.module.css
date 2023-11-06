@@ -1,7 +1,7 @@
 .orderCart {
   background-color: aliceblue;
   min-height: 100vh;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .orderCartDisplayOrdersBlock {
   display: flex;

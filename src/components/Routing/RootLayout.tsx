@@ -100,21 +100,35 @@ const RootLayout = () => {
         console.log(
           "=====>Fetched Data Details ====================================="
         );
-        console.log("Fetched pizzaList = " + pizzaList.length);
-        console.log("Fetched crustList = " + crustList.length);
-        console.log("Fetched crustMap ====>= " + crustMap);
-        crustMap.forEach((k, v) => console.log("Key:" + k + "  " + v));
-        console.log("Fetched pizzaPriceList = " + pizzaPriceList.length);
-        console.log("Fetched ToppingList = " + toppingList.length);
-        console.log("Fetched ToppingMap = " + toppingMap.size);
-        console.log("Fetched vegToppingList = " + vegToppingList.length);
-        console.log(
-          "Fetched nonVegToppingList_veg = " + nonVegToppingList_veg.length
-        );
-        console.log(
-          "Fetched nonVegToppingList_nonVeg = " +
-            nonVegToppingList_nonVeg.length
-        );
+        console.log({
+          pizzaList,
+          pizzaMap,
+          crustList,
+          crustMap,
+          pizzaPriceList,
+          toppingList,
+          toppingMap,
+          vegToppingList,
+          nonVegToppingList_veg,
+          nonVegToppingList_nonVeg,
+          sideList,
+        });
+
+        // console.log("Fetched pizzaList = " + pizzaList.length);
+        // console.log("Fetched crustList = " + crustList.length);
+        // console.log("Fetched crustMap ====>= " + crustMap);
+        // crustMap.forEach((k, v) => console.log("Key:" + k + "  " + v));
+        // console.log("Fetched pizzaPriceList = " + pizzaPriceList.length);
+        // console.log("Fetched ToppingList = " + toppingList.length);
+        // console.log("Fetched ToppingMap = " + toppingMap.size);
+        // console.log("Fetched vegToppingList = " + vegToppingList.length);
+        // console.log(
+        //   "Fetched nonVegToppingList_veg = " + nonVegToppingList_veg.length
+        // );
+        // console.log(
+        //   "Fetched nonVegToppingList_nonVeg = " +
+        //     nonVegToppingList_nonVeg.length
+        // );
 
         console.log("<====================================\n\n");
       } catch (error) {
@@ -139,7 +153,6 @@ const RootLayout = () => {
     <React.Fragment>
       <div
         style={{
-          border: "3px solid yellow",
           minHeight: "100vh",
         }}
       >

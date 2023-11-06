@@ -7,15 +7,16 @@ import styles from "./ModalEditOrderCart_EditOrderLine_EditPizzaCard.module.css"
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import OrderLine from "../interfaces/orderLineInterface";
+import { Pizza } from "../interfaces/pizzaInterface";
 
 const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
-  const curPizza = props.myPizza;
+  const curPizza: Pizza = props.myPizza;
   const curOl: OrderLine = props.curOl;
   const onBtnEditOrderLine = props.onBtnEditOrderLine;
   const onHandleClose = props.onHandleClose;
 
-  const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
-  const [selectedCrustType, setSelectedCrustType] = useState("");
+  const [selectedPizzaSize, setSelectedPizzaSize] = useState(curOl.size);
+  const [selectedCrustType, setSelectedCrustType] = useState(curOl.crustId);
   const [selectedToppings, setSelectedToppings] = useState([] as string[]);
   const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
 
@@ -66,17 +67,24 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
       }
     }
   }
+
   //==========================================
   const handlePizzaSizeChange = () => {
     setSelectedPizzaSize(chooseSize.current.value);
-    // setSelectedCrustType("");
+    setSelectedCrustType("");
+    //remove all previously selected toppings
+    setSelectedToppings((prev) => []);
+    //remove all previously selected cheese
+    setSelectedExtraCheese(false);
   };
   //==========================================
   const handleCrustTypeChange = () => {
     setSelectedCrustType(chooseCrust.current.value);
+    //remove all previously selected toppings
+    setSelectedToppings((prev) => []);
+    //remove all previously selected cheese
+    setSelectedExtraCheese(false);
   };
-
-  //========================================
 
   //====> Handling Extra Cheese======================
   const handleExtraCheese = () => {
@@ -99,27 +107,21 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
   };
   //====>Handling "Update Pizza details" =======================
   const handleUpdatePizzaDetails = (event: any) => {
+    event.preventDefault();
     console.log("Inside handle Update Pizza Changes");
 
     const newOl: OrderLine = {
-      orderLineId: curOl.orderLineId,
-      pizzaId: curPizza.pizzaId,
+      pizzaId: curPizza.pizzaId!,
       size: selectedPizzaSize,
       crustId: selectedCrustType,
       quantity: 1,
       extraCheese: selectedExtraCheese,
       toppingList: selectedToppings,
       totalPrice: pizzaPrice,
+      singlePizzaPrice: pizzaPrice,
     };
 
     onBtnEditOrderLine(curOl.orderId, curOl, newOl);
-    console.log(`============================>
-    Editing Pizza: ${curPizza.pizzaId} \n 
-    before OL : ${curOl.size} & ${curOl.crustId}
-    new OL : ${newOl.size} & ${newOl.crustId}
-    `);
-
-    console.log("editing Pizza Finished");
     onHandleClose();
   };
 
@@ -163,7 +165,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                   onClick={handlePizzaSizeChange}
                   onChange={(e) => setSelectedPizzaSize(e.target.value)}
                   placeholder="Choose Pizza Size"
-                  defaultValue=""
+                  defaultValue={selectedPizzaSize}
                 >
                   <option value="" disabled>
                     Choose Pizza Size
@@ -199,7 +201,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                         setSelectedCrustType(event.target.value)
                       }
                       onClick={handleCrustTypeChange}
-                      defaultValue=""
+                      defaultValue={selectedCrustType}
                     >
                       <option disabled>Choose Crust Type</option>
                       {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (

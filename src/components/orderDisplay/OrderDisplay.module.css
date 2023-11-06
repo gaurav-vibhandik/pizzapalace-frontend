@@ -1,6 +1,6 @@
 .orderDisplay {
   width: 40vw;
-  background-color: lightblue;
+  background-color: aliceblue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,16 +13,26 @@
   width: 38vw;
   margin-top: 3rem;
   height: 80%;
-  background-color: gray;
+  background-color: ghostwhite;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+.emptyOrderBlock {
+  background-color: ghostwhite;
+  height: 80%;
+  width: 100%;
+  text-align: center;
+}
+.emptyOrderDisplayImage {
+  margin-top: -4rem;
+  height: 80%;
+  width: 100%;
+}
 
 .displayOrderLine {
   width: 100%;
-  background-color: pink;
   height: 80%;
   overflow-y: scroll;
 }
