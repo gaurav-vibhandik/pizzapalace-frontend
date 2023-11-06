@@ -1,11 +1,13 @@
 .mainFormContainer {
   margin-top: 1rem;
   margin-left: 30%;
-  width: fit-content;
+  width: 45%;
   /* display: container-fluid; */
   /* justify-content: center;
   align-items: center; */
   background-color: gainsboro;
+  margin-bottom: 2rem;
+  text-wrap: wrap;
 }
 
 .pizzaForm {
@@ -24,5 +26,9 @@
 
 .formSubmitStatus_Fail {
   background-color: white;
+  color: red;
+}
+
+.form-error {
   color: red;
 }

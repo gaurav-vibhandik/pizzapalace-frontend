@@ -1,7 +1,10 @@
 .App {
   background-color: blue;
 }
-
+.form-error {
+  color: red;
+  font-style: italic;
+}
 .outlet {
   background-color: lightblue;
   min-height: 100vh;

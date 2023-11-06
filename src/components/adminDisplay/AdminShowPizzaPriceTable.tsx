@@ -58,28 +58,6 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
     };
     console.log(newPizzaPrice);
 
-    // if (newPizzaPrice.id) {
-    //   const updatedPizzaPrice = newPizzaPrice;
-
-    //   //update the reducerPizzaPriceState so that table reloads with latest state data
-    //   props.dispatchToPizzaPriceStateReducer({
-    //     type: "EditPizzaPrice",
-    //     item: updatedPizzaPrice,
-    //   });
-
-    //   setStatusSuccess(
-    //     `PizzaPrice Entry with pizzaPriceId = ${updatedPizzaPrice.id} updated  successfully!!! `
-    //   );
-    //   setTimeout(() => {
-    //     setStatusSuccess("");
-    //   }, 7000);
-    // } else {
-    //   setStatusFail("Failed to edit pizzaPrice :" + newPizzaPrice.id);
-    //   setTimeout(() => {
-    //     setStatusFail("");
-    //   }, 7000);
-    // }
-
     axios
       .put(
         "http://localhost:8080/api/v1/pizzaPrices/" + newPizzaPrice.id,
@@ -117,33 +95,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
   //======> handle delete pizzaPrice entry==========
   const handleDeletePizzaPrice = (e: any) => {
     const pizzaPriceIdToDelete = e.target.value;
-
-    //fetch pizzaPriceId to be deleted
-    // console.log("ppId= " + e.target.parentNode.parentNode.id);
-    // console.log("pId= " + e.target.parentNode.id);
     console.log("Deleting pizzaPriceId = " + e.target.value);
-    //=========>dubugging without hitting backend===============
-    // if (pizzaPriceIdToDelete) {
-    //   //if yes , delete entry from  pizzaPriceStateReducer
-    //   props.dispatchToPizzaPriceStateReducer({
-    //     type: "DeletePizzaPrice",
-    //     item: pizzaPriceIdToDelete,
-    //   });
-    //   setStatusSuccess(
-    //     `PizzaPriceId =${pizzaPriceIdToDelete} deleted successfully !!!`
-    //   );
-    //   setTimeout(() => {
-    //     setStatusSuccess("");
-    //   }, 9000);
-    // } else {
-    //   setStatusFail(
-    //     `Failed to delete PizzaPriceId =${pizzaPriceIdToDelete}  ...`
-    //   );
-    //   setTimeout(() => {
-    //     setStatusFail("");
-    //   }, 5000);
-    //    }
-    //<=========dubugging without hitting backend===============
 
     axios
       .delete(

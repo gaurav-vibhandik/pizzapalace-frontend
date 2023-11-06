@@ -34,25 +34,6 @@ const AdminCreateTopping = (props: curProps) => {
     };
     console.log(newTopping);
 
-    // if (newTopping) {
-    //   newTopping.toppingId = "TP999";
-    //   props.dispatchToToppingStateReducer({
-    //     type: "AddTopping",
-    //     item: newTopping,
-    //   });
-    //   setFormSubmitStatus_Success(
-    //     `New Topping Entry with toppingId = ${newTopping.toppingId}  Created Successfully !!! `
-    //   );
-    //   setTimeout(() => {
-    //     setFormSubmitStatus_Success("");
-    //   }, 4000);
-    // } else {
-    //   setFormSubmitStatus_Fail("Failed to create new topping");
-    //   setTimeout(() => {
-    //     setFormSubmitStatus_Fail("");
-    //   }, 3000);
-    // }
-
     axios
       .post("http://localhost:8080/api/v1/toppings", newTopping)
       .then((resp) => {

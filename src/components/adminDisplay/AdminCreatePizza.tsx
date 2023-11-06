@@ -1,18 +1,21 @@
 import React, { useRef, useState } from "react";
+import { Button, Col, Collapse, Row } from "react-bootstrap";
 import {
-  Button,
-  Col,
-  Collapse,
+  Formik,
+  Field,
   Form,
-  FormControl,
-  FormLabel,
-  FormSelect,
-  Row,
-} from "react-bootstrap";
+  ErrorMessage,
+  FormikValues,
+  FormikHelpers,
+  FormikHandlers,
+  FormikProvider,
+} from "formik";
 import { BsPlusCircle } from "react-icons/bs";
 import styles from "../adminDisplay/adminDisplay_moduleCssFiles/adminCreatePizza.module.css";
 import { Pizza } from "../interfaces/pizzaInterface";
 import axios from "axios";
+import { ValidationSchemaForAdminDisplay_CreatePizzaForm } from "../../formik schemas/adminPageSchemas";
+import DisplayFormError from "./DisplayFormError";
 
 type curProps = {
   pizzaList: Pizza[];
@@ -24,43 +27,62 @@ const AdminCreatePizza = (props: curProps) => {
   const [formSubmitStatus_Success, setFormSubmitStatus_Success] = useState("");
   const [formSubmitStatus_Fail, setFormSubmitStatus_Fail] = useState("");
 
-  const handleCreatePizzaFormSubmit = (e: any) => {
-    e.preventDefault();
-    const newPizza: Pizza = {
-      name: e.target.pizzaName.value,
-      description: e.target.pizzaDescription.value,
-      type: e.target.pizzaType.value,
-      imageUrl: e.target.pizzaImageUrl.value,
-    };
-    //console.log(newPizza);
+  const initialValues = {
+    name: "",
+    description: "",
+    type: "VEG",
+    imageUrl: "",
+  };
 
-    axios
-      .post("http://localhost:8080/api/v1/pizzas", newPizza)
-      .then((resp) => {
-        if (resp.data.success) {
-          const createdPizza = resp.data.data.list[0];
-          console.log(createdPizza);
+  const handleCreatePizzaFormSubmit = async (
+    values: FormikValues,
+    formikHandler: FormikHandlers | any
+  ): Promise<void> => {
+    // console.log(
+    //   "🚀 ~ file: AdminCreatePizza.tsx:40 ~ AdminCreatePizza ~ formikHandler:",
+    //   formikHelpers
+    // );
+    // console.log(
+    //   "🚀 ~ file: AdminCreatePizza.tsx:40 ~ AdminCreatePizza ~ values:",
+    //   values
+    // );
 
-          setFormSubmitStatus_Success(
-            `New Pizza Entry with pizzaId = ${resp.data.data.list[0].pizzaId}  Created `
-          );
-          //update the reducerPizzaState so that table reloads with latest state data
-          props.dispatchToPizzaStateReducer({
-            type: "AddPizza",
-            item: createdPizza,
-          });
+    //formikHelpers.setSubmitting(true);
 
-          setTimeout(() => {
-            setFormSubmitStatus_Success("");
-          }, 4000);
-        }
-      })
-      .catch((err) => {
-        setFormSubmitStatus_Fail("Failed to create new pizza");
+    let resp;
+    try {
+      resp = await axios.post("http://localhost:8080/api/v1/pizzas", values);
+      if (resp.data.success) {
+        const createdPizza = resp.data.data.list[0];
+        console.log(createdPizza);
+        setFormSubmitStatus_Success(
+          `New Pizza Entry with pizzaId = ${resp.data.data.list[0].pizzaId}  Created `
+        );
+        //update the reducerPizzaState so that table reloads with latest state data
+        props.dispatchToPizzaStateReducer({
+          type: "AddPizza",
+          item: createdPizza,
+        });
         setTimeout(() => {
-          setFormSubmitStatus_Fail("");
-        }, 3000);
-      });
+          setFormSubmitStatus_Success("");
+        }, 4000);
+        formikHandler.setSubmitting(false);
+      }
+    } catch (error: any) {
+      console.log(error.response.data.error.message);
+      //console.log(formikHandler);
+      //populating <ErrorMessage> fields with Field error messages as received from backend
+      let errObject = error.response.data.error.message;
+      Object.getOwnPropertyNames(errObject).forEach((p) =>
+        formikHandler.setFieldError(p, error.response.data.error.message[p])
+      );
+
+      setFormSubmitStatus_Fail("Failed to create new pizza");
+      setTimeout(() => {
+        setFormSubmitStatus_Fail("");
+      }, 3000);
+      formikHandler.setSubmitting(false);
+    }
   };
 
   return (
@@ -78,60 +100,92 @@ const AdminCreatePizza = (props: curProps) => {
 
       <Collapse in={showPizzaForm}>
         <div className={`${styles.mainFormContainer}`}>
-          <Form onSubmit={handleCreatePizzaFormSubmit}>
-            <div className={`col-11 me-auto  ${styles.pizzaForm}`}>
-              <Row>
-                <FormLabel htmlFor="pizzaName">
-                  Enter Pizza Name :<FormControl type="text" name="pizzaName" />
-                </FormLabel>
-              </Row>
-              <Row>
-                <FormLabel htmlFor="pizzaDescription">
-                  Enter Pizza Description :
-                  <FormControl type="text" name="pizzaDescription" />
-                </FormLabel>
-              </Row>
-              <Row>
-                <FormLabel htmlFor="pizzaType">Select Pizza Type :</FormLabel>
-                <FormSelect name="pizzaType" defaultValue="VEG">
-                  <option disabled>----choose pizza type----</option>
-                  <option value={"VEG"}>VEG</option>
-                  <option value={"NON_VEG"}>NON_VEG</option>
-                </FormSelect>
-              </Row>
-              <Row>
-                <FormLabel htmlFor="pizzaImageUrl">
-                  Enter Pizza Image URL :
-                </FormLabel>
-                <FormControl
-                  type="text"
-                  name="pizzaImageUrl"
-                  placeholder={"https://tinyurl.com/pizza-002"}
-                />
-              </Row>
+          <Formik
+            initialValues={initialValues}
+            //  validationSchema={ValidationSchemaForAdminDisplay_CreatePizzaForm}
+            validateOnChange={false}
+            validateOnBlur={true}
+            onSubmit={handleCreatePizzaFormSubmit}
+          >
+            {(formik) => {
+              // console.log(
+              // "🚀 ~ file: AdminCreatePizza.tsx:90 ~ AdminCreatePizza ~ formik:",
+              // formik
+              // );
 
-              <Row>
-                <Col>
-                  <Button type="submit" variant="success">
-                    Submit
-                  </Button>{" "}
-                </Col>
-                <Col>
-                  <Button type="reset" variant="danger">
-                    RESET
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <span className={`${styles.formSubmitStatus_Success}`}>
-                  {formSubmitStatus_Success}
-                </span>
-                <span className={`${styles.formSubmitStatus_Fail}`}>
-                  {formSubmitStatus_Fail}
-                </span>
-              </Row>
-            </div>
-          </Form>
+              return (
+                <Form>
+                  <div className={`col-11 ${styles.pizzaForm}`}>
+                    <Row>
+                      <label htmlFor="name">Enter Pizza Name :</label>
+                      <Field type="text" name="name" />
+                      <ErrorMessage name="name" component={DisplayFormError} />
+                    </Row>
+                    <Row>
+                      <label htmlFor="description">
+                        Enter Pizza Description :
+                      </label>
+                      <Field type="textarea" name="description" />
+                      <ErrorMessage
+                        name="description"
+                        component={DisplayFormError}
+                      />
+                    </Row>
+                    <Row>
+                      <label htmlFor="type">Select Pizza Type :</label>
+                      <select name="type" defaultValue="VEG">
+                        <option disabled>----choose pizza type----</option>
+                        <option value={"VEG"}>VEG</option>
+                        <option value={"NON_VEG"}>NON_VEG</option>
+                      </select>
+                      <ErrorMessage name="type" component={DisplayFormError} />
+                    </Row>
+                    <Row>
+                      <label htmlFor="imageUrl">Enter Pizza Image URL :</label>
+                      <Field
+                        type="text"
+                        name="imageUrl"
+                        placeholder="https://tinyurl.com/pizza-002"
+                      />
+                      <ErrorMessage
+                        name="imageUrl"
+                        component={DisplayFormError}
+                      />
+                    </Row>
+
+                    <Row>
+                      <Col>
+                        <Button
+                          type="submit"
+                          variant="success"
+                          disabled={!formik.isValid || formik.isSubmitting}
+                        >
+                          Submit
+                        </Button>{" "}
+                      </Col>
+                      <Col>
+                        <Button
+                          type="reset"
+                          variant="danger"
+                          onClick={formik.handleReset}
+                        >
+                          RESET
+                        </Button>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <span className={`${styles.formSubmitStatus_Success}`}>
+                        {formSubmitStatus_Success}
+                      </span>
+                      <span className={`${styles.formSubmitStatus_Fail}`}>
+                        {formSubmitStatus_Fail}
+                      </span>
+                    </Row>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
         </div>
       </Collapse>
     </React.Fragment>
