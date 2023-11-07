@@ -108,12 +108,11 @@ const orderLineReducer = (
 
   if (action.type === "REPLACE") {
     //This will update existing OL entry by REPLACING existing Pizza Details only
-    let updatedOrderLineList: OrderLine[] = [...state.orderLineList];
-    console.log(
-      "Before replacing , olList.length= " + updatedOrderLineList.length
+    let updatedOrderLineList: OrderLine[] = JSON.parse(
+      JSON.stringify(state.orderLineList)
     );
 
-    const existingOrderLineIndex = state.orderLineList.findIndex(
+    const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.oldOl.pizzaId &&
@@ -129,7 +128,7 @@ const orderLineReducer = (
     );
 
     //If newOL is same as one of existing orderLineList , increase its qty AND remove the oldOl entry
-    const existingOrderLineIndexForNewOl = state.orderLineList.findIndex(
+    const existingOrderLineIndexForNewOl = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.newOl.pizzaId &&
@@ -143,9 +142,14 @@ const orderLineReducer = (
         );
       }
     );
-    if (updatedOrderLineList[existingOrderLineIndexForNewOl]) {
+    if (existingOrderLineIndexForNewOl !== -1) {
       //increase qty by one
-      updatedOrderLineList[existingOrderLineIndexForNewOl].quantity += 1;
+      let existingOrderLine =
+        updatedOrderLineList[existingOrderLineIndexForNewOl];
+
+      existingOrderLine.quantity += 1;
+      existingOrderLine.totalPrice += existingOrderLine.singlePizzaPrice!;
+      updatedOrderLineList[existingOrderLineIndexForNewOl] = existingOrderLine;
       //remove oldOL entry
       updatedOrderLineList = updatedOrderLineList.filter((ol: OrderLine) => {
         return (
@@ -159,18 +163,14 @@ const orderLineReducer = (
             new Set([...ol.toppingList, ...action.item.oldOl.toppingList]).size
         );
       });
-      console.log(
-        "After replacing , olList.length= " + updatedOrderLineList.length
-      );
+
       return { orderLineList: updatedOrderLineList };
     } else {
       //if not simply replace oldOl entry
       updatedOrderLineList[existingOrderLineIndex] = {
         ...action.item.newOl,
       };
-      console.log(
-        "After replacing , olList.length= " + updatedOrderLineList.length
-      );
+
       return { orderLineList: updatedOrderLineList };
     }
   }
