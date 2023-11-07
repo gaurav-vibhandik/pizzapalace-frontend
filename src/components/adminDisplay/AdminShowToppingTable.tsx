@@ -35,9 +35,9 @@ const AdminShowToppingTable = (props: curProps) => {
 
   //=======> handler Functions==========================================
 
-  const handleSetToppingIdToEdit = (e: any) => {
+  const handleSetToppingIdToEdit = (toppingIdToEdit: any) => {
     const toppingToEdit = props.toppingList.find(
-      (tp) => tp.toppingId === e.target.value
+      (tp) => tp.toppingId === toppingIdToEdit
     );
     setToppingToEdit(toppingToEdit);
   };
@@ -90,13 +90,11 @@ const AdminShowToppingTable = (props: curProps) => {
   };
 
   //======> handle delete topping entry==========
-  const handleDeleteTopping = (e: any) => {
-    const toppingIdToDelete = e.target.value;
-
+  const handleDeleteTopping = (toppingIdToDelete: any) => {
     //fetch toppingId to be deleted
     // console.log("ppId= " + e.target.parentNode.parentNode.id);
     // console.log("pId= " + e.target.parentNode.id);
-    console.log("Deleting toppingId = " + e.target.value);
+    console.log("Deleting toppingId = " + toppingIdToDelete);
 
     axios
       .delete(`http://localhost:8080/api/v1/toppings/${toppingIdToDelete}`)
@@ -158,11 +156,10 @@ const AdminShowToppingTable = (props: curProps) => {
                 <td id={`${t.toppingId}_p`}>
                   <Button
                     type="submit"
-                    onClick={(e: any) => {
-                      handleSetToppingIdToEdit(e);
+                    onClick={() => {
+                      handleSetToppingIdToEdit(t.toppingId);
                       handleShow();
                     }}
-                    value={t.toppingId}
                   >
                     Edit Topping
                   </Button>
@@ -170,8 +167,7 @@ const AdminShowToppingTable = (props: curProps) => {
                     type="submit"
                     variant="danger"
                     className={styles.btnDeleteTopping}
-                    onClick={handleDeleteTopping}
-                    value={t.toppingId}
+                    onClick={() => handleDeleteTopping(t.toppingId)}
                   >
                     <BsFillTrashFill />
                   </Button>

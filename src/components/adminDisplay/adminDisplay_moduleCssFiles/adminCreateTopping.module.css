@@ -1,11 +1,13 @@
 .mainFormContainer {
   margin-top: 1rem;
   margin-left: 30%;
-  width: fit-content;
+  width: 45%;
   /* display: container-fluid; */
   /* justify-content: center;
   align-items: center; */
   background-color: gainsboro;
+  margin-bottom: 2rem;
+  text-wrap: wrap;
 }
 
 .toppingForm {

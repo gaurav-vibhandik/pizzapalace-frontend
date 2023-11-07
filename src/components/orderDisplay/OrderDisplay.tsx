@@ -45,7 +45,7 @@ const OrderDisplay = () => {
     // such that user can not click multiple times checkouts
     setTimeout(() => {
       navigate("/orderCart");
-    }, 10);
+    }, 30);
   };
 
   //<===============
