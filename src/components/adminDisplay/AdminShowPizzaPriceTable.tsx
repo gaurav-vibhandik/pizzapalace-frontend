@@ -29,8 +29,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
   const crustList = initData.crustList;
   const crustMap = initData.crustMap;
 
-  const handleSetPizzaPriceToEdit = (e: any) => {
-    const pizzaPriceIdToEdit = e.target.id.value;
+  const handleSetPizzaPriceToEdit = (pizzaPriceIdToEdit: number) => {
     const pizzaPriceToEdit = props.pizzaPriceList.find(
       (pizzaPrice) => pizzaPrice.id === pizzaPriceIdToEdit
     );
@@ -56,7 +55,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
       pizzaSize: e.target.pizzaSize.value,
       price: e.target.price.value,
     };
-    console.log(newPizzaPrice);
+    console.log("Before ", newPizzaPrice);
 
     axios
       .put(
@@ -83,7 +82,9 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
         }
       })
       .catch((err) => {
-        setStatusFail("Failed to edit pizzaPrice :" + newPizzaPrice.id);
+        console.log(err.response.data);
+
+        setStatusFail("Failed to update pizzaPrice :" + newPizzaPrice.id);
         setTimeout(() => {
           setStatusFail("");
         }, 7000);
@@ -93,9 +94,8 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
   };
 
   //======> handle delete pizzaPrice entry==========
-  const handleDeletePizzaPrice = (e: any) => {
-    const pizzaPriceIdToDelete = e.target.value;
-    console.log("Deleting pizzaPriceId = " + e.target.value);
+  const handleDeletePizzaPrice = (pizzaPriceIdToDelete: number) => {
+    console.log("Deleting pizzaPriceId = " + pizzaPriceIdToDelete);
 
     axios
       .delete(
@@ -165,11 +165,10 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
                 <td id={`${pp.id}_p`}>
                   <Button
                     type="submit"
-                    onClick={(e: any) => {
-                      handleSetPizzaPriceToEdit(e);
+                    onClick={() => {
+                      handleSetPizzaPriceToEdit(pp.id!);
                       handleShow();
                     }}
-                    value={pp.id}
                   >
                     Edit
                   </Button>
@@ -177,8 +176,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
                     type="submit"
                     variant="danger"
                     className={styles.btnDeletePizzaPrice}
-                    onClick={handleDeletePizzaPrice}
-                    value={pp.id}
+                    onClick={() => handleDeletePizzaPrice(pp.id!)}
                   >
                     <BsFillTrashFill />
                   </Button>
@@ -202,15 +200,14 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
                 <div className={`col-11 me-auto  ${styles.pizzaPriceForm}`}>
                   <Row>
                     <FormLabel htmlFor="id">
-                      Id: {pizzaPriceToEdit?.id}
+                      Id:
+                      <FormControl
+                        type="number"
+                        name="id"
+                        value={pizzaPriceToEdit?.id}
+                        readOnly
+                      />
                     </FormLabel>
-
-                    <FormControl
-                      type="number"
-                      name="id"
-                      value={pizzaPriceToEdit?.id}
-                      readOnly
-                    />
                   </Row>
                   <Row>
                     <FormLabel htmlFor="pizzaId">
@@ -231,7 +228,7 @@ const AdminShowPizzaPriceTable = (props: curProps) => {
                         {crustList.map((crust) => (
                           <option
                             key={"crustKey_" + crust.crustId}
-                            value={crust.crust}
+                            value={crust.crustId}
                           >
                             {crust.crust}
                           </option>

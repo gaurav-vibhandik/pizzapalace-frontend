@@ -41,3 +41,16 @@ export const ValidationSchemaForAdminDisplay_CreateToppingForm = Yup.object({
     .required("Please provide quantity"),
 });
 //<=================================================
+
+export const ValidationSchemaForAdminDisplay_CreatePizzaPriceForm = Yup.object({
+  pizzaId: Yup.string()
+    .trim()
+    .matches(/^[A-Z0-9]{5}$/, "Name must be in format ZA000")
+    .required("Please enter pizzaId"),
+  crustId: Yup.string().required("Please select crustType"),
+  pizzaSize: Yup.string().required("Please select pizzaSize"),
+  price: Yup.number()
+    .min(0, "Price can not be negative")
+    .required("Please enter price"),
+});
+//<=================================================

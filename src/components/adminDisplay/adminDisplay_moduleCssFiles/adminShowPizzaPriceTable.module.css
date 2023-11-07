@@ -22,12 +22,12 @@
   font-size: medium;
 }
 
-.pizzaActionStatusSuccess {
+.pizzaPriceActionStatusSuccess {
   background-color: white;
   color: green;
 }
 
-.pizzaActionStatusFail {
+.pizzaPriceActionStatusFail {
   background-color: white;
   color: red;
 }

@@ -27,7 +27,7 @@ const AdminCreateTopping = (props: curProps) => {
 
   const initialValues = {
     name: "",
-    type: "VEG",
+    type: "",
     price: 0,
     quantity: 0,
   };
@@ -127,7 +127,7 @@ const AdminCreateTopping = (props: curProps) => {
             validationSchema={ValidationSchemaForAdminDisplay_CreateToppingForm}
             onSubmit={handleCreateToppingFormSubmit}
             validateOnBlur={true}
-            validateOnChange={false}
+            validateOnChange={true}
           >
             {(formik) => {
               // console.log(
@@ -145,8 +145,10 @@ const AdminCreateTopping = (props: curProps) => {
                     </Row>
                     <Row>
                       <label htmlFor="type">Select Topping Type :</label>
-                      <Field as="select" name="type" defaultValue="VEG">
-                        <option disabled>----choose pizza type----</option>
+                      <Field as="select" name="type">
+                        <option disabled selected value={""}>
+                          ----choose pizza type----
+                        </option>
                         <option value={"VEG"}>VEG</option>
                         <option value={"NON_VEG"}>NON_VEG</option>
                       </Field>

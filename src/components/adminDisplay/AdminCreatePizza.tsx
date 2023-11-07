@@ -28,7 +28,7 @@ const AdminCreatePizza = (props: curProps) => {
   const initialValues = {
     name: "",
     description: "",
-    type: "VEG",
+    type: "",
     imageUrl: "",
   };
 
@@ -131,7 +131,7 @@ const AdminCreatePizza = (props: curProps) => {
           <Formik
             initialValues={initialValues}
             validationSchema={ValidationSchemaForAdminDisplay_CreatePizzaForm}
-            validateOnChange={false}
+            validateOnChange={true}
             validateOnBlur={true}
             onSubmit={handleCreatePizzaFormSubmit}
           >
@@ -161,8 +161,10 @@ const AdminCreatePizza = (props: curProps) => {
                     </Row>
                     <Row>
                       <label htmlFor="type">Select Pizza Type :</label>
-                      <Field as="select" name="type" defaultValue="VEG">
-                        <option disabled>----choose pizza type----</option>
+                      <Field as="select" name="type">
+                        <option disabled selected value={""}>
+                          ----choose pizza type----
+                        </option>
                         <option value={"VEG"}>VEG</option>
                         <option value={"NON_VEG"}>NON_VEG</option>
                       </Field>

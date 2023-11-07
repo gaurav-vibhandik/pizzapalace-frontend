@@ -1,11 +1,12 @@
 .mainFormContainer {
   margin-top: 1rem;
   margin-left: 30%;
-  width: fit-content;
+  width: 50%;
   /* display: container-fluid; */
   /* justify-content: center;
   align-items: center; */
   background-color: gainsboro;
+  text-wrap: wrap;
 }
 
 .pizzaPriceForm {
