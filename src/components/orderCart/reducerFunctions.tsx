@@ -65,43 +65,43 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       return { orderList: action.item };
 
     case "ADD":
-      console.log(
-        "🚀🚀🚀🚀🚀 ~ file: reducerFunctions.tsx:68 ~ ================> inside ADD:"
-      );
+      // //console.log(
+      // "🚀🚀🚀🚀🚀 ~ file: reducerFunctions.tsx:68 ~ ================> inside ADD:"
+      // );
 
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:73 ~ state.orderList[0]:",
-        state.orderList[0]
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:73 ~ state.orderList[0]:",
+      // state.orderList[0]
+      // );
 
       existingOrderIndex = state.orderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:84 ~ existingOrderIndex:",
-        existingOrderIndex
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:84 ~ existingOrderIndex:",
+      // existingOrderIndex
+      // );
 
       existingOrder = state.orderList[existingOrderIndex];
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:87 ~ existingOrder:",
-        existingOrder
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:87 ~ existingOrder:",
+      // existingOrder
+      // );
 
       const updatedOrderLineList1 = existingOrder.orderLines;
 
       existingOrderLineIndex = updatedOrderLineList1.findIndex(
         (ol) => ol.orderLineId === action.item.orderLineId
       );
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:99 ~ existingOrderLineIndex:",
-        existingOrderLineIndex
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:99 ~ existingOrderLineIndex:",
+      // existingOrderLineIndex
+      // );
       existingOrderLine = updatedOrderLineList1[existingOrderLineIndex];
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:104 ~ existingOrderLine:",
-        existingOrderLine
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:104 ~ existingOrderLine:",
+      // existingOrderLine
+      // );
       existingOrderLine.quantity += 1;
       existingOrderLine.totalPrice += existingOrderLine.singlePizzaPrice!;
       //save changes done back to updatedOrderLineList
@@ -111,10 +111,10 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       existingOrder = { ...existingOrder, orderLines: updatedOrderLineList1 };
       const updatedOrderList1 = [...state.orderList];
       updatedOrderList1[existingOrderIndex] = existingOrder;
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:118 ~ updatedOrderList AFTER:",
-        updatedOrderList1
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:118 ~ updatedOrderList AFTER:",
+      // updatedOrderList1
+      // );
 
       return { orderList: [...updatedOrderList1] };
 
@@ -148,7 +148,7 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       );
       existingOrder = updatedOrderList[existingOrderIndex];
       updatedOrderLineList = existingOrder.orderLines;
-      console.log("Before OL.length()=" + updatedOrderLineList.length);
+      //console.log("Before OL.length()=" + updatedOrderLineList.length);
 
       //decrease totalPrice of order also
       existingOrderLineIndex = updatedOrderLineList.findIndex(
@@ -161,58 +161,58 @@ const reducerFunctionForEditOrder_EditOrderLines = (
       updatedOrderLineList = updatedOrderLineList.filter(
         (ol) => ol.orderLineId !== action.item.orderLineId
       );
-      console.log("After OL.length()=" + updatedOrderLineList.length);
+      //console.log("After OL.length()=" + updatedOrderLineList.length);
       existingOrder = { ...existingOrder, orderLines: updatedOrderLineList };
-      console.log(
-        "After OL.length() in OrderList=" + existingOrder.orderLines.length
-      );
+      //console.log(
+      //   "After OL.length() in OrderList=" + existingOrder.orderLines.length
+      // );
       updatedOrderList[existingOrderIndex] = existingOrder;
       return { orderList: [...updatedOrderList] };
 
     case "EDIT":
       updatedOrderList = JSON.parse(JSON.stringify(state.orderList));
-      console.log(
-        "===inside edit of orderReducer ===========================>"
-      );
-      console.log("cur ol => ", action.item.curOl);
-      console.log("new ol => ", action.item.newOl);
+      // //console.log(
+      //   "===inside edit of orderReducer ===========================>"
+      // );
+      // //console.log("cur ol => ", action.item.curOl);
+      // //console.log("new ol => ", action.item.newOl);
 
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:145 ~ state orderList_initial:",
-        state.orderList
-      );
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:145 ~ updatedOrderList_initial:",
-        updatedOrderList
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:145 ~ state orderList_initial:",
+      // state.orderList
+      // );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:145 ~ updatedOrderList_initial:",
+      // updatedOrderList
+      // );
 
       existingOrderIndex = updatedOrderList.findIndex(
         (o) => o.orderId == action.item.orderId
       );
-      console.log("Existing order index= ", existingOrderIndex);
+      //console.log("Existing order index= ", existingOrderIndex);
 
       existingOrder = updatedOrderList[existingOrderIndex];
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:163 ~ existingOrder:",
-        existingOrder
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:163 ~ existingOrder:",
+      // existingOrder
+      // );
 
       updatedOrderLineList = existingOrder.orderLines;
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:169 ~ updatedOrderLineList: before",
-        updatedOrderLineList
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:169 ~ updatedOrderLineList: before",
+      // updatedOrderLineList
+      // );
 
       existingOrderLineIndex = updatedOrderLineList.findIndex(
         (ol) => ol.orderLineId === action.item.curOl.orderLineId
       );
-      console.log("exisitingOrderLineIndex = ", existingOrderLineIndex);
+      //console.log("exisitingOrderLineIndex = ", existingOrderLineIndex);
 
       updatedOrderLineList[existingOrderLineIndex] = action.item.newOl;
-      console.log(
-        "🚀 ~ file: reducerFunctions.tsx:180 ~ updatedOrderLineList after:",
-        updatedOrderLineList
-      );
+      // //console.log(
+      // "🚀 ~ file: reducerFunctions.tsx:180 ~ updatedOrderLineList after:",
+      // updatedOrderLineList
+      // );
 
       //change order's totalAmount = totalPrice of new OL
       existingOrder.totalAmount =
