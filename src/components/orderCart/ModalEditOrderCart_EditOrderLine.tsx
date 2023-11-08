@@ -82,9 +82,9 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
                   {curPizza.name}
                 </Card.Title>
                 <Card.Text className={styles.olCardDescription}>
-                  <div className={styles.actualOlDescription}>
-                    <p>{curPizza.description}</p>
-                  </div>
+                  {curPizza.description}
+                </Card.Text>
+                <div>
                   <div className={styles.sizeAndCrustDetails}>
                     <p>
                       <b>
@@ -112,7 +112,7 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
                       </div>
                     </Col>
                   </Row>
-                </Card.Text>
+                </div>
               </Card.Body>
             </Col>
           </Row>
