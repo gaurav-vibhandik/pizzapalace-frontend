@@ -87,7 +87,7 @@ const CardPizza = (props: Pizza) => {
     setSelectedPizzaSize(chooseSize.current.value);
     setSelectedCrustType("");
     //remove all previously selected toppings
-    setSelectedToppings((prev) => []);
+    setSelectedToppings([]);
     //remove all previously selected cheese
     setSelectedExtraCheese(false);
     //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
@@ -97,9 +97,11 @@ const CardPizza = (props: Pizza) => {
   const handleCrustTypeChange = () => {
     setSelectedCrustType(chooseCrust.current.value);
     //remove all previously selected toppings
-    setSelectedToppings((prev) => []);
+    setSelectedToppings([]);
     //remove all previously selected cheese
     setSelectedExtraCheese(false);
+    //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
+    //setIsAddToCartClicked(false);
   };
 
   //====> Handling Extra Cheese======================
@@ -134,7 +136,7 @@ const CardPizza = (props: Pizza) => {
       totalPrice: pizzaPrice,
       singlePizzaPrice: pizzaPrice,
     };
-    console.log(ol);
+
     orderLineState.addToOrderLineList(ol);
     console.log("addToCart finished");
   };
@@ -184,7 +186,7 @@ const CardPizza = (props: Pizza) => {
                   placeholder="Choose Pizza Size"
                   defaultValue=""
                 >
-                  <option value="" disabled>
+                  <option value="" selected disabled>
                     Choose Pizza Size
                   </option>
                   <option key={props.pizzaId + "REGULAR"} value="REGULAR">
@@ -241,6 +243,7 @@ const CardPizza = (props: Pizza) => {
                             type="checkbox"
                             onChange={handleExtraCheese}
                             value={35}
+                            checked={selectedExtraCheese}
                           />
                           Extra Cheese @35
                         </label>
@@ -260,6 +263,9 @@ const CardPizza = (props: Pizza) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -280,6 +286,9 @@ const CardPizza = (props: Pizza) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -301,6 +310,9 @@ const CardPizza = (props: Pizza) => {
                                       name="toppingSelection"
                                       value={topping.toppingId}
                                       onChange={handleToppingCheckboxChange}
+                                      checked={selectedToppings.includes(
+                                        topping.toppingId!
+                                      )}
                                     />
                                     {`${topping.name} @ Rs.${topping.price}`}
                                   </label>

@@ -20,12 +20,14 @@ const ModalPizzaCard = (props: any) => {
   const onHandleClose = props.onHandleClose;
 
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
-  const [selectedPizzaSize, setSelectedPizzaSize] = useState("");
-  const [selectedCrustType, setSelectedCrustType] = useState("");
+  const [selectedPizzaSize, setSelectedPizzaSize] = useState(oldOl.size);
+  const [selectedCrustType, setSelectedCrustType] = useState(oldOl.crustId);
   // const [pizzaQty, setPizzaQty] = useState(1);
-  const [selectedToppings, setSelectedToppings] = useState([] as string[]);
+  const [selectedToppings, setSelectedToppings] = useState(oldOl.toppingList);
   // const [pizzaPrice, setPizzaPrice] = useState(0);
-  const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
+  const [selectedExtraCheese, setSelectedExtraCheese] = useState(
+    oldOl.extraCheese
+  );
 
   let pizzaPrice = 0;
 
@@ -79,20 +81,16 @@ const ModalPizzaCard = (props: any) => {
   const handlePizzaSizeChange = () => {
     setSelectedPizzaSize(chooseSize.current.value);
     setSelectedCrustType("");
+    setSelectedExtraCheese(false);
+    setSelectedToppings([]);
     //resetting AddToCart from clicked to unClicked,so that it can add next orderLine
     setIsAddToCartClicked(false);
   };
   //==========================================
   const handleCrustTypeChange = () => {
     setSelectedCrustType(chooseCrust.current.value);
-  };
-
-  //========================================
-  const handleChangeForQtyState = () => {
-    if (isAddToCartClicked) {
-      // setPizzaQty(1);
-      // setIsAddToCartClicked(false);
-    }
+    setSelectedExtraCheese(false);
+    setSelectedToppings([]);
   };
 
   //====> Handling Extra Cheese======================
@@ -182,9 +180,8 @@ const ModalPizzaCard = (props: any) => {
                   className={styles.myCardSelect}
                   size="sm"
                   onClick={handlePizzaSizeChange}
-                  onChange={handleChangeForQtyState}
                   placeholder="Choose Pizza Size"
-                  defaultValue=""
+                  defaultValue={oldOl.size}
                 >
                   <option value="" disabled>
                     Choose Pizza Size
@@ -218,12 +215,13 @@ const ModalPizzaCard = (props: any) => {
                       className={styles.myCardSelect}
                       onChange={() => {
                         handleCrustTypeChange();
-                        handleChangeForQtyState();
                       }}
                       onClick={handleCrustTypeChange}
-                      defaultValue=""
+                      defaultValue={oldOl.crustId}
                     >
-                      <option disabled>Choose Crust Type</option>
+                      <option value="" disabled>
+                        Choose Crust Type
+                      </option>
                       {pizzaPriceListForCurrentPizza.map((crustWithPrice) => (
                         <option
                           key={crustWithPrice.crustId}
@@ -244,6 +242,7 @@ const ModalPizzaCard = (props: any) => {
                             ref={chooseExtraCheese}
                             type="checkbox"
                             onChange={handleExtraCheese}
+                            checked={selectedExtraCheese}
                           />
                           Extra Cheese @35
                         </label>
@@ -263,6 +262,9 @@ const ModalPizzaCard = (props: any) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -283,6 +285,9 @@ const ModalPizzaCard = (props: any) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -304,6 +309,9 @@ const ModalPizzaCard = (props: any) => {
                                       name="toppingSelection"
                                       value={topping.toppingId}
                                       onChange={handleToppingCheckboxChange}
+                                      checked={selectedToppings.includes(
+                                        topping.toppingId!
+                                      )}
                                     />
                                     {`${topping.name} @ Rs.${topping.price}`}
                                   </label>
