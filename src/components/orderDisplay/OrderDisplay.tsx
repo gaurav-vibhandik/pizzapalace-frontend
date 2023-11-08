@@ -11,6 +11,10 @@ import EmptyOrderDisplayImage from "../images/EmptyOrderDisplayImage/EmptyOrderD
 const OrderDisplay = () => {
   const orderLineState = useContext(OrderLineContext);
   const orderLineList = orderLineState.orderLineList;
+  // console.log(
+  // "🚀 ~ file: OrderDisplay.tsx:14 ~ OrderDisplay ~ orderLineList:",
+  // orderLineList
+  // );
 
   //Calculating Total Order Price
   let totalOrderPrice = 0;
@@ -67,6 +71,7 @@ const OrderDisplay = () => {
             </div>
           </div>
         )}
+
         {orderLineState.orderLineList.length > 0 && (
           <div className={styles.orderCart}>
             <div className={styles.displayOrderLine}>

@@ -15,6 +15,7 @@ import OrderLine from "../interfaces/orderLineInterface";
 const ModalPizzaCard = (props: any) => {
   const curPizza = props.myPizza;
   const oldOl: OrderLine = props.oldOl;
+
   const onReplace = props.onReplace;
   const onHandleClose = props.onHandleClose;
 
@@ -114,8 +115,8 @@ const ModalPizzaCard = (props: any) => {
     }
   };
   //====>Handling "Save Changes" =======================
-  const handleUpdatecart = (event: any) => {
-    console.log("Inside handleSaveChanges");
+  const handleUpdatecart = () => {
+    console.log("Inside handleUpdate of edit pizza in orderline");
 
     const newOl: OrderLine = {
       pizzaId: curPizza.pizzaId,
@@ -125,14 +126,19 @@ const ModalPizzaCard = (props: any) => {
       extraCheese: selectedExtraCheese,
       toppingList: selectedToppings,
       totalPrice: pizzaPrice,
+      singlePizzaPrice: pizzaPrice,
     };
 
+    console.log(
+      "🚀 ~ file: ModalPizzaCard.tsx:132 ~ handleUpdatecart ~ oldOl:",
+      oldOl
+    );
+
+    console.log(
+      "🚀 ~ file: ModalPizzaCard.tsx:134 ~ handleUpdatecart ~ newOl:",
+      newOl
+    );
     onReplace({ oldOl: oldOl, newOl: newOl });
-    console.log(`============================>
-    Editing Pizza: ${curPizza.pizzaId} \n 
-    before OL : ${oldOl.size} & ${oldOl.crustId}
-    new OL : ${selectedPizzaSize} & ${selectedCrustType}
-    `);
 
     console.log("editing Pizza Finished");
     onHandleClose();
