@@ -1,23 +1,12 @@
 import React, { useContext, useState } from "react";
 import InitDataContext from "../../context/InitDataContext";
 import { Pizza } from "../interfaces/pizzaInterface";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import vegLogo from "../images/vegFoodLogo_32x32.png";
 import nonVegLogo from "../images/nonVegFoodLogo_32x32.png";
 import styles from "./ModalEditOrderCart_EditOrderLine.module.css";
-import BtnManageQuantity from "../BtnManageQuantity";
-import OrderLineContext from "../../context/orderLineContext";
 import OrderLine from "../interfaces/orderLineInterface";
 import ModalEditOrderCart_EditOrderLine_EditPizzaCard from "./ModalEditOrderCart_EditOrderLine_EditPizzaCard";
-import Order from "../interfaces/orderInterface";
 import EditOrder_BtnManageQuantity from "./EditOrder_BtnManageQuantity";
 
 type curProps = {
@@ -43,14 +32,7 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
   const curPizza: Pizza = pizzaMap.get(ol.pizzaId)!;
   const curPizzaSize = ol.size;
   const curPizzaCrust: string = crustMap.get(ol.crustId);
-  const orderLineContext = useContext(OrderLineContext);
-
   const toppingMap = initData.toppingMap;
-
-  //Handling Customize Orderline
-  const handleCustomizeOrderLine = () => {
-    let pizzaToChange = pizzaMap.get(ol.pizzaId)!;
-  };
 
   //====> Modal Handling :
   const [show, setShow] = useState(false);
@@ -60,9 +42,6 @@ const ModalEditOrderCart_EditOrderLine = (props: curProps) => {
 
   //====> Debugging ==========
 
-  // const handleBtnAddClick = () => {
-  //   props.onBtnAddQuantity(ol.orderId, ol.orderLineId);
-  // };
   //<======================
 
   return (

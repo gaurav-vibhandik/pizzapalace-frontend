@@ -28,7 +28,11 @@ const orderLineReducer = (
 ) => {
   if (action.type === "ADD") {
     //This will add new OL entry or update existing one by incrementing existing quantity
-    let updatedOrderLineList = [...state.orderLineList];
+    let updatedOrderLineList = JSON.parse(JSON.stringify(state.orderLineList));
+    console.log(
+      "🚀 ~ file: OrderLineContextProvider.tsx:32 ~ updatedOrderLineList:Att start of ADD",
+      updatedOrderLineList
+    );
     const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
@@ -43,20 +47,32 @@ const orderLineReducer = (
         );
       }
     );
+    console.log(
+      "🚀 ~ file: OrderLineContextProvider.tsx:47 ~ existingOrderLineIndex:",
+      existingOrderLineIndex
+    );
 
     //if OL exists increase its quantity
-    let existingOrderLine = updatedOrderLineList[existingOrderLineIndex];
-    if (existingOrderLine) {
+    let existingOrderLine: OrderLine =
+      updatedOrderLineList[existingOrderLineIndex];
+    if (existingOrderLineIndex !== -1) {
       //NOTE : We must not change prev state as it may be refer by other also
       //Make isolated changes and then return them
-
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:57 ~ updatedOrderLineList[existingOrderLineIndex]:",
+        updatedOrderLineList[existingOrderLineIndex]
+      );
       existingOrderLine.quantity += 1;
       existingOrderLine.totalPrice += existingOrderLine.singlePizzaPrice!;
       updatedOrderLineList[existingOrderLineIndex] = existingOrderLine;
     } else {
+      //during first time adding of OL we will have to set singlePizzaPrice as it is not there
+      // action.item.singlePizzaPrice = action.item.totalPrice;
+
       //NOTE : We must not change prev state as it may be refer by other also
       //Make isolated changes and then return them
       //concat method will return new Array without changing original one
+
       updatedOrderLineList = state.orderLineList.concat(action.item);
     }
 
@@ -66,7 +82,7 @@ const orderLineReducer = (
   if (action.type === "REMOVE") {
     //This will update existing OL entry by decrementing existing quantity or
     // remove OL from olList if quantity reaches zero
-    let updatedOrderLineList = [...state.orderLineList];
+    let updatedOrderLineList = JSON.parse(JSON.stringify(state.orderLineList));
     const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
@@ -109,8 +125,23 @@ const orderLineReducer = (
   if (action.type === "REPLACE") {
     //This will update existing OL entry by REPLACING existing Pizza Details only
     let updatedOrderLineList: OrderLine[] = JSON.parse(
-      JSON.stringify(state.orderLineList)
+      JSON.stringify([...state.orderLineList])
     );
+
+    //CaseA: When olList contains only one element , simply replace it
+    if (updatedOrderLineList.length == 1) {
+      updatedOrderLineList[0] = action.item.newOl;
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:134 ~ action.item.newOl:",
+        action.item.newOl
+      );
+
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:122 ~ updatedOrderLineList:",
+        updatedOrderLineList
+      );
+      return { orderLineList: updatedOrderLineList };
+    }
 
     const existingOrderLineIndex = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
@@ -126,8 +157,8 @@ const orderLineReducer = (
         );
       }
     );
-
     //If newOL is same as one of existing orderLineList , increase its qty AND remove the oldOl entry
+
     const existingOrderLineIndexForNewOl = updatedOrderLineList.findIndex(
       (ol: OrderLine) => {
         return (
@@ -142,8 +173,8 @@ const orderLineReducer = (
         );
       }
     );
+
     if (existingOrderLineIndexForNewOl !== -1) {
-      //increase qty by one
       let existingOrderLine =
         updatedOrderLineList[existingOrderLineIndexForNewOl];
 
@@ -167,9 +198,7 @@ const orderLineReducer = (
       return { orderLineList: updatedOrderLineList };
     } else {
       //if not simply replace oldOl entry
-      updatedOrderLineList[existingOrderLineIndex] = {
-        ...action.item.newOl,
-      };
+      updatedOrderLineList[existingOrderLineIndex] = action.item.newOl;
 
       return { orderLineList: updatedOrderLineList };
     }
@@ -184,6 +213,10 @@ const orderLineReducer = (
 };
 
 const OrderLineContextProvider = (props: any) => {
+  // console.log(
+  //   "🚀 🚀 🚀 🚀 ~ file: OrderLineContextProvider.tsx:218 ~ OrderLineContextProvider ~ :=====>OLContext Provider Rendered"
+  // );
+
   const [orderLineState, dispatchOrderLineStateAction] = useReducer(
     orderLineReducer,
     defaultValue

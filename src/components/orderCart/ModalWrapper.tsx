@@ -1,8 +1,6 @@
 import React, { RefObject, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import Order from "../interfaces/orderInterface";
-import OrderLine from "../interfaces/orderLineInterface";
 
 type curProps = {
   children: any;

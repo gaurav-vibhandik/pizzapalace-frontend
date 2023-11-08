@@ -7,7 +7,6 @@ import OrderLineContextProvider from "../../context/OrderLineContextProvider";
 import Topping from "../interfaces/toppingInterface";
 import { Pizza } from "../interfaces/pizzaInterface";
 import axios from "axios";
-import Crust from "../interfaces/crustInterface";
 
 const RootLayout = () => {
   // Fetching required all context data so that it can be provided to all children components replacing outlet component
@@ -97,11 +96,9 @@ const RootLayout = () => {
           sideList,
           loading: false,
         });
+
         console.log(
-          "=====>Fetched Data Details ====================================="
-        );
-        console.log({
-          pizzaList,
+          "🚀 ~ file: RootLayout.tsx:102 ~ fetchData",
           pizzaMap,
           crustList,
           crustMap,
@@ -111,24 +108,8 @@ const RootLayout = () => {
           vegToppingList,
           nonVegToppingList_veg,
           nonVegToppingList_nonVeg,
-          sideList,
-        });
-
-        // console.log("Fetched pizzaList = " + pizzaList.length);
-        // console.log("Fetched crustList = " + crustList.length);
-        // console.log("Fetched crustMap ====>= " + crustMap);
-        // crustMap.forEach((k, v) => console.log("Key:" + k + "  " + v));
-        // console.log("Fetched pizzaPriceList = " + pizzaPriceList.length);
-        // console.log("Fetched ToppingList = " + toppingList.length);
-        // console.log("Fetched ToppingMap = " + toppingMap.size);
-        // console.log("Fetched vegToppingList = " + vegToppingList.length);
-        // console.log(
-        //   "Fetched nonVegToppingList_veg = " + nonVegToppingList_veg.length
-        // );
-        // console.log(
-        //   "Fetched nonVegToppingList_nonVeg = " +
-        //     nonVegToppingList_nonVeg.length
-        // );
+          sideList
+        );
 
         console.log("<====================================\n\n");
       } catch (error) {
@@ -160,9 +141,7 @@ const RootLayout = () => {
         <div className="blockAfterHeader"></div>
         <div className="outlet">
           <InitDataContext.Provider value={initData}>
-            <OrderLineContextProvider>
-              <Outlet />
-            </OrderLineContextProvider>
+            <Outlet />
           </InitDataContext.Provider>
         </div>
         <Footer />

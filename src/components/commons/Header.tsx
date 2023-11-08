@@ -9,7 +9,7 @@ const Header = () => {
       <div className="header">
         <Navbar bg="primary" data-bs-theme="dark">
           <Container fluid>
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/home">
               <img
                 alt="logo"
                 src={logo}
@@ -36,7 +36,7 @@ const Header = () => {
                 }
                 end
               >
-                My Cart
+                OrderCart
               </NavLink>
               <NavLink
                 to="/admin"

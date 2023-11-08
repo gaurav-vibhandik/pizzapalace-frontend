@@ -44,7 +44,7 @@ const OrderDisplay = () => {
     //Handle idle time to wait before navigating(so that data can be fetched in OrderCart)
     // such that user can not click multiple times checkouts
     setTimeout(() => {
-      navigate("/orderCart");
+      navigate("/checkout");
     }, 30);
   };
 
@@ -53,6 +53,20 @@ const OrderDisplay = () => {
   return (
     <React.Fragment>
       <div className={styles.orderDisplay}>
+        {orderLineState.orderLineList.length == 0 && (
+          <div className={styles.orderCart}>
+            <div className={styles.emptyOrderBlock}>
+              <Image
+                className={styles.emptyOrderDisplayImage}
+                src={EmptyOrderDisplayImage}
+              />
+              <p>
+                <b>YOUR CART IS EMPTY</b>
+              </p>
+              <p>Please add some items from the menu.</p>
+            </div>
+          </div>
+        )}
         {orderLineState.orderLineList.length > 0 && (
           <div className={styles.orderCart}>
             <div className={styles.displayOrderLine}>
@@ -87,21 +101,6 @@ const OrderDisplay = () => {
                   Checkout
                 </Button>
               </div>
-            </div>
-          </div>
-        )}
-
-        {orderLineState.orderLineList.length == 0 && (
-          <div className={styles.orderCart}>
-            <div className={styles.emptyOrderBlock}>
-              <Image
-                className={styles.emptyOrderDisplayImage}
-                src={EmptyOrderDisplayImage}
-              />
-              <p>
-                <b>YOUR CART IS EMPTY</b>
-              </p>
-              <p>Please add some items from the menu.</p>
             </div>
           </div>
         )}

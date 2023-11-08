@@ -11,8 +11,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import OrderCartPage from "./components/pages/OrderCartPage";
-import RootLayout from "./components/Routing/RootLayout";
 import AdminPage from "./components/pages/AdminPage";
+import RootLayout from "./components/pages/RootLayout";
+import CheckoutPage from "./components/pages/CheckoutPage";
 
 function App() {
   //=========> Routing using JS object ========
@@ -22,6 +23,7 @@ function App() {
       element: <RootLayout />,
       children: [
         { path: "/home", element: <HomePage /> },
+        { path: "/checkout", element: <CheckoutPage /> },
         { path: "/orderCart", element: <OrderCartPage /> },
         { path: "/admin", element: <AdminPage /> },
       ],
@@ -41,18 +43,7 @@ function App() {
     <React.Fragment>
       <RouterProvider router={router} />
 
-      <div className="App">
-        {/* <HomePage /> */}
-        {/* <Demo /> */}
-      </div>
-
-      {/* Old approach :
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/orderCart" element={<OrderCartPage />} />
-        </Routes>
-      </BrowserRouter> */}
+      <div className="App"></div>
     </React.Fragment>
   );
 }
