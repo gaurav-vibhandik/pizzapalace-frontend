@@ -41,19 +41,6 @@ const OrderCart = () => {
       type: "ADD",
       item: { orderId, orderLineId },
     });
-
-    console.log(
-      "In customerOrderData.orders[0].orderId= " +
-        customerOrderData.orders[0].orderId
-    );
-    console.log(
-      "In customerOrderData.orders[0].orderLines[0].orderLineId= " +
-        customerOrderData.orders[0].orderLines[0].orderLineId
-    );
-    console.log(
-      "In customerOrderData.orders[0].orderLines[0].quantity= " +
-        customerOrderData.orders[0].orderLines[0].quantity
-    );
   };
 
   const handleBtnRemoveQuantity = (
@@ -182,7 +169,7 @@ const OrderCart = () => {
         const resp = await axios.get(
           "http://localhost:8080/api/v1/orders/customer/CUS003"
         );
-        console.log("===============>Fetched data :\n");
+        console.log("===============>Fetched data in OrderCart :\n");
         console.log(resp.data.data.list);
         //============>check 1 : SHALLOW COPY : note : [...SorceArr] => it returns new array but object within new array still points to original source array objects
         // This approach makes both OrderList for state n reducer to point at same OrderList object==================================>
@@ -232,6 +219,11 @@ const OrderCart = () => {
           type: "POPULATE_ORDERSTATE",
           item: fetchedOrderListForReducer!,
         });
+
+        console.log(
+          "🚀 ~ file: OrderCart.tsx:221 ~ loadOrderData ~Initial value of fetchedOrderListForReducer:",
+          fetchedOrderListForReducer
+        );
 
         /*
         //For Debugging ONLY :
@@ -301,6 +293,7 @@ const OrderCart = () => {
                           </span>
                         </Col>
                       </Row>
+                      <div>Delivery Address : {o.deliveryAddress}</div>
                     </div>
                     <TableForOrderLine
                       orderLines={o.orderLines}

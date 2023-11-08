@@ -17,8 +17,10 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
 
   const [selectedPizzaSize, setSelectedPizzaSize] = useState(curOl.size);
   const [selectedCrustType, setSelectedCrustType] = useState(curOl.crustId);
-  const [selectedToppings, setSelectedToppings] = useState([] as string[]);
-  const [selectedExtraCheese, setSelectedExtraCheese] = useState(false);
+  const [selectedToppings, setSelectedToppings] = useState(curOl.toppingList);
+  const [selectedExtraCheese, setSelectedExtraCheese] = useState(
+    curOl.extraCheese
+  );
 
   let pizzaPrice = 0;
 
@@ -224,6 +226,7 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                             ref={chooseExtraCheese}
                             type="checkbox"
                             onChange={handleExtraCheese}
+                            checked={selectedExtraCheese}
                           />
                           Extra Cheese @35
                         </label>
@@ -243,6 +246,9 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -263,6 +269,9 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                                     name="toppingSelection"
                                     value={topping.toppingId}
                                     onChange={handleToppingCheckboxChange}
+                                    checked={selectedToppings.includes(
+                                      topping.toppingId!
+                                    )}
                                   />
                                   {`${topping.name} @ Rs.${topping.price}`}
                                 </label>
@@ -284,6 +293,9 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
                                       name="toppingSelection"
                                       value={topping.toppingId}
                                       onChange={handleToppingCheckboxChange}
+                                      checked={selectedToppings.includes(
+                                        topping.toppingId!
+                                      )}
                                     />
                                     {`${topping.name} @ Rs.${topping.price}`}
                                   </label>

@@ -90,9 +90,11 @@ const EditOrder = (props: curProps) => {
 
         <Row className="mt-1">
           <FormLabel htmlFor="cusAddress">Delivery Address :</FormLabel>
-          <textarea ref={addressRef} name="cusAddress">
-            {curOrder.deliveryAddress}
-          </textarea>
+          <textarea
+            ref={addressRef}
+            name="cusAddress"
+            defaultValue={curOrder.deliveryAddress}
+          />
         </Row>
         <Row>
           OrderLines:
