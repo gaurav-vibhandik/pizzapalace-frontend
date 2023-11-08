@@ -37,6 +37,29 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
   const backendPizzaPriceList = initData.pizzaPriceList;
   const crustMap: Map<string, string> = initData.crustMap;
 
+  //====>Handling "Update Pizza details" =======================
+  const handleUpdatePizzaDetails = () => {
+    console.log("Inside handle Update Pizza Changes");
+
+    const newOl: OrderLine = {
+      orderLineId: curOl.orderLineId,
+      orderId: curOl.orderId,
+      pizzaId: curPizza.pizzaId!,
+      size: selectedPizzaSize,
+      crustId: selectedCrustType,
+      quantity: 1,
+      extraCheese: selectedExtraCheese,
+      toppingList: selectedToppings,
+      totalPrice: pizzaPrice,
+      singlePizzaPrice: pizzaPrice,
+    };
+
+    onBtnEditOrderLine(curOl.orderId, curOl, newOl);
+    onHandleClose();
+  };
+
+  //<===============================
+
   //Fetching crustTypes and its Prices for given selected PizzaSize
   const pizzaPriceListForCurrentPizza: PizzaPrice[] =
     backendPizzaPriceList.filter((p) => {
@@ -107,27 +130,6 @@ const ModalEditOrderCart_EditOrderLine_EditPizzaCard = (props: any) => {
       );
     }
   };
-  //====>Handling "Update Pizza details" =======================
-  const handleUpdatePizzaDetails = (event: any) => {
-    event.preventDefault();
-    console.log("Inside handle Update Pizza Changes");
-
-    const newOl: OrderLine = {
-      pizzaId: curPizza.pizzaId!,
-      size: selectedPizzaSize,
-      crustId: selectedCrustType,
-      quantity: 1,
-      extraCheese: selectedExtraCheese,
-      toppingList: selectedToppings,
-      totalPrice: pizzaPrice,
-      singlePizzaPrice: pizzaPrice,
-    };
-
-    onBtnEditOrderLine(curOl.orderId, curOl, newOl);
-    onHandleClose();
-  };
-
-  //<===============================
 
   return (
     <React.Fragment>

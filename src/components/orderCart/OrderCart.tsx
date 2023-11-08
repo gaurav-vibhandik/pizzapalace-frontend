@@ -80,8 +80,6 @@ const OrderCart = () => {
   };
 
   const handleCancelEditOrder = (resetOrderId: string) => {
-    console.log("Inside reset handler");
-
     const curOrderIndex = customerOrderData.orders.findIndex(
       (o) => o.orderId === resetOrderId
     );
@@ -171,7 +169,7 @@ const OrderCart = () => {
         );
         console.log("===============>Fetched data in OrderCart :\n");
         console.log(resp.data.data.list);
-        //============>check 1 : SHALLOW COPY : note : [...SorceArr] => it returns new array but object within new array still points to original source array objects
+        //============>check 1 : SHALLOW COPY : note : [...SourceArr] => it returns new array but object within new array still points to original source array objects
         // This approach makes both OrderList for state n reducer to point at same OrderList object==================================>
         const backendOrderList: Order[] = resp.data.data.list;
         backendOrderList.forEach((fetchedOrder) => {
@@ -190,12 +188,10 @@ const OrderCart = () => {
         //Method 2 : deep copying using "const destArr = JSON.parse(JSON.stringify(srcArr))"
         const fetchedBackendOrderList = JSON.parse(
           JSON.stringify(backendOrderList)
-          // JSON.stringify([...backendOrderList])
         );
 
         const fetchedOrderListForReducer = JSON.parse(
           JSON.stringify(backendOrderList)
-          // JSON.stringify([...backendOrderList])
         );
 
         /*// Method 3 : using custom deepCopy functions 

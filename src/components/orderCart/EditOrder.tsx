@@ -39,13 +39,6 @@ const EditOrder = (props: curProps) => {
       deliveryAddress: addressRef.current!.value,
       orderLines: curOrder.orderLines,
     };
-    // console.log("Sending details : \n");
-    // console.log(newOrder.customerId);
-    // console.log(newOrder.orderId);
-    // console.log(newOrder.deliveryAddress);
-    // console.log(newOrder.totalAmount);
-    // console.log(newOrder.status);
-    // console.log(newOrder.orderLines.length);
 
     props.onBtnUpdateOrder(newOrder);
   };

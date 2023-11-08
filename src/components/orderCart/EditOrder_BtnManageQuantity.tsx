@@ -5,6 +5,10 @@ import OrderLine from "../interfaces/orderLineInterface";
 const EditOrder_BtnManageQuantity = (props: any) => {
   const { quantity, handleBtnAdd, handleBtnRemove } = props;
   const curOL: OrderLine = props.curOrderLine;
+
+  // console.log("=======> Inside BtnManageQty :");
+  // console.log("🚀 ~ file: EditOrder_BtnManageQuantity.tsx:11 ~ curOl:", curOL);
+
   return (
     <React.Fragment>
       <div className={styles.btnContainer}>
