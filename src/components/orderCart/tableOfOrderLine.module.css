@@ -16,15 +16,16 @@
 .olTablePrice {
   width: 8%;
 }
-.olTableDescription {
-  width: 28%;
+.olTableCrust {
+  width: 20%;
 }
 .olTableExtraCheese {
-  width: 10%;
+  width: 9%;
 }
 .olTableTopping {
-  width: fit-content;
+  width: 30%;
+  text-wrap: wrap;
 }
-.olTableEdit {
+/* .olTableEdit {
   width: 5%;
-}
+} */

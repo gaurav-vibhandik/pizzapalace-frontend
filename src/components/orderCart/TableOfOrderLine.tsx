@@ -9,6 +9,7 @@ import { wrap } from "module";
 type TableOLProp = {
   orderLines: OrderLine[];
   pizzaMap: Map<string, Pizza>;
+  crustMap: Map<string, string>;
   toppingMap: Map<string, Topping>;
 };
 
@@ -21,16 +22,16 @@ const TableForOrderLine = (props: TableOLProp) => {
 
   return (
     <React.Fragment>
-      <div className={`${styles.olTable}`}>
+      <div className={`container ms-0 ${styles.olTable}`}>
         <Table striped bordered hover>
           <thead>
             <tr>
               <th className={styles.olTableHeading}>OrderlineId</th>
               <th className={styles.olTableName}>PizzaName</th>
+              <th className={styles.olTableCrust}>Crust</th>
               <th className={styles.olTableSize}>Size</th>
               <th className={styles.olTableQuantity}>Quantity</th>
               <th className={styles.olTablePrice}>Total Price</th>
-              <th className={styles.olTableDescription}>Description</th>
               <th className={styles.olTableExtraCheese}>Extra Cheese</th>
               <th className={styles.olTableTopping}>Toppings</th>
             </tr>
@@ -40,12 +41,12 @@ const TableForOrderLine = (props: TableOLProp) => {
               <tr key={Math.random()}>
                 <td>{ol.orderLineId}</td>
                 <td>{props.pizzaMap.get(ol.pizzaId)!.name}</td>
+                <td>{props.crustMap.get(ol.crustId)!}</td>
                 <td>{ol.size}</td>
                 <td>{ol.quantity}</td>
                 <td>{ol.totalPrice}</td>
-                <td>{props.pizzaMap.get(ol.pizzaId)!.description}</td>
                 <td>{ol.extraCheese ? "Yes" : "No"}</td>
-                <td>
+                <td className={styles.olTableTopping}>
                   {ol.toppingList.length > 0
                     ? ol.toppingList
                         .map((tpId) => props.toppingMap.get(tpId)!.name)

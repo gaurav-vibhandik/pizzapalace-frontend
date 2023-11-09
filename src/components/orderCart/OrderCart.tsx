@@ -27,7 +27,7 @@ const OrderCart = () => {
 
   const ref_editOrderModalClose = useRef<HTMLButtonElement>(null);
   const initData = useContext(InitDataContext);
-  const { pizzaMap, toppingMap } = initData;
+  const { pizzaMap, crustMap, toppingMap } = initData;
 
   //=========> Declaring Reducer to handle Order n OrderLine changes
   const [orderStateReducer, dispatchToOrderStateReducer] = useReducer(
@@ -294,6 +294,7 @@ const OrderCart = () => {
                     <TableForOrderLine
                       orderLines={o.orderLines}
                       pizzaMap={pizzaMap}
+                      crustMap={crustMap}
                       toppingMap={toppingMap}
                     />
                     <div
