@@ -39,7 +39,6 @@ const EditOrder = (props: curProps) => {
       deliveryAddress: addressRef.current!.value,
       orderLines: curOrder.orderLines,
     };
-
     props.onBtnUpdateOrder(newOrder);
   };
 

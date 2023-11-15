@@ -121,7 +121,9 @@ const OrderCart = () => {
         }
       })
       .catch((error) => {
-        console.log("Failed to update order details :" + error.data.message);
+        console.log(
+          "Failed to update order details :" + error.response.data.message
+        );
         //reset changes done current orderStateReducer
         handleCancelEditOrder(newOrder.orderId!);
       });
