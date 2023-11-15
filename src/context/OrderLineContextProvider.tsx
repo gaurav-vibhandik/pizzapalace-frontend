@@ -152,7 +152,8 @@ const orderLineReducer = (
       return { orderLineList: updatedOrderLineList };
     }
 
-    const existingOrderLineIndex = updatedOrderLineList.findIndex(
+    //CaseB: When olList contains more than one element
+    const existingOrderLineIndex = state.orderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.oldOl.pizzaId &&
@@ -160,15 +161,15 @@ const orderLineReducer = (
           ol.crustId === action.item.oldOl.crustId &&
           ol.extraCheese === action.item.oldOl.extraCheese &&
           //checking first length of toppings is same or not
-          ol.toppingList.length == action.item.newOl.toppingList.length &&
+          ol.toppingList.length == action.item.oldOl.toppingList.length &&
           new Set([...ol.toppingList]).size ==
-            new Set([...ol.toppingList, ...action.item.newOl.toppingList]).size
+            new Set([...ol.toppingList, ...action.item.oldOl.toppingList]).size
         );
       }
     );
-    //If newOL is same as one of existing orderLineList , increase its qty AND remove the oldOl entry
+    //Case B.1) => If newOL is same as one of existing orderLineList , increase its qty AND remove the oldOl entry
 
-    const existingOrderLineIndexForNewOl = updatedOrderLineList.findIndex(
+    const existingOrderLineIndexForNewOl = state.orderLineList.findIndex(
       (ol: OrderLine) => {
         return (
           ol.pizzaId === action.item.newOl.pizzaId &&
@@ -205,8 +206,23 @@ const orderLineReducer = (
       });
 
       return { orderLineList: updatedOrderLineList };
-    } else {
+    } //Case B.2) => updated newOL is different
+    else {
       //if not simply replace oldOl entry
+      console.log("here in Case B.2) => ");
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:212 ~ existingOrderLineIndex:",
+        existingOrderLineIndex
+      );
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:218 ~ action.item.oldOl:",
+        action.item.oldOl
+      );
+
+      console.log(
+        "🚀 ~ file: OrderLineContextProvider.tsx:219 ~ action.item.newOl:",
+        action.item.newOl
+      );
       updatedOrderLineList[existingOrderLineIndex] = action.item.newOl;
 
       return { orderLineList: updatedOrderLineList };
