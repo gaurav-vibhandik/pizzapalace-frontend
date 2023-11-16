@@ -57,7 +57,7 @@ const Header = () => {
                 SignIn
               </NavLink>
               <NavLink
-                to="/signUp"
+                to="/register"
                 className={({ isActive }) =>
                   isActive ? "activeHeaderMenu" : "inactiveHeaderMenu"
                 }

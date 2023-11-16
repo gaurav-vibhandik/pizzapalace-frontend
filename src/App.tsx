@@ -14,6 +14,7 @@ import OrderCartPage from "./components/pages/OrderCartPage";
 import AdminPage from "./components/pages/AdminPage";
 import RootLayout from "./components/pages/RootLayout";
 import CheckoutPage from "./components/pages/CheckoutPage";
+import RegisterPage from "./components/pages/RegisterPage";
 
 function App() {
   //=========> Routing using JS object ========
@@ -22,10 +23,12 @@ function App() {
       path: "/",
       element: <RootLayout />,
       children: [
-        { path: "/home", element: <HomePage /> },
+        //  { path: "/", element: <HomePage /> },
+        { path: "/home", element: <HomePage />, index: true },
         { path: "/checkout", element: <CheckoutPage /> },
         { path: "/orderCart", element: <OrderCartPage /> },
         { path: "/admin", element: <AdminPage /> },
+        { path: "/register", element: <RegisterPage /> },
       ],
     },
   ]);
