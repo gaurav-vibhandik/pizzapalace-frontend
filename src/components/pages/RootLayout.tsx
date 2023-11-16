@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Header from "../commons/Header";
 import Footer from "../commons/Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import InitDataContext from "../../context/InitDataContext";
 import OrderLineContextProvider from "../../context/OrderLineContextProvider";
 import Topping from "../interfaces/toppingInterface";
 import { Pizza } from "../interfaces/pizzaInterface";
 import axios from "axios";
+import ErrorPage from "./ErrorPage";
 
 const RootLayout = () => {
   // Fetching required all context data so that it can be provided to all children components replacing outlet component
@@ -23,7 +24,10 @@ const RootLayout = () => {
     nonVegToppingList_nonVeg: [],
     sideList: [] as any,
     loading: true, // Add a loading state
+    error: "", //to handle serverDown or other data not fetched issue
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("inside useEffect");
@@ -95,6 +99,7 @@ const RootLayout = () => {
           nonVegToppingList_nonVeg,
           sideList,
           loading: false,
+          error: "",
         });
 
         console.log(
@@ -112,8 +117,12 @@ const RootLayout = () => {
         );
 
         console.log("<====================================\n\n");
-      } catch (error) {
-        console.log("Error in fetching data:", error);
+      } catch (error: any) {
+        console.log(
+          "🚀 ~ file: RootLayout.tsx:116 ~ fetchData ~ error:",
+          error
+        );
+        setInitData({ ...initData, loading: false, error: error.message });
       }
     };
 
@@ -128,6 +137,15 @@ const RootLayout = () => {
         </div>
       </div>
     ); // Display a loading message or spinner
+  }
+
+  //when error occurs during loading of data like server-down
+  if (!initData.loading && initData.error.length > 0) {
+    return (
+      <div>
+        <ErrorPage error={initData.error} />
+      </div>
+    );
   }
 
   return (

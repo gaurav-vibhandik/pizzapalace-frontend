@@ -93,40 +93,45 @@ const OrderCart = () => {
     });
   };
 
-  const handleUpdateOrder = (newOrder: Order) => {
+  const handleUpdateOrder = async (newOrder: Order) => {
     //hit backend for updating Order .If success update entry in reducer state also
-    axios
-      .put("http://localhost:8080/api/v1/orders/" + newOrder.orderId, newOrder)
-      .then((resp) => {
-        if (resp.data.success) {
-          //if backend orderData has been updated , reflect same in given customerOrderData.orders and
-          //  orderStateReducer
 
-          const updatedCustomerOrderDataOrderList = [
-            ...customerOrderData.orders,
-          ];
+    try {
+      const resp = await axios.put(
+        "http://localhost:8080/api/v1/orders/" + newOrder.orderId,
+        newOrder
+      );
+      console.log(
+        "🚀 ~ file: OrderCart.tsx:104 ~ handleUpdateOrder ~ resp:",
+        resp
+      );
 
-          const existingOrderIndex = customerOrderData.orders.findIndex(
-            (o) => o.orderId === newOrder.orderId
-          );
-          updatedCustomerOrderDataOrderList[existingOrderIndex] = newOrder;
-          setCustomerOrderData({
-            loading: false,
-            orders: updatedCustomerOrderDataOrderList,
-          });
+      // if (resp.data.success) {
+      //   //if backend orderData has been updated , reflect same in given customerOrderData.orders and
+      //   //  orderStateReducer
 
-          dispatchToOrderStateReducer({ type: "UPDATE_ORDER", item: newOrder });
-          console.log("resp succes:state updated");
-          ref_editOrderModalClose.current!.click();
-        }
-      })
-      .catch((error) => {
-        console.log(
-          "Failed to update order details :" + error.response.data.message
-        );
-        //reset changes done current orderStateReducer
-        handleCancelEditOrder(newOrder.orderId!);
-      });
+      //   const updatedCustomerOrderDataOrderList = [...customerOrderData.orders];
+
+      //   const existingOrderIndex = customerOrderData.orders.findIndex(
+      //     (o) => o.orderId === newOrder.orderId
+      //   );
+      //   updatedCustomerOrderDataOrderList[existingOrderIndex] = newOrder;
+      //   setCustomerOrderData({
+      //     loading: false,
+      //     orders: updatedCustomerOrderDataOrderList,
+      //   });
+
+      //   dispatchToOrderStateReducer({ type: "UPDATE_ORDER", item: newOrder });
+      //   console.log("resp succes:state updated");
+      //   ref_editOrderModalClose.current!.click();
+      // }
+    } catch (error: any) {
+      console.log(
+        "Failed to update order details :" + error.response.data.message
+      );
+      //reset changes done current orderStateReducer
+      handleCancelEditOrder(newOrder.orderId!);
+    }
   };
 
   const handleDeleteOrder = (orderId: string) => {
@@ -178,10 +183,10 @@ const OrderCart = () => {
         );
 
         backendOrderList.forEach((fetchedOrder) => {
-          console.log("here in bOL, orderId=: ", fetchedOrder.orderId);
+          //console.log("here in bOL, orderId=: ", fetchedOrder.orderId);
 
           fetchedOrder.orderLines.forEach((fetchedOL) => {
-            console.log("here in bOL,orderLineId: ", fetchedOL.orderLineId);
+            // console.log("here in bOL,orderLineId: ", fetchedOL.orderLineId);
 
             fetchedOL.singlePizzaPrice =
               fetchedOL.totalPrice / fetchedOL.quantity;
