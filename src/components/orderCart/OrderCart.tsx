@@ -170,12 +170,19 @@ const OrderCart = () => {
           "http://localhost:8080/api/v1/orders/customer/CUS003"
         );
         console.log("===============>Fetched data in OrderCart :\n");
-        console.log(resp.data.data.list);
-        //============>check 1 : SHALLOW COPY : note : [...SourceArr] => it returns new array but object within new array still points to original source array objects
-        // This approach makes both OrderList for state n reducer to point at same OrderList object==================================>
+
         const backendOrderList: Order[] = resp.data.data.list;
+        console.log(
+          "🚀 ~ file: OrderCart.tsx:175 ~ loadOrderData ~ backendOrderList:",
+          backendOrderList
+        );
+
         backendOrderList.forEach((fetchedOrder) => {
-          fetchedOrder.orderLines!.forEach((fetchedOL) => {
+          console.log("here in bOL, orderId=: ", fetchedOrder.orderId);
+
+          fetchedOrder.orderLines.forEach((fetchedOL) => {
+            console.log("here in bOL,orderLineId: ", fetchedOL.orderLineId);
+
             fetchedOL.singlePizzaPrice =
               fetchedOL.totalPrice / fetchedOL.quantity;
           });
@@ -196,15 +203,6 @@ const OrderCart = () => {
           JSON.stringify(backendOrderList)
         );
 
-        /*// Method 3 : using custom deepCopy functions 
-        // Following getDeepNestedArrayCopyFrom must be designed to handle nesting of objects in given srcArr item , so its not universal deep copy function
-        const fetchedBackendOrderList =
-          getDeepNestedArrayCopyFrom(backendOrderList);
-        const fetchedOrderListForReducer =
-          getDeepNestedArrayCopyFrom(backendOrderList);
-          */
-        //<====check1==============================================================
-
         //following data is used for backup of original orderList when we cancels an UpdateOrder
         setCustomerOrderData({
           loading: false,
@@ -218,22 +216,10 @@ const OrderCart = () => {
           item: fetchedOrderListForReducer!,
         });
 
-        console.log(
-          "🚀 ~ file: OrderCart.tsx:221 ~ loadOrderData ~Initial value of fetchedOrderListForReducer:",
-          fetchedOrderListForReducer
-        );
-
-        /*
-        //For Debugging ONLY :
-        console.log("======Debugging starts==========>  Ordercart dispatched");
-        console.log(
-          "==============>Checking deep clone copy of fetchedOListForReducer and fetchedOListForState  "
-        );
-        fetchedOrderListForReducer[0].orderLines[0].totalPrice = 999999;
-        console.log(fetchedBackendOrderList[0].orderLines[0]);
-        console.log(fetchedOrderListForReducer[0].orderLines[0]);
-        console.log("<====Debugging Ends==================");
-        */
+        // console.log(
+        // "🚀 ~ file: OrderCart.tsx:221 ~ loadOrderData ~Initial value of fetchedOrderListForReducer:",
+        // fetchedOrderListForReducer
+        // );
       } catch (error) {
         console.log("====>Error in OrderCart :\n" + error);
       }
@@ -241,6 +227,7 @@ const OrderCart = () => {
     loadOrderData();
   }, []);
 
+  //when customer order cart data is loading :
   if (customerOrderData.loading) {
     return (
       <React.Fragment>
@@ -255,11 +242,25 @@ const OrderCart = () => {
     );
   }
 
+  //when loading of orderData is complete but orderList is EMPTY
+  if (!customerOrderData.loading && customerOrderData.orders.length == 0) {
+    return (
+      <React.Fragment>
+        <div className={styles.orderCart}>
+          <div
+            className={`text-align-center ${styles.orderCartDisplayCustomerDetails}`}
+          >
+            <h3 style={{ textAlign: "center" }}>
+              Looks like you have not placed any orders yet...
+            </h3>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
-      {/* {customerOrderData.orders.map((o) => (
-        <p>{o.orderId}</p>
-      ))} */}
       <div className={styles.orderCart}>
         <div className={styles.orderCartDisplayCustomerDetails}>
           <h2>Welcome Customer :"CUS003"</h2>

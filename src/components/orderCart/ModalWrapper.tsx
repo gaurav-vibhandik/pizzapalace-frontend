@@ -23,6 +23,7 @@ const ModalWrapper = (props: curProps) => {
       <Button
         variant="danger"
         onClick={() => props.onBtnDeleteOrder(props.curOrder.orderId!)}
+        style={{ marginLeft: "1rem" }}
       >
         Delete Order
       </Button>
